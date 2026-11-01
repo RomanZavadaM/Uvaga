@@ -64,14 +64,18 @@ pub fn normalize_official(observation: &SourceObservation) -> Result<OfficialEve
         ObservationKind::Advisory => return Err(NormalizeError::NotOfficialSignal),
     };
 
+    let source_id = observation.source_id.trim();
+    let provider_event_id = observation.provider_event_id.trim();
+    let region = observation.region.trim();
+
     Ok(OfficialEvent {
-        region: observation.region.clone(),
+        region: region.to_owned(),
         // Core event_id identifies a normalized event VERSION, not merely a provider record.
-        // A provider may update one record from start -> clear; those updates must not collide.
+        // Canonical trim prevents transport whitespace from creating duplicate logical identities.
         event_id: format!(
             "{}:{}:{}:{}",
-            observation.source_id,
-            observation.provider_event_id,
+            source_id,
+            provider_event_id,
             observation.issued_at,
             signal_id
         ),
@@ -118,6 +122,18 @@ mod tests {
         assert_ne!(start.event_id, clear.event_id);
         assert_eq!(start.event_id, "official-api:evt-1:100:start");
         assert_eq!(clear.event_id, "official-api:evt-1:120:clear");
+    }
+
+    #[test]
+    fn surrounding_whitespace_is_canonicalized_in_normalized_identity() {
+        let mut o = obs(ObservationKind::OfficialStart);
+        o.source_id = " official-api ".into();
+        o.provider_event_id = " evt-1 ".into();
+        o.region = " UA-46 ".into();
+
+        let event = normalize_official(&o).unwrap();
+        assert_eq!(event.event_id, "official-api:evt-1:100:start");
+        assert_eq!(event.region, "UA-46");
     }
 
     #[test]
