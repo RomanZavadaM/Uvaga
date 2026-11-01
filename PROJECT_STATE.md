@@ -5,71 +5,52 @@
 **Методологія:** dev-strategy v2 RC — пробне застосування, не прийнято повністю.
 
 ## Підтверджений інтегрований стан
-- `main` створений початковим docs-only README; базовий commit: `ad8653ebcdf16507be54a929b690c8a1060e035b`.
-- Жоден prototype PR #1–#11 не злитий у `main`.
-- Немає release/tag, production deployment, live API credential або публічної доставки сповіщень.
+- `main` містить початковий README; базовий commit: `ad8653ebcdf16507be54a929b690c8a1060e035b`.
+- Prototype/docs work ведеться через stacked PR; перед будь-якою інтеграцією звіряти live GitHub.
+- Release/tag, production deployment, live API credential і публічна доставка сповіщень відсутні.
 
 ## Погоджений продукт
-- Аудиторія: public, територія: вся Україна.
-- Обсяг: офіційні тривоги + перевірена додаткова інформація.
-- Канали: desktop, mobile, web; Telegram — пізніше через інтеграційний вихід.
-- Попередній стек: Rust + Tauri 2; Windows 7 виключено.
-- Легкий Rust relay/cache; PostgreSQL не є вимогою. Секретні third-party tokens не в public clients.
+- Public, вся Україна, alerts-plus.
+- Офіційні тривоги + перевірена додаткова інформація.
+- Desktop + mobile + web; Telegram — пізніше через інтеграційний вихід.
+- Rust + Tauri 2; Windows 7 виключено.
+- Легкий Rust relay/cache; PostgreSQL не є вимогою.
+- Secret third-party tokens не зберігаються у public clients.
 - Proprietary: Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved.
 
-## Незмінні safety rules
+## Safety invariants
 - Timeout, TTL, empty response, 401/403/429 чи втрата джерела не створюють official clear.
 - Додаткове/агреговане джерело не може самостійно стати official source.
 - Старий clear без свіжого джерела не показується як поточна безпека.
 - Немає публічного live military tracking/точних траєкторій.
 - До окремого рішення власника: без production і public notifications.
 
-## Активні draft PR
-- #1 — organizational docs.
-- #2 — r1 offline alert-state core.
-- #3 — r2 bounded multi-region store.
-- #4 — r3 Tauri 2 offline shell.
-- #5 — r4 source trust/normalization.
-- #6 — r5 localhost synthetic relay.
-- #7 — r6 alerts.in.ua v2 compact parser.
-- #8 — r7 explicit source freshness.
-- #10 — r8 conservative recovery snapshot.
-- #11 — r9 fail-safe presentation state.
-- Issue #9 — independent review/integration gate.
+## Режим роботи
+Один активний виконавець за замовчуванням. Паралельність — лише за рішенням власника. Не робити висновок про «іншого виконавця» лише тому, що live branch змінився: спочатку звірити історію поточної/попередньої сесії та GitHub.
 
-## Перевірені CI checkpoints
-- Docs: run `41338991422` — SUCCESS.
-- r1 core: `41335891826` — SUCCESS.
-- r2 multi-region: `41336873203` — SUCCESS.
-- Tauri product-platform matrix: `41338709796` — SUCCESS на Windows 2025 x64, macOS 26 ARM64, macOS 26 Intel.
-- r4 source contract: `41337182862` — SUCCESS.
-- r5 local relay: `41337322695` — SUCCESS.
-- r6 alerts parser: `41337434827` — SUCCESS.
-- r7 freshness: `41337648092` — SUCCESS.
-- r8 recovery після consistency fix: `41338929570` — SUCCESS.
-- r9 presentation: `41338934425` — SUCCESS.
+## Поточні slices
+Базова лінія: PR #1, #2, #3; далі source/Tauri/relay/freshness/recovery/presentation та territory/source slices. Повний порядок і поточні live heads — Issue #9. Не зберігати тут рухомі SHA як остаточну правду.
 
-## Build/dependency state
-PR #4 згенерував CI Cargo.lock artifact:
-- Cargo.lock SHA256 `420880998b64ca0e1a882c781b7d4f1577b9873be8b943ae3f425482bfb514fd`.
-- artifact ZIP SHA256 `f4ab56495655c1e0a6b1c8d312940c4776697d06d7491961d8ff6bd0931d464e`.
-- direct pins: tauri 2.12.5, tauri-build 2.7.4.
-Повний Cargo.lock ще не закомічений; dependency reproducibility не вважати завершеною.
-Direct-license audit записаний у `docs/DEPENDENCY_LICENSE_AUDIT_20261101.md`; full transitive license gate ще не виконаний.
+## Перевірено
+- Docs/core/Tauri/relay/parser/freshness/recovery/presentation та territory slices мають успішні CI checkpoints; кожен current head треба звіряти live перед merge.
+- Tauri product-platform checks успішно виконувались на Windows x64, macOS ARM64 та macOS Intel.
+- Google Drive PROJECT mirror створено й readback-перевірено.
+- KATOTTG та UkraineAlarm source/contract research задокументовано.
+- Production/live delivery не перевірялась і не запускалась.
+
+## Build/dependency
+Tauri CI-generated Cargo.lock artifact існує; direct dependency pins та попередній license audit зафіксовані. Повний transitive license gate і точний release lock ще залишаються до релізу.
 
 ## Drive / recovery
-Google Drive PROJECT mirror для START/RULES/STATE/WORKLOG/HANDOFF створений і readback-перевірений. GitHub — source of truth.
-Повний незалежний Git-history bundle + restore test НЕ виконаний: контейнерний Git не мав DNS-доступу до github.com.
+Google Drive PROJECT mirror існує. GitHub — source of truth. Текстовий checkpoint у Drive не дорівнює byte-exact Git backup. Повний raw/git backup + restore test залишається відкритим.
 
 ## Відкрите
-- Незалежне review іншою особою/ШІ за Issue #9.
-- Правильна поетапна інтеграція stacked PR з fresh CI після retarget.
-- Commit точних Cargo.lock перед release.
+- Поетапна інтеграція stacked PR із fresh CI.
 - Full transitive license audit.
-- Full Git backup/restore.
+- Full Git/raw backup + restore.
 - Android/iOS compile/build validation.
-- Отримання/перевірка live API доступу, latency, schema, webhook/security та legal acceptance.
+- Live API access/schema/latency/webhook/security/legal acceptance — лише після окремого рішення власника.
 - Push/background delivery — не починалась.
 
 ## Одна наступна дія
-Незалежно перевірити PR #1 за Issue #9. Лише після приймання бази — merge/retarget наступного slice та fresh CI; не зливати stacked PR поза порядком.
+Звірити Issue #9 і live GitHub, перевірити базовий PR #1 та почати base-first integration з fresh CI. Не bulk-merge.
