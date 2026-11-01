@@ -1,6 +1,8 @@
 //! ТривогА: offline deterministic model. No network, notifications or production integration.
 //! All timestamps are integer UTC epoch seconds supplied by caller.
 
+pub mod alerts_in_ua;
+
 pub mod presentation;
 pub mod source;
 pub mod store;
