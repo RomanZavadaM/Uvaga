@@ -27,7 +27,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q "central dev-strategy" START_HERE.md
+          grep -qi "dev-strategy" START_HERE.md
+          grep -qiE "не потріб|не обов" START_HERE.md HANDOFF_CURRENT.md
           grep -Eq "production|зовнішнє розгортання" PROJECT_RULES.md
           grep -Eq "публічні сповіщення|реальні повідомлення" PROJECT_RULES.md
           grep -q "Proprietary Software License" LICENSE.md
