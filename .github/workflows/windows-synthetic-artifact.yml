@@ -1,0 +1,70 @@
+name: Windows synthetic test artifact
+on:
+  pull_request:
+    paths:
+      - 'app/**'
+      - 'src-tauri/**'
+      - '.github/workflows/windows-synthetic-artifact.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    env:
+      CARGO_TARGET_DIR: target/uvaga-test
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Generate dependency lock
+        run: cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
+      - name: Test offline Tauri bridge
+        run: cargo test --locked --manifest-path src-tauri/Cargo.toml
+      - name: Build unsigned debug executable
+        run: cargo build --locked --manifest-path src-tauri/Cargo.toml
+      - name: Prepare test artifact and checksums
+        shell: pwsh
+        run: |
+          $artifact = "target/uvaga-test/artifact"
+          New-Item -ItemType Directory -Force -Path $artifact | Out-Null
+
+          $exe = "target/uvaga-test/debug/uvaga-app.exe"
+          if (!(Test-Path $exe)) { throw "Expected executable not found: $exe" }
+
+          Copy-Item $exe "$artifact/Uvaga.exe"
+          Copy-Item "src-tauri/Cargo.lock" "$artifact/Cargo.lock"
+
+          $exeHash = (Get-FileHash "$artifact/Uvaga.exe" -Algorithm SHA256).Hash.ToLower()
+          $lockHash = (Get-FileHash "$artifact/Cargo.lock" -Algorithm SHA256).Hash.ToLower()
+
+          "$exeHash  Uvaga.exe" | Set-Content -Encoding ascii "$artifact/SHA256SUMS.txt"
+          "$lockHash  Cargo.lock" | Add-Content -Encoding ascii "$artifact/SHA256SUMS.txt"
+
+          @(
+            "ТривогА — Windows synthetic test artifact r17",
+            "",
+            "НЕ РЕЛІЗ. НЕ PRODUCTION. НЕ СИСТЕМА РЕАЛЬНОГО ОПОВІЩЕННЯ.",
+            "Target: Windows 10/11 x64",
+            "Build: unsigned debug executable",
+            "GitHub head: $env:GITHUB_SHA",
+            "",
+            "Мережа, live API, push і геолокація не підключені.",
+            "Очікувана демонстрація: confirmed=active, freshness=stale, presentation=active_last_known.",
+            "Якщо IPC не працює, UI має показати помилку, а не відбій.",
+            "",
+            "SHA256 див. SHA256SUMS.txt"
+          ) | Set-Content -Encoding utf8 "$artifact/TEST_ARTIFACT.txt"
+
+          Write-Host "Uwaga executable SHA256: $exeHash"
+          Write-Host "Cargo.lock SHA256: $lockHash"
+      - name: Upload Windows synthetic artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uvaga-Windows-Synthetic-r17
+          path: target/uvaga-test/artifact/*
+          if-no-files-found: error
+          retention-days: 30
