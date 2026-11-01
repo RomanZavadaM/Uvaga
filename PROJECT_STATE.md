@@ -5,12 +5,18 @@
 **Методологія:** dev-strategy v2 RC — пробне застосування, не прийнято повністю.
 
 ## Інтегрований стан
-- `main`: `cb7e245eb9e4d1267b74625e67bd1cf7b3d1d47f`.
-- PR #1 — organizational foundation — merged.
-- PR #2 — r1 offline alert-state core — merged.
-- PR #3 — r2 bounded multi-region store — merged.
-- Усі три інтегровані squash після fresh CI.
-- Release/tag, production deployment, live API credential і публічна доставка сповіщень відсутні.
+Current `main`: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+
+Merged with squash + fresh CI:
+- PR #1 — organizational foundation;
+- PR #2 — r1 offline alert-state core;
+- PR #3 — r2 bounded multi-region store;
+- PR #22 — continuity checkpoint after r1/r2 integration;
+- PR #8 — explicit source freshness;
+- PR #10 — conservative recovery snapshot;
+- PR #11 — fail-safe presentation states.
+
+Release/tag, production deployment, live API credential і публічна доставка сповіщень відсутні.
 
 ## Погоджений продукт
 - Public, вся Україна, alerts-plus.
@@ -25,6 +31,7 @@
 - Timeout, TTL, empty response, 401/403/429 чи втрата джерела не створюють official clear.
 - Додаткове/агреговане джерело не може самостійно стати official source.
 - Старий clear без свіжого джерела не показується як поточна безпека.
+- Source freshness окремий від confirmed alert state.
 - Немає публічного live military tracking/точних траєкторій.
 - До окремого рішення власника: без production і public notifications.
 
@@ -33,23 +40,29 @@
 
 ## Поточна інтеграційна черга
 Issue #9 — source of truth для порядку.
-Наступна core-лінія: #8 freshness → #10 recovery → #11 presentation, після чого source contract / parser / relay / Tauri та territory slices.
+Наступні slices:
+1. #5 source trust/normalization;
+2. #7 alerts.in.ua parser;
+3. #6 localhost relay;
+4. #4 Tauri shell;
+5. territory/source/attention #12–#21 після reconciliation з accepted core.
 
 ## Перевірено
-- Fresh CI для PR #1, #2, #3 перед merge — PASS.
-- Tauri product-platform checks раніше проходили на Windows x64, macOS ARM64 та macOS Intel.
-- Google Drive PROJECT mirror створено й readback-перевірено.
-- KATOTTG та UkraineAlarm source/contract research задокументовано.
+- Fresh docs + Rust CI для #8, #10, #11 перед merge — PASS.
+- Recovery restore скидає freshness до Unknown.
+- Stale/unavailable clear не показується як current clear.
+- Tauri product-platform checks раніше проходили на Windows x64, macOS ARM64, macOS Intel.
+- Google Drive PROJECT mirror readback-перевірений.
 - Production/live delivery не запускалась.
 
 ## Drive / recovery
 GitHub — source of truth.
 PROJECT mirror існує.
-Невдалий native-Google-Docs source snapshot видалений; `BACKUPS` зараз порожній.
+BACKUPS зараз порожній.
 Full raw/git backup + restore test залишається відкритим.
 
 ## Відкрите
-- Поетапна інтеграція наступних slices із fresh CI.
+- Поетапна інтеграція #5/#7/#6/#4 та territory slices із fresh CI.
 - Full transitive license audit.
 - Full Git/raw backup + restore.
 - Android/iOS compile/build validation.
@@ -57,4 +70,4 @@ Full raw/git backup + restore test залишається відкритим.
 - Push/background delivery — не починалась.
 
 ## Одна наступна дія
-Очистити/ретаргетити PR #8 на current `main`, виконати fresh CI і інтегрувати лише після PASS.
+Очистити/ретаргетити PR #5 на current `main`, виконати fresh CI і інтегрувати лише після PASS.
