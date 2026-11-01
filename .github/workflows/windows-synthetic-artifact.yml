@@ -59,7 +59,7 @@ jobs:
             "SHA256 див. SHA256SUMS.txt"
           ) | Set-Content -Encoding utf8 "$artifact/TEST_ARTIFACT.txt"
 
-          Write-Host "Uwaga executable SHA256: $exeHash"
+          Write-Host "Uvaga executable SHA256: $exeHash"
           Write-Host "Cargo.lock SHA256: $lockHash"
       - name: Upload Windows synthetic artifact
         uses: actions/upload-artifact@v4
