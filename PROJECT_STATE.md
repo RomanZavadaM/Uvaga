@@ -5,7 +5,9 @@
 **Методологія:** dev-strategy v2 RC — пробне застосування, не прийнято повністю.
 
 ## Інтегрований стан
-Current `main`: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+Last integrated **product-code** base before the continuity checkpoint: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+
+Live `main` SHA must always be read from GitHub; this document does not hard-code a self-referential current docs-merge SHA.
 
 Merged with squash + fresh CI:
 - PR #1 — organizational foundation;
