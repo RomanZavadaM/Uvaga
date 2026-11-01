@@ -2,6 +2,7 @@
 //! All timestamps are integer UTC epoch seconds supplied by caller.
 
 pub mod source;
+pub mod source_territory;
 pub mod store;
 pub mod territory;
 pub mod territory_mapping;
