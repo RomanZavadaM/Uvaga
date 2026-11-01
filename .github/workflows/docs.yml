@@ -9,17 +9,36 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Required project-local documents
         shell: bash
         run: |
           set -euo pipefail
-          for f in             START_HERE.md PROJECT_RULES.md PROJECT_STATE.md WORKLOG.md HANDOFF_CURRENT.md             REQUIREMENTS.md ARCHITECTURE.md TEST_PLAN.md SOURCES.md SOURCE_VALIDATION.md             BACKUP_AND_SYNC.md REPOSITORY_GOVERNANCE.md LICENSE.md COPYRIGHT.md THIRD_PARTY_NOTICES.md CORE_EVALUATION.md
+          for f in \
+            START_HERE.md \
+            PROJECT_RULES.md \
+            PROJECT_STATE.md \
+            WORKLOG.md \
+            HANDOFF_CURRENT.md \
+            REQUIREMENTS.md \
+            ARCHITECTURE.md \
+            TEST_PLAN.md \
+            SOURCES.md \
+            SOURCE_VALIDATION.md \
+            BACKUP_AND_SYNC.md \
+            REPOSITORY_GOVERNANCE.md \
+            LICENSE.md \
+            COPYRIGHT.md \
+            THIRD_PARTY_NOTICES.md \
+            CORE_EVALUATION.md
           do
             test -s "$f" || { echo "missing or empty: $f"; exit 1; }
           done
@@ -34,7 +53,6 @@ jobs:
           grep -q "Proprietary Software License" LICENSE.md
           grep -q "Google Drive" BACKUP_AND_SYNC.md
           grep -q "TTL" SOURCE_VALIDATION.md
-
       - name: Validate local Markdown links
         shell: python
         run: |
