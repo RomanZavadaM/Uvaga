@@ -3,6 +3,7 @@
 
 pub mod source;
 pub mod store;
+pub mod territory;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlertState {
