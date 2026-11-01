@@ -43,6 +43,6 @@ PROJECT mirror існує. GitHub залишається source of truth.
 Native Google Docs snapshot не довів byte-exact source restore; повний raw/git backup + fresh restore test залишається відкритим.
 
 ## One next action
-Відкрити Issue #9, звірити live PR #1 і current CI, після перевірки почати base-first integration. Паралельну роботу не припускати без прямого рішення власника.
+Відкрити Issue #9, звірити live PR #1 і current CI, після перевірки почати base-first integration. Паралельність — лише за прямим рішенням власника.
 
 For ordinary continuation: `START_HERE.md → PROJECT_RULES.md → PROJECT_STATE.md → WORKLOG.md → HANDOFF_CURRENT.md → live GitHub`. Центральний dev-strategy не потрібний щодня.
