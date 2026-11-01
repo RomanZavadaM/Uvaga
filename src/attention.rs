@@ -13,7 +13,7 @@ pub enum AttentionClass {
 }
 
 impl AttentionClass {
-    pub const fn rank(self) -> u16 {
+    pub fn rank(self) -> u16 {
         match self {
             // Keep official ordering anchored to PresentationState::attention_rank().
             // Multiplying leaves room to place supplemental threat between
