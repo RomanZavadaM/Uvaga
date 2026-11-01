@@ -10,7 +10,8 @@ Verification/integration gate: https://github.com/RomanZavadaM/Uvaga/issues/9
 Перед записом перевір live `main`, PR heads/bases і останні CI. Не відтворювати стан із чату.
 
 ## Integrated base
-Current confirmed `main`: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+Last integrated **product-code** base before the continuity checkpoint: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+Live `main` SHA must be verified in GitHub at session start.
 
 Already integrated:
 - #1 project foundation;
