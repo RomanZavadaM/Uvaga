@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q "Центральний dev-strategy не потрібний щодня" HANDOFF_CURRENT.md
+          grep -q "central dev-strategy" START_HERE.md
           grep -Eq "production|зовнішнє розгортання" PROJECT_RULES.md
           grep -Eq "публічні сповіщення|реальні повідомлення" PROJECT_RULES.md
           grep -q "Proprietary Software License" LICENSE.md
