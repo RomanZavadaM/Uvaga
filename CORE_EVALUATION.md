@@ -4,17 +4,18 @@
 
 - C01 мета/власник/межі: **так**.
 - C02 єдина точка входу: **так** — START_HERE.
-- C03 поточний стан/next action: **так** — PROJECT_STATE / HANDOFF.
+- C03 current state / unfinished / next action: **так після цього checkpoint** — PROJECT_STATE / HANDOFF / Issue #9.
 - C04 source of truth: **так** — GitHub.
-- C05 межі дозволів: **так**.
-- C06 ідентичність змін/rollback: **так для поточного етапу** — PR, exact heads, fresh CI, squash SHAs, Issue #9.
-- C07 неопублікована унікальна робота: **так** — GitHub branches/PR.
-- C08 захист від знищення: **так для поточного етапу** — force-with-lease лише з exact expected head; clean tree створювався від accepted main.
-- C09 критерії до виконання: **так** — TEST_PLAN + slice docs.
-- C10 release/handoff: **release не застосовується**; handoff має integrated SHA і next action.
-- C11 документація/Drive mirror: **так** — GitHub authoritative; PROJECT mirror readback існує.
-- C12 backup/restore: **частково** — full raw/git backup + restore ще не виконаний.
-- C13 continuation without chat: **структурно так, formal clean-session check ще відкрита**.
-- C14 revision/status/owner acceptance: **частково** — v2 RC trial; owner acceptance ще немає.
+- C05 permission/safety bounds: **так** — production/public alerts/live credentials/API-offer acceptance explicitly constrained.
+- C06 change identity / rollback evidence: **так для prototype stage** — PRs, exact heads, CI runs, squash SHAs, artifact hashes.
+- C07 unpublished unique work protected: **так** — GitHub branches/PRs + raw artifact mirror.
+- C08 destructive-change protection: **так для поточного етапу** — force-with-lease only against exact expected heads; accepted work integrated before branch cleanup.
+- C09 acceptance criteria before implementation: **так** — TEST_PLAN + per-slice docs/issues.
+- C10 release/handoff identity: **release N/A**; handoff has exact product SHA/artifact hashes/next action.
+- C11 project docs + mirror discipline: **так** — GitHub authoritative; Drive is mirror/backup only.
+- C12 backup/restore: **частково** — raw build artifacts preserved/read back, але full Git-history bundle + clean restore ще не виконані.
+- C13 continuation without chat: **частково operationally demonstrated** — після state divergence фактичний стан відновлено через live GitHub/Issue #9; цей checkpoint прибирає застарілий handoff. Окремий clean-session trial можна зробити після r17/C12.
+- C14 revision/status/owner acceptance: **частково** — v2 RC trial; owner acceptance «прийнято» ще немає.
 
-Висновок: **НЕ ПРИЙНЯТО повністю**. Відкриті C12, formal C13 та owner acceptance C14.
+Висновок: **НЕ ПРИЙНЯТО повністю**.
+Найближчі відкриті докази: manual r17 runtime, C12 Git bundle/restore, потім clean-session continuity check і owner acceptance.

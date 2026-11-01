@@ -4,72 +4,75 @@
 **Repository:** `RomanZavadaM/Uvaga`  
 **Методологія:** dev-strategy v2 RC — пробне застосування, не прийнято повністю.
 
-## Інтегрований стан
-Last integrated **product-code** base before the continuity checkpoint: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+## Інтегрований продукт-код
+Last integrated product-code base: `bba0bd82351fa06f20dbe144e8ac487b81314e4f` (r16).
 
-Live `main` SHA must always be read from GitHub; this document does not hard-code a self-referential current docs-merge SHA.
+До `main` уже інтегровані:
+- fail-safe official alert state, freshness, recovery і presentation;
+- source trust/normalization та provider lifecycle identity;
+- alerts.in.ua offline parser;
+- localhost synthetic relay;
+- Tauri 2 desktop shell;
+- source-neutral territory hierarchy, provider mapping і hierarchical subscriptions;
+- mapped source-territory normalization;
+- KATOTTG cutoff/amendment policy + staging validator;
+- UkraineAlarm public-offer audit;
+- deterministic attention ranking;
+- r16 local Tauri UI ↔ Rust core bridge.
 
-Merged with squash + fresh CI:
-- PR #1 — organizational foundation;
-- PR #2 — r1 offline alert-state core;
-- PR #3 — r2 bounded multi-region store;
-- PR #22 — continuity checkpoint after r1/r2 integration;
-- PR #8 — explicit source freshness;
-- PR #10 — conservative recovery snapshot;
-- PR #11 — fail-safe presentation states.
+Live `main` SHA на початку кожної сесії читати з GitHub, а не відновлювати з чату.
 
-Release/tag, production deployment, live API credential і публічна доставка сповіщень відсутні.
+## Поточний checkpoint — r17
+Open draft PR #28: Windows synthetic runtime artifact.
 
-## Погоджений продукт
-- Public, вся Україна, alerts-plus.
-- Офіційні тривоги + перевірена додаткова інформація.
-- Desktop + mobile + web; Telegram — пізніше через інтеграційний вихід.
-- Rust + Tauri 2; Windows 7 виключено.
-- Легкий Rust relay/cache; PostgreSQL не є вимогою.
-- Secret third-party tokens не зберігаються у public clients.
-- Proprietary: Copyright © 2026 Roman Zavada (Роман Завада). All rights reserved.
+Final verified source head:
+`2a9ef7e1d30c50a42dedcf822a2c8728a6d1d490`
+
+CI run `41352681448`: PASS.
+- generate Cargo.lock: PASS;
+- `cargo test --locked`: PASS;
+- `cargo build --locked`: PASS;
+- checksum creation/upload: PASS.
+
+Verified artifact:
+- `Uvaga.exe` SHA256 `220a15adc02ab03ff2f067f01a3f67a31b97fc88c01eb46a0633d4ee9022acd8`;
+- `Cargo.lock` SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- ZIP SHA256 `c02fab2a009e85ea3b9218f800e00c8e53be24f6e8b5789f3e188344bf281c98`.
+
+**Manual Windows 10/11 x64 runtime acceptance: PENDING.**
+PR #28 не зливати до результату ручного запуску власником.
 
 ## Safety invariants
-- Timeout, TTL, empty response, 401/403/429 чи втрата джерела не створюють official clear.
-- Додаткове/агреговане джерело не може самостійно стати official source.
-- Старий clear без свіжого джерела не показується як поточна безпека.
-- Source freshness окремий від confirmed alert state.
-- Немає публічного live military tracking/точних траєкторій.
-- До окремого рішення власника: без production і public notifications.
+- source outage/timeout/TTL/auth/schema error never creates official clear;
+- aggregator/supplemental data cannot self-promote to official state;
+- stale/unavailable previous clear is not current clear;
+- provider territory IDs become core identity only through audited mapping;
+- no live military target tracking/trajectories;
+- no production deployment/public notifications/live credentials without separate owner decision.
 
-## Режим роботи
-Один активний виконавець за замовчуванням. Паралельність — лише за рішенням власника. Одна гілка/матеріал не редагуються одночасно двома виконавцями.
+## Виконання
+Один активний виконавець за замовчуванням. Паралельність — лише за рішенням власника.
+Якщо пам'ять сесії суперечить GitHub: STOP → READ → VERIFY → RECONCILE → CONTINUE.
 
-## Поточна інтеграційна черга
-Issue #9 — source of truth для порядку.
-Наступні slices:
-1. #5 source trust/normalization;
-2. #7 alerts.in.ua parser;
-3. #6 localhost relay;
-4. #4 Tauri shell;
-5. territory/source/attention #12–#21 після reconciliation з accepted core.
-
-## Перевірено
-- Fresh docs + Rust CI для #8, #10, #11 перед merge — PASS.
-- Recovery restore скидає freshness до Unknown.
-- Stale/unavailable clear не показується як current clear.
-- Tauri product-platform checks раніше проходили на Windows x64, macOS ARM64, macOS Intel.
-- Google Drive PROJECT mirror readback-перевірений.
-- Production/live delivery не запускалась.
+## Sources
+- UkraineAlarm public request page/offer rechecked 2026-11-01; no application/credentials/live call.
+- alerts.in.ua public docs researched; token belongs only behind relay.
+- KATOTTG production snapshot must use Ministry base + discovered amendment chain to explicit cutoff.
 
 ## Drive / recovery
 GitHub — source of truth.
-PROJECT mirror існує.
-BACKUPS зараз порожній.
-Full raw/git backup + restore test залишається відкритим.
+Drive PROJECT mirror exists.
+BACKUPS currently contains raw Tauri Cargo.lock checkpoint and the verified r17 Windows ZIP.
+Full Git-history backup + fresh restore test is still open.
 
 ## Відкрите
-- Поетапна інтеграція #5/#7/#6/#4 та territory slices із fresh CI.
-- Full transitive license audit.
-- Full Git/raw backup + restore.
-- Android/iOS compile/build validation.
-- Live API access/schema/latency/webhook/security/legal acceptance — лише після окремого рішення власника.
-- Push/background delivery — не починалась.
+- manual runtime acceptance of r17;
+- full Git bundle + restore test (C12);
+- full transitive dependency/license gate before release;
+- Android/iOS build/runtime validation;
+- live API credentials/schema/latency/webhook/security acceptance only after separate owner decision;
+- push/background delivery;
+- production packaging/signing/release.
 
 ## Одна наступна дія
-Очистити/ретаргетити PR #5 на current `main`, виконати fresh CI і інтегрувати лише після PASS.
+Власник запускає r17 `Uvaga.exe` на Windows 10/11 x64 і повідомляє фактичний результат. Після PASS — merge PR #28; після FAIL — зафіксувати симптом і виправити до merge.
