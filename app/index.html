@@ -6,6 +6,7 @@
   <meta name="color-scheme" content="dark light">
   <title>ТривогА</title>
   <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
 </head>
 <body>
   <main class="shell">
@@ -22,32 +23,60 @@
       <span>Живі джерела, push-повідомлення та production ще не підключені.</span>
     </section>
 
-    <section class="grid" aria-label="Демонстраційні стани">
+    <section class="bridge" aria-labelledby="bridge-title">
+      <div class="bridge-head">
+        <div>
+          <p class="label">Offline UI ↔ Rust core</p>
+          <h2 id="bridge-title">Синтетичний стан регіону <span data-region>—</span></h2>
+        </div>
+        <button type="button" data-refresh>Оновити тестовий стан</button>
+      </div>
+
+      <p class="bridge-status" data-status data-kind="loading" aria-live="polite">
+        Очікую локальний Rust core…
+      </p>
+
+      <dl class="status-grid">
+        <div>
+          <dt>Підтверджений стан</dt>
+          <dd data-confirmed>—</dd>
+        </div>
+        <div>
+          <dt>Свіжість джерела</dt>
+          <dd data-freshness>—</dd>
+        </div>
+        <div>
+          <dt>Безпечне представлення</dt>
+          <dd data-presentation>—</dd>
+        </div>
+      </dl>
+
+      <p class="raw" data-raw>—</p>
+    </section>
+
+    <section class="explain" aria-label="Що перевіряє цей етап">
       <article class="card active">
-        <p class="label">Демонстраційний регіон A</p>
-        <h2>Тривога активна</h2>
-        <p>Підтверджений синтетичний старт. Відбій не отримано.</p>
-        <small>Джерело: synthetic / test-only</small>
+        <p class="label">Fail-safe</p>
+        <h2>Активний стан не зникає</h2>
+        <p>Синтетичний сигнал приходить із Rust core. Застаріле джерело не створює відбій.</p>
       </article>
 
       <article class="card stale">
-        <p class="label">Демонстраційний регіон B</p>
-        <h2>Стан потребує оновлення</h2>
-        <p>Втрата зв'язку не означає відсутність небезпеки.</p>
-        <small>Останній стан зберігається окремо від доступності джерела.</small>
+        <p class="label">IPC</p>
+        <h2>Без HTTP</h2>
+        <p>WebView викликає локальну Tauri command. Мережа, токени та зовнішні API не використовуються.</p>
       </article>
 
       <article class="card clear">
-        <p class="label">Демонстраційний регіон C</p>
-        <h2>Підтверджений відбій</h2>
-        <p>Статус змінено лише новішою підтвердженою подією.</p>
-        <small>TTL додаткових повідомлень не створює відбій.</small>
+        <p class="label">Scope</p>
+        <h2>Тільки тестовий міст</h2>
+        <p>Цей етап доводить зв’язок UI з core, але не підключає реальні тривоги чи сповіщення.</p>
       </article>
     </section>
 
     <footer>
-      <span>Тестова оболонка r3</span>
-      <span>Без мережі · без сповіщень · без геолокації</span>
+      <span>Тестова оболонка r16</span>
+      <span>Без мережі · без push · без геолокації</span>
     </footer>
   </main>
 </body>
