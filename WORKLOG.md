@@ -5,3 +5,5 @@ Docs-only набір: старт, правила, стан, handoff, вимог�
 Перевірка: змістова + повторне читання з GitHub після запису (підсумок у VERIFICATION.md). Ні збірок, ні CI продукту, ні live джерел не заявляти.
 NEXT: незалежна перевірка PR та рішення власника щодо merge. Google Drive дзеркало — окрема перевірювана дія.
 2026-11-01: PR #1 доповнено BACKUP_AND_SYNC.md, SOURCE_VALIDATION.md і 6 сценаріями TEST_PLAN.md; перевірено через GitHub список 17 змінених файлів. Drive checkpoint index створено, повний mirror і restore не виконані. Незалежний рецензент не залучений. NEXT: зовнішнє незалежне docs-review PR #1.
+
+2026-11-01: створено stacked draft PR #2 https://github.com/RomanZavadaM/Uvaga/pull/2 з Rust offline synthetic model та 5 unit tests. GitHub Actions run 41335891826: SUCCESS, cargo test --offline --all-targets SUCCESS. Не перевірено незалежним рецензентом, не злитий, жодного live API чи оповіщення. NEXT: незалежне рев'ю PR #1 і #2, а потім merge в правильному порядку.
