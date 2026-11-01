@@ -83,8 +83,8 @@ fn demo_book() -> AlertBook {
 
     let _ = book.apply(&lviv);
     let _ = book.apply(&kyiv);
-    book.set_source_freshness("UA-46", SourceFreshness::Stale);
-    book.set_source_freshness("UA-80", SourceFreshness::Fresh);
+    book.set_source_health("UA-46", false);
+    book.set_source_health("UA-80", true);
     book
 }
 
@@ -152,7 +152,7 @@ mod tests {
         let snapshot = snapshot_for(&book, "UA-46").unwrap();
 
         assert_eq!(snapshot.confirmed_state, "active");
-        assert_eq!(snapshot.source_freshness, "stale");
+        assert_eq!(snapshot.source_freshness, "unavailable");
         assert_eq!(snapshot.presentation, "active_last_known");
         assert!(snapshot.synthetic);
     }
@@ -170,11 +170,11 @@ mod tests {
     #[test]
     fn stale_clear_uses_core_clear_needs_refresh_presentation() {
         let mut book = demo_book();
-        book.set_source_freshness("UA-80", SourceFreshness::Stale);
+        book.set_source_health("UA-80", false);
 
         let snapshot = snapshot_for(&book, "UA-80").unwrap();
         assert_eq!(snapshot.confirmed_state, "cleared");
-        assert_eq!(snapshot.source_freshness, "stale");
+        assert_eq!(snapshot.source_freshness, "unavailable");
         assert_eq!(snapshot.presentation, "clear_needs_refresh");
     }
 
