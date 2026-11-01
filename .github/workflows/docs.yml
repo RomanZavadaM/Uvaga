@@ -1,0 +1,66 @@
+name: Organizational docs checks
+on:
+  pull_request:
+    paths:
+      - '*.md'
+      - 'docs/**'
+      - 'decisions/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required project-local documents
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in             START_HERE.md PROJECT_RULES.md PROJECT_STATE.md WORKLOG.md HANDOFF_CURRENT.md             REQUIREMENTS.md ARCHITECTURE.md TEST_PLAN.md SOURCES.md SOURCE_VALIDATION.md             BACKUP_AND_SYNC.md REPOSITORY_GOVERNANCE.md LICENSE.md COPYRIGHT.md THIRD_PARTY_NOTICES.md CORE_EVALUATION.md
+          do
+            test -s "$f" || { echo "missing or empty: $f"; exit 1; }
+          done
+      - name: Guard critical project rules
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -qi "dev-strategy" START_HERE.md
+          grep -qiE "не потріб|не обов" START_HERE.md HANDOFF_CURRENT.md
+          grep -Eq "production|зовнішнє розгортання" PROJECT_RULES.md
+          grep -Eq "публічні сповіщення|реальні повідомлення" PROJECT_RULES.md
+          grep -q "Proprietary Software License" LICENSE.md
+          grep -q "Google Drive" BACKUP_AND_SYNC.md
+          grep -q "TTL" SOURCE_VALIDATION.md
+
+      - name: Validate local Markdown links
+        shell: python
+        run: |
+          import pathlib, re, sys
+          root = pathlib.Path(".")
+          failures = []
+          pattern = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+          for md in root.rglob("*.md"):
+              if any(part == ".git" for part in md.parts):
+                  continue
+              text = md.read_text(encoding="utf-8")
+              for target in pattern.findall(text):
+                  target = target.strip()
+                  if target.startswith(("http://", "https://", "#", "mailto:")):
+                      continue
+                  path = target.split("#", 1)[0].split("?", 1)[0]
+                  if not path:
+                      continue
+                  resolved = (md.parent / path).resolve()
+                  try:
+                      resolved.relative_to(root.resolve())
+                  except ValueError:
+                      failures.append(f"{md}: outside repository: {target}")
+                      continue
+                  if not resolved.exists():
+                      failures.append(f"{md}: missing: {target}")
+          if failures:
+              print("\n".join(failures))
+              sys.exit(1)
