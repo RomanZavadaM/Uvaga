@@ -8,7 +8,8 @@ Define what a future source adapter is allowed to turn into an official alert ev
 - Aggregator/supplemental sources cannot self-promote to official state.
 - Advisories cannot become official start/clear signals.
 - Blank provenance identifiers and impossible observation-time ordering are rejected.
-- The normalized event ID is namespaced by source_id to prevent accidental cross-provider collisions.
+- The normalized event ID is namespaced by source_id and includes provider record id + issued_at + signal kind.
+- A provider may reuse one record id across lifecycle updates; start and clear of that record must normalize to distinct event-version IDs so dedup does not suppress a legitimate clear.
 - No credentials, URLs, HTTP implementation, storage or notifications exist in this slice.
 
 ## Predeclared acceptance
