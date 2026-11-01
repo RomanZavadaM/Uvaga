@@ -58,15 +58,23 @@ pub fn normalize_official(observation: &SourceObservation) -> Result<OfficialEve
         return Err(NormalizeError::InvalidTimeOrder);
     }
 
-    let signal = match observation.kind {
-        ObservationKind::OfficialStart => Signal::Start,
-        ObservationKind::OfficialClear => Signal::Clear,
+    let (signal, signal_id) = match observation.kind {
+        ObservationKind::OfficialStart => (Signal::Start, "start"),
+        ObservationKind::OfficialClear => (Signal::Clear, "clear"),
         ObservationKind::Advisory => return Err(NormalizeError::NotOfficialSignal),
     };
 
     Ok(OfficialEvent {
         region: observation.region.clone(),
-        event_id: format!("{}:{}", observation.source_id, observation.provider_event_id),
+        // Core event_id identifies a normalized event VERSION, not merely a provider record.
+        // A provider may update one record from start -> clear; those updates must not collide.
+        event_id: format!(
+            "{}:{}:{}:{}",
+            observation.source_id,
+            observation.provider_event_id,
+            observation.issued_at,
+            signal_id
+        ),
         issued_at: observation.issued_at,
         signal,
         verified_official: true,
@@ -95,7 +103,21 @@ mod tests {
         let event = normalize_official(&obs(ObservationKind::OfficialStart)).unwrap();
         assert_eq!(event.signal, Signal::Start);
         assert!(event.verified_official);
-        assert_eq!(event.event_id, "official-api:evt-1");
+        assert_eq!(event.event_id, "official-api:evt-1:100:start");
+    }
+
+    #[test]
+    fn same_provider_record_can_emit_distinct_start_and_clear_versions() {
+        let start = normalize_official(&obs(ObservationKind::OfficialStart)).unwrap();
+
+        let mut clear_obs = obs(ObservationKind::OfficialClear);
+        clear_obs.issued_at = 120;
+        clear_obs.observed_at = 121;
+        let clear = normalize_official(&clear_obs).unwrap();
+
+        assert_ne!(start.event_id, clear.event_id);
+        assert_eq!(start.event_id, "official-api:evt-1:100:start");
+        assert_eq!(clear.event_id, "official-api:evt-1:120:clear");
     }
 
     #[test]
