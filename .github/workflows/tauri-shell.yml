@@ -1,0 +1,38 @@
+name: Tauri shell product-platform checks
+on:
+  pull_request:
+    paths:
+      - 'Cargo.toml'
+      - 'src/**'
+      - 'app/**'
+      - 'src-tauri/**'
+      - '.github/workflows/tauri-shell.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-2025
+          - macos-26
+          - macos-26-intel
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Check Tauri shell
+        run: cargo check --manifest-path src-tauri/Cargo.toml
+      - name: Export generated Cargo.lock for repository checkpoint
+        if: matrix.os == 'windows-2025'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-cargo-lock
+          path: src-tauri/Cargo.lock
+          if-no-files-found: error

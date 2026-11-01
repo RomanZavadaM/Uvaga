@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
+  <title>ТривогА</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">ТривогА</p>
+        <h1>Оперативне інформування про небезпеку</h1>
+      </div>
+      <span class="mode">СИНТЕТИЧНИЙ РЕЖИМ</span>
+    </header>
+
+    <section class="notice" aria-live="polite">
+      <strong>Це не система реального оповіщення.</strong>
+      <span>Живі джерела, push-повідомлення та production ще не підключені.</span>
+    </section>
+
+    <section class="grid" aria-label="Демонстраційні стани">
+      <article class="card active">
+        <p class="label">Демонстраційний регіон A</p>
+        <h2>Тривога активна</h2>
+        <p>Підтверджений синтетичний старт. Відбій не отримано.</p>
+        <small>Джерело: synthetic / test-only</small>
+      </article>
+
+      <article class="card stale">
+        <p class="label">Демонстраційний регіон B</p>
+        <h2>Стан потребує оновлення</h2>
+        <p>Втрата зв'язку не означає відсутність небезпеки.</p>
+        <small>Останній стан зберігається окремо від доступності джерела.</small>
+      </article>
+
+      <article class="card clear">
+        <p class="label">Демонстраційний регіон C</p>
+        <h2>Підтверджений відбій</h2>
+        <p>Статус змінено лише новішою підтвердженою подією.</p>
+        <small>TTL додаткових повідомлень не створює відбій.</small>
+      </article>
+    </section>
+
+    <footer>
+      <span>Тестова оболонка r3</span>
+      <span>Без мережі · без сповіщень · без геолокації</span>
+    </footer>
+  </main>
+</body>
+</html>
