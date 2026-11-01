@@ -1,6 +1,8 @@
 //! ТривогА: offline deterministic model. No network, notifications or production integration.
 //! All timestamps are integer UTC epoch seconds supplied by caller.
 
+pub mod store;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlertState {
     Unknown,
