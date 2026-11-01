@@ -2,14 +2,28 @@ use std::collections::BTreeSet;
 
 use crate::territory::{TerritoryCatalog, TerritoryKey};
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SubscriptionError {
+    UnknownTerritory,
+}
+
 #[derive(Clone, Debug, Default)]
 pub struct TerritorySubscriptions {
     selected: BTreeSet<TerritoryKey>,
 }
 
 impl TerritorySubscriptions {
-    pub fn subscribe(&mut self, key: TerritoryKey) -> bool {
-        self.selected.insert(key)
+    /// Subscribe only to a territory that exists in the current canonical catalog.
+    /// Returns Ok(true) when inserted, Ok(false) when it was already selected.
+    pub fn subscribe(
+        &mut self,
+        catalog: &TerritoryCatalog,
+        key: TerritoryKey,
+    ) -> Result<bool, SubscriptionError> {
+        if catalog.get(&key).is_none() {
+            return Err(SubscriptionError::UnknownTerritory);
+        }
+        Ok(self.selected.insert(key))
     }
 
     pub fn unsubscribe(&mut self, key: &TerritoryKey) -> bool {
@@ -27,6 +41,10 @@ impl TerritorySubscriptions {
     /// A subscription to a broader territory matches that territory and its descendants.
     /// A subscription to a child never implicitly matches its parent.
     pub fn matches(&self, catalog: &TerritoryCatalog, event_territory: &TerritoryKey) -> bool {
+        if catalog.get(event_territory).is_none() {
+            return false;
+        }
+
         self.selected.iter().any(|selected| {
             selected == event_territory || catalog.is_descendant_of(event_territory, selected)
         })
@@ -99,7 +117,9 @@ mod tests {
     fn oblast_subscription_matches_descendant_hromada() {
         let catalog = catalog();
         let mut subscriptions = TerritorySubscriptions::default();
-        subscriptions.subscribe(key(TerritoryLevel::Oblast, "UA-46"));
+        subscriptions
+            .subscribe(&catalog, key(TerritoryLevel::Oblast, "UA-46"))
+            .unwrap();
 
         assert!(subscriptions.matches(
             &catalog,
@@ -111,7 +131,9 @@ mod tests {
     fn country_subscription_matches_all_known_descendants() {
         let catalog = catalog();
         let mut subscriptions = TerritorySubscriptions::default();
-        subscriptions.subscribe(key(TerritoryLevel::Country, "UA"));
+        subscriptions
+            .subscribe(&catalog, key(TerritoryLevel::Country, "UA"))
+            .unwrap();
 
         assert!(subscriptions.matches(
             &catalog,
@@ -127,7 +149,9 @@ mod tests {
     fn child_subscription_does_not_match_parent_alert() {
         let catalog = catalog();
         let mut subscriptions = TerritorySubscriptions::default();
-        subscriptions.subscribe(key(TerritoryLevel::Hromada, "UA-46-H001"));
+        subscriptions
+            .subscribe(&catalog, key(TerritoryLevel::Hromada, "UA-46-H001"))
+            .unwrap();
 
         assert!(!subscriptions.matches(
             &catalog,
@@ -140,28 +164,43 @@ mod tests {
         let catalog = catalog();
         let mut subscriptions = TerritorySubscriptions::default();
         let oblast = key(TerritoryLevel::Oblast, "UA-46");
-        subscriptions.subscribe(oblast.clone());
+        subscriptions.subscribe(&catalog, oblast.clone()).unwrap();
 
         assert!(subscriptions.matches(&catalog, &oblast));
     }
 
     #[test]
     fn subscriptions_are_idempotent_and_removable() {
+        let catalog = catalog();
         let mut subscriptions = TerritorySubscriptions::default();
         let oblast = key(TerritoryLevel::Oblast, "UA-46");
 
-        assert!(subscriptions.subscribe(oblast.clone()));
-        assert!(!subscriptions.subscribe(oblast.clone()));
+        assert_eq!(subscriptions.subscribe(&catalog, oblast.clone()), Ok(true));
+        assert_eq!(subscriptions.subscribe(&catalog, oblast.clone()), Ok(false));
         assert_eq!(subscriptions.len(), 1);
         assert!(subscriptions.unsubscribe(&oblast));
         assert!(subscriptions.is_empty());
     }
 
     #[test]
-    fn unrelated_unknown_territory_does_not_match() {
+    fn unknown_subscription_is_rejected() {
         let catalog = catalog();
         let mut subscriptions = TerritorySubscriptions::default();
-        subscriptions.subscribe(key(TerritoryLevel::Oblast, "UA-46"));
+
+        assert_eq!(
+            subscriptions.subscribe(&catalog, key(TerritoryLevel::Oblast, "UA-99")),
+            Err(SubscriptionError::UnknownTerritory)
+        );
+        assert!(subscriptions.is_empty());
+    }
+
+    #[test]
+    fn unrelated_unknown_event_territory_does_not_match() {
+        let catalog = catalog();
+        let mut subscriptions = TerritorySubscriptions::default();
+        subscriptions
+            .subscribe(&catalog, key(TerritoryLevel::Oblast, "UA-46"))
+            .unwrap();
 
         assert!(!subscriptions.matches(
             &catalog,
