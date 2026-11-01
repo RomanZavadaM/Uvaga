@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           grep -q "Центральний dev-strategy не потрібний щодня" HANDOFF_CURRENT.md
-          grep -q "production" PROJECT_RULES.md
+          grep -Eq "production|зовнішнє розгортання" PROJECT_RULES.md
           grep -Eq "публічні сповіщення|реальні повідомлення" PROJECT_RULES.md
           grep -q "Proprietary Software License" LICENSE.md
           grep -q "Google Drive" BACKUP_AND_SYNC.md
