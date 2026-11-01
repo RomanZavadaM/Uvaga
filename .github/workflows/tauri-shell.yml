@@ -26,7 +26,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
-      - name: Check Tauri shell
+      - name: Test Tauri shell bridge on Windows
+        if: matrix.os == 'windows-2025'
+        run: cargo test --manifest-path src-tauri/Cargo.toml
+      - name: Check Tauri shell on macOS
+        if: matrix.os != 'windows-2025'
         run: cargo check --manifest-path src-tauri/Cargo.toml
       - name: Export generated Cargo.lock for repository checkpoint
         if: matrix.os == 'windows-2025'
