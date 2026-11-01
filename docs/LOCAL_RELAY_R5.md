@@ -13,8 +13,8 @@ Prove the boundary between public clients and future secret-bearing source adapt
   - `presentation`.
 - Presentation is derived by the shared core `presentation_state()`; relay does not maintain a second safety rule.
 - Unknown regions return 404 rather than a false clear.
-- A stale source can coexist with the last confirmed active state.
-- A stale confirmed clear becomes `clear_needs_refresh`, not `cleared_current`.
+- A non-fresh/unavailable source can coexist with the last confirmed active state.
+- A confirmed clear with unavailable source becomes `clear_needs_refresh`, not `cleared_current`.
 - No POST endpoints, persistence, API keys, Internet fetches, push notifications, geolocation or production configuration.
 
 ## Dependency choice
@@ -27,8 +27,8 @@ Prove the boundary between public clients and future secret-bearing source adapt
 2. Root core tests remain green.
 3. Relay binds only to loopback in source.
 4. Unknown region never becomes clear.
-5. Synthetic active + stale remains `confirmed_state=active`, `source_freshness=stale`, `presentation=active_last_known`.
-6. Stale clear is `clear_needs_refresh`, not `cleared_current`.
+5. Synthetic active + unavailable source remains `confirmed_state=active`, `source_freshness=unavailable`, `presentation=active_last_known`.
+6. Clear + unavailable source is `clear_needs_refresh`, not `cleared_current`.
 7. Relay uses the shared core presentation model.
 8. No third-party endpoint/token exists in code.
 9. No release or deployment is produced.
