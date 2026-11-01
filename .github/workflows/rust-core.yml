@@ -19,4 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test --offline --all-targets
+      - name: Run offline core tests when a Rust core exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f Cargo.toml ]]; then
+            cargo test --offline --all-targets
+          else
+            echo "Docs-only base: Cargo.toml not present yet; no Rust core to test."
+          fi
