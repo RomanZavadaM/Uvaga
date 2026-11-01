@@ -1,21 +1,29 @@
 # WORKLOG — ТривогА
-2026-11-01: власник погодив public Uvaga, Rust + Tauri 2 (попередньо), docs-only PR; заборонено production й публічні сповіщення.
-2026-11-01: GitHub репозиторій перевірено як порожній. Створено ініціальний README у main: ad8653ebcdf16507be54a929b690c8a1060e035b. Створено гілку docs/organizational-start-v2-rc-20261101.
-Docs-only набір: старт, правила, стан, handoff, вимоги, архітектура, тестування, джерела та правові повідомлення.
-Перевірка: змістова + повторне читання з GitHub після запису (підсумок у VERIFICATION.md). Ні збірок, ні CI продукту, ні live джерел не заявляти.
-NEXT: незалежна перевірка PR та рішення власника щодо merge. Google Drive дзеркало — окрема перевірювана дія.
-2026-11-01: PR #1 доповнено BACKUP_AND_SYNC.md, SOURCE_VALIDATION.md і 6 сценаріями TEST_PLAN.md; перевірено через GitHub список 17 змінених файлів. Drive checkpoint index створено, повний mirror і restore не виконані. Незалежний рецензент не залучений. NEXT: зовнішнє незалежне docs-review PR #1.
 
-2026-11-01: autonomous prototype slices created as separate draft PRs #2–#8. Confirmed CI success: docs #1 run 41337588598; r1 41335891826; r2 41336873203; source contract r4 41337182862; local relay r5 41337322695; alerts parser r6 41337434827. Tauri r3 failed twice on required icon, then icon was added; latest run pending. Freshness r7 pending. No live credentials/endpoints/push/deploy.
+## 2026-11-01 — організаційний старт
+- Власник погодив public `RomanZavadaM/Uvaga`, Rust + Tauri 2, proprietary license за моделлю Taxo.
+- Заборонено production і публічні сповіщення до окремого рішення.
+- Створено initial README/main, docs branch, PR #1, START/RULES/STATE/WORKLOG/HANDOFF, requirements/architecture/source/test/license docs.
+- Створено структуру Google Drive PROJECT/CHECKPOINTS/BACKUPS/VERIFICATION.
 
+## 2026-11-01 — prototype slices
+- Створено малими PR offline Rust alert core, multi-region store, source contract, localhost synthetic relay, alerts.in.ua parser, freshness, recovery/presentation state, Tauri shell та подальші territory/source/attention slices.
+- CI неодноразово запускався на GitHub; фактичні помилки Tauri icon/build були знайдені й виправлені.
+- Product-platform Tauri checks успішно проходили на Windows x64, macOS ARM64, macOS Intel.
+- Жодного live API token, production deployment чи public notification не використовувалось.
 
-2026-11-01 — stabilization checkpoint:
-- Source audit expanded with current UkraineAlarm public offer; no credentials/live requests used.
-- Direct dependency-license audit added; Tauri MIT/Apache-2.0, axum/Tokio MIT, Serde MIT/Apache-2.0 at direct-family level; transitive release audit still open.
-- PR #4 fixed required PNG/ICO assets, pinned tauri=2.12.5 and tauri-build=2.7.4, recorded generated Cargo.lock digest. Product-platform matrix run 41338709796 SUCCESS on Windows x64 + macOS ARM64 + macOS Intel.
-- PR #10 recovery snapshot added; consistency fix rejects Active/Cleared without last event and Unknown with persisted last event. CI 41338929570 SUCCESS.
-- PR #11 fail-safe presentation states added; only fresh confirmed clear may use safe presentation. CI 41338934425 SUCCESS.
-- Issue #9 updated with review order for #10/#11.
-- Google Drive key-doc mirror write/readback verified; full Git-history backup/restore remains open because container GitHub DNS was unavailable.
-- No production, public notifications, real API tokens or live third-party API calls.
-NEXT: independent review gate Issue #9 beginning with PR #1; do not merge stacked children out of order.
+## 2026-11-01 — source/recovery work
+- Досліджено UkraineAlarm public API/application/offer та alerts.in.ua public docs.
+- Зафіксовано secret-safe relay boundary.
+- Визначено політику актуального KATOTTG: Ministry base + applicable amendment chain.
+- Drive PROJECT mirror записано/readback-перевірено.
+- Створено текстовий Drive snapshot із blob-SHA markers; readback показав, що native Google Docs не доводить byte-exact restore. Full raw/git backup + restore лишається відкритим.
+
+## 2026-11-01 — уточнення режиму виконавців
+- Власник підтвердив: зараз проєкт ведеться одним активним виконавцем.
+- Паралельність можлива тільки за рішенням власника; двох виконавців одночасно на одну гілку/матеріал власник не запускає.
+- Попереднє припущення про паралельну активність було помилковим; Issue #9 та project docs очищено й переведено на звичайний verification/integration workflow.
+- Технічні self-review/re-test результати зберігаються як звичайні докази перевірки, а не як окрема роль виконавця.
+
+## NEXT
+Звірити current PR #1 / Issue #9 / CI і почати поетапну base-first integration. Після кожного base merge — retarget наступного slice, fresh CI, перевірка, лише потім наступний merge.
