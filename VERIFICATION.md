@@ -2,46 +2,72 @@
 
 **Оновлено:** 2026-11-01
 
-## Integrated GitHub state
-Last integrated **product-code** base verified before the continuity checkpoint: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
-Live `main` SHA is intentionally not frozen here; verify it from GitHub.
+## Integrated product state
+Last integrated product-code base: `bba0bd82351fa06f20dbe144e8ac487b81314e4f` (r16).
+Live `main` must always be checked in GitHub.
 
-Merged after clean reconciliation + fresh CI:
-- #1 project foundation;
-- #2 r1 alert-state core;
-- #3 r2 multi-region store;
-- #22 continuity checkpoint;
-- #8 source freshness;
-- #10 recovery snapshot;
-- #11 presentation states.
+Integrated prototype verifies:
+- official alert state separated from source freshness;
+- source loss cannot create clear;
+- recovery resets freshness conservatively;
+- stale clear is not current clear;
+- trusted-source admission and immutable event-version identity;
+- provider territory mapping before core identity;
+- hierarchical subscription overlap;
+- deterministic attention ranking;
+- local Tauri UI ↔ Rust core IPC without HTTP/live source.
 
-## Verified safety behavior
-- Source freshness: Unknown/Fresh/Stale/Unavailable separated from confirmed alert state.
-- Loss/stale source does not clear an active alert.
-- Recovery snapshot preserves confirmed state but restores freshness as Unknown.
-- Inconsistent/duplicate recovery records fail closed.
-- Stale/unavailable previous clear becomes ClearNeedsRefresh, not current clear.
-- Unknown state never becomes a safe presentation.
+## Desktop CI
+r16 PR #27:
+- Windows bridge unit test: PASS;
+- macOS ARM64 compile: PASS;
+- macOS Intel compile: PASS;
+- organizational docs check: PASS.
 
-## CI
-Fresh Organizational docs checks + Rust core offline tests passed on the final clean heads for #8, #10 and #11 before merge.
+## r17 build verification
+PR #28 source head:
+`2a9ef7e1d30c50a42dedcf822a2c8728a6d1d490`
 
-## Sources
-UkraineAlarm public access/offer, alerts.in.ua docs and KATOTTG source policy researched without credentials/live API calls.
+Final workflow run:
+`41352681448` — PASS.
 
-## Drive
-PROJECT mirror exists and was read back.
-BACKUPS currently empty.
-Full raw/git backup + restore: **NOT DONE**.
+GitHub artifact:
+- id `13102550016`;
+- digest `sha256:c02fab2a009e85ea3b9218f800e00c8e53be24f6e8b5789f3e188344bf281c98`.
 
-## Not completed
-- Reconciliation/integration of #5/#7/#6/#4 and #12–#21.
-- Android/iOS build validation.
-- Live API credentials/schema/latency/webhook/security/legal acceptance.
-- Public notification/background push.
-- Full raw/git backup/restore.
-- Full transitive license gate.
-- Release artifacts/signing/installers.
-- Formal clean-session continuity verification C13.
+Downloaded ZIP was independently unpacked/read back:
+- `Uvaga.exe` — 12,201,472 bytes;
+  SHA256 `220a15adc02ab03ff2f067f01a3f67a31b97fc88c01eb46a0633d4ee9022acd8`;
+- `Cargo.lock` — 104,041 bytes;
+  SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- `SHA256SUMS.txt`: both entries PASS;
+- `TEST_ARTIFACT.txt`: correct source head + distinct Actions checkout SHA;
+- downloaded ZIP SHA256 equals GitHub artifact digest: PASS.
 
-Issue #9 is the current integration/verification register.
+Drive raw backup:
+`Uvaga-Windows-Synthetic-r17-2a9ef7e1-20261101.zip`
+in `ТривогА/BACKUPS`.
+
+**Manual Windows runtime acceptance: NOT YET DONE.**
+Therefore r17 is not accepted/merged yet.
+
+## Source/legal checks
+- UkraineAlarm public request page/offer checked without accepting/applying.
+- KATOTTG uses cutoff/amendment-chain policy.
+- alerts.in.ua remains aggregator/proxy candidate only.
+- no live API credential used.
+
+## Backup status
+- project continuity mirror: exists;
+- raw Tauri lock artifact: preserved;
+- raw r17 Windows artifact: preserved and checksum-verified;
+- full Git history bundle + clean restore: **NOT DONE**.
+
+## Still open
+- r17 manual Windows runtime acceptance;
+- full Git bundle/restore (C12);
+- full transitive dependency/license gate before release;
+- Android/iOS validation;
+- live API access/security/latency/schema acceptance;
+- push/background delivery;
+- signing/installers/release/production.
