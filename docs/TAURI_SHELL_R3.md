@@ -43,3 +43,7 @@ The artifact was downloaded and its SHA256 rechecked on 2026-11-01. The current 
 
 ## Not yet verified
 Android/iOS builds, signing, installer/portable packaging, WebView behavior beyond compile-time checks, accessibility beyond static markup, notification APIs, background execution and actual source integration.
+
+
+## Clean-rebuild gate
+This PR was rebuilt onto the accepted current `main`. The historical matrix results are evidence only; integration requires a new Windows/macOS matrix PASS for the current PR head.
