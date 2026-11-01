@@ -10,11 +10,16 @@ Verification/integration gate: https://github.com/RomanZavadaM/Uvaga/issues/9
 Перед записом перевір live `main`, PR heads/bases і останні CI. Не відтворювати стан із чату.
 
 ## Integrated base
-Current confirmed main after PR #3: `cb7e245eb9e4d1267b74625e67bd1cf7b3d1d47f`.
-Merged with squash + fresh CI:
+Current confirmed `main`: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+
+Already integrated:
 - #1 project foundation;
-- #2 r1 offline alert state;
-- #3 r2 multi-region store.
+- #2 r1 alert state;
+- #3 r2 multi-region store;
+- #8 freshness;
+- #10 recovery snapshot;
+- #11 presentation states;
+- docs checkpoint #22.
 
 ## Owner decisions
 - public product, вся Україна, alerts-plus;
@@ -34,7 +39,10 @@ Merged with squash + fresh CI:
 - no live military target tracking/trajectories.
 
 ## Current queue
-Issue #9 веде порядок. Наступна core-лінія: #8 freshness → #10 recovery → #11 presentation. Старі stacked heads після squash треба очищати/rebuild на current main, а не тягнути стару історію.
+Issue #9 веде порядок.
+Next: #5 source contract → #7 parser → #6 local relay → #4 Tauri shell → territory/source/attention slices.
+
+Старі stacked heads після squash треба rebuild/retarget на current main, а не тягнути стару історію.
 
 ## Sources
 - UkraineAlarm public API/application/offer досліджено; credentials не отримувалися, live call не робився.
@@ -44,10 +52,10 @@ Issue #9 веде порядок. Наступна core-лінія: #8 freshness
 ## Google Drive / backup
 Drive root: https://drive.google.com/drive/folders/1sPq7Ajmi4uhydjK7Wy1B-vR5IwTFVt8b  
 PROJECT mirror існує. GitHub залишається source of truth.
-`BACKUPS` зараз порожній після видалення неперевіреного text snapshot.
+BACKUPS зараз порожній.
 Повний raw/git backup + fresh restore test залишається відкритим.
 
 ## One next action
-Очистити PR #8 на current `main`, fresh CI, перевірка, squash merge.
+Очистити PR #5 на current main, fresh CI, перевірка, squash merge.
 
 For ordinary continuation: `START_HERE.md → PROJECT_RULES.md → PROJECT_STATE.md → WORKLOG.md → HANDOFF_CURRENT.md → live GitHub`. Центральний dev-strategy не потрібний щодня.
