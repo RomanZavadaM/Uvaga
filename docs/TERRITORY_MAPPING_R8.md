@@ -24,3 +24,7 @@ Map each provider's territorial identifiers to the source-neutral territory hier
 
 ## Limits
 The test code uses synthetic provider identifiers. Before production, every real mapping must be generated from documented provider metadata and checked against the accepted versioned Ukrainian territorial dataset. Mapping changes require explicit versioning/audit because a wrong map can misdirect alerts.
+
+
+## Clean-rebuild gate
+This PR was rebuilt onto the accepted current `main`. Integration requires fresh Rust core + relay compatibility CI on the current PR head.
