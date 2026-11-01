@@ -3,7 +3,8 @@
 **Оновлено:** 2026-11-01
 
 ## Integrated GitHub state
-Current confirmed `main`: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+Last integrated **product-code** base verified before the continuity checkpoint: `1d7281c944ecfded2d70c7d7540bebdba06b0f15`.
+Live `main` SHA is intentionally not frozen here; verify it from GitHub.
 
 Merged after clean reconciliation + fresh CI:
 - #1 project foundation;
