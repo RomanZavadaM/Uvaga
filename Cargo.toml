@@ -1,0 +1,10 @@
+[package]
+name = "uvaga-core"
+version = "0.1.0"
+edition = "2021"
+description = "Offline synthetic alert state model for TrivohA"
+license = "LicenseRef-Proprietary"
+publish = false
+
+[lib]
+path = "src/lib.rs"
