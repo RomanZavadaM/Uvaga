@@ -1,0 +1,23 @@
+name: Local synthetic relay tests
+on:
+  pull_request:
+    paths:
+      - 'Cargo.toml'
+      - 'src/**'
+      - 'relay/**'
+      - '.github/workflows/relay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --manifest-path relay/Cargo.toml --all-targets
+      - run: cargo check --manifest-path relay/Cargo.toml
