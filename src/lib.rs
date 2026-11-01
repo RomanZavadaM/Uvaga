@@ -7,6 +7,7 @@ pub mod presentation;
 pub mod source;
 pub mod store;
 pub mod territory;
+pub mod territory_mapping;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlertState {
