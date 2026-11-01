@@ -27,23 +27,46 @@ pub struct OfficialEvent {
     pub verified_official: bool,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SourceFreshness {
+    Unknown,
+    Fresh,
+    Stale,
+    Unavailable,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct RegionStatus {
     pub state: AlertState,
     pub last_event_at: Option<i64>,
     pub last_event_id: Option<String>,
-    pub source_healthy: bool,
+    pub source_freshness: SourceFreshness,
 }
 
 impl Default for RegionStatus {
     fn default() -> Self {
-        Self { state: AlertState::Unknown, last_event_at: None, last_event_id: None, source_healthy: false }
+        Self {
+            state: AlertState::Unknown,
+            last_event_at: None,
+            last_event_id: None,
+            source_freshness: SourceFreshness::Unknown,
+        }
     }
 }
 
 impl RegionStatus {
-    /// A stale or unavailable feed MUST NOT imply a clear. Preserve last confirmed state.
-    pub fn set_source_health(&mut self, healthy: bool) { self.source_healthy = healthy; }
+    /// Compatibility helper for early callers.
+    pub fn set_source_health(&mut self, healthy: bool) {
+        self.source_freshness = if healthy {
+            SourceFreshness::Fresh
+        } else {
+            SourceFreshness::Unavailable
+        };
+    }
+
+    pub fn set_source_freshness(&mut self, freshness: SourceFreshness) {
+        self.source_freshness = freshness;
+    }
 
     /// Returns true only when the official state was updated.
     /// Equal-time conflicting signals are rejected conservatively.
@@ -60,8 +83,10 @@ impl RegionStatus {
         true
     }
 
-    /// The UI must distinguish confirmation from reachability.
-    pub fn current_data_available(&self) -> bool { self.source_healthy }
+    /// Only Fresh means the source can currently confirm new information.
+    pub fn current_data_available(&self) -> bool {
+        self.source_freshness == SourceFreshness::Fresh
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -104,7 +129,24 @@ mod tests {
         assert!(s.apply(&ev("a", 10, Signal::Start, true)));
         s.set_source_health(false);
         assert_eq!(s.state, AlertState::Active);
+        assert_eq!(s.source_freshness, SourceFreshness::Unavailable);
         assert!(!s.current_data_available());
+    }
+
+    #[test] fn unknown_stale_and_unavailable_are_distinct() {
+        let mut s = RegionStatus::default();
+        assert_eq!(s.source_freshness, SourceFreshness::Unknown);
+
+        s.set_source_freshness(SourceFreshness::Stale);
+        assert_eq!(s.source_freshness, SourceFreshness::Stale);
+        assert!(!s.current_data_available());
+
+        s.set_source_freshness(SourceFreshness::Unavailable);
+        assert_eq!(s.source_freshness, SourceFreshness::Unavailable);
+        assert!(!s.current_data_available());
+
+        s.set_source_freshness(SourceFreshness::Fresh);
+        assert!(s.current_data_available());
     }
     #[test] fn advisory_expiry_is_independent() {
         let mut s = RegionStatus::default();
