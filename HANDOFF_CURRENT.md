@@ -6,5 +6,6 @@
 Заборонено: production, публічні сповіщення, живе військове стеження та секрети в репозиторії; наразі лише docs-only.
 Перевірено: у GitHub PR перераховує 15 docs-файлів, чотири ключові прочитані повторно. Доказ VERIFICATION.md. НЕ перевірено: незалежне рев'ю, CI, код, API, функціональна доставка, restore.
 Google Drive: https://drive.google.com/drive/folders/1sPq7Ajmi4uhydjK7Wy1B-vR5IwTFVt8b — папки створені, файли **ще не синхронізовані**; BACKUPS порожня.
+Доповнено правила SOURCE_VALIDATION.md і тестові сценарії TEST_PLAN.md. Незалежне рев'ю іншою особою/ШІ поки не проведено.
 Наступна одна дія: незалежне рев'ю PR #1, виправлення та рішення власника про merge. Після цього підтверджувана одностороння Drive синхронізація та окремий backup/restore test.
 Для продовження: START_HERE.md → PROJECT_RULES.md → PROJECT_STATE.md → WORKLOG.md + цей HANDOFF + live GitHub. Центральний dev-strategy не потрібний щодня.
