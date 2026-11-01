@@ -6,6 +6,7 @@ pub mod alerts_in_ua;
 pub mod presentation;
 pub mod source;
 pub mod store;
+pub mod territory;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlertState {
