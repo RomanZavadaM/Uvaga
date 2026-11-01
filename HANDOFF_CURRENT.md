@@ -1,9 +1,10 @@
 # HANDOFF_CURRENT — ТривогА
-Дата: 2026-11-01; методологія dev-strategy v2 RC (пробне застосування).
-Репозиторій: RomanZavadaM/Uvaga; чинні live SHA/PR визначити через GitHub на початку сесії.
-База: ініціальний main ad8653ebcdf16507be54a929b690c8a1060e035b; docs branch docs/organizational-start-v2-rc-20261101.
-Погоджено: public, всеукраїнське оповіщення, офіційні тривоги плюс підтверджені додаткові повідомлення; web, Windows 10/11 x64, macOS Intel/ARM, Android/iOS; Telegram пізніше; Rust + Tauri 2 попередньо. Proprietary Roman Zavada.
-Межі: жодного production, публічних оповіщень, живого моніторингу цілей і секретів у GitHub; docs-only.
-Завершення/перевірки: звірити VERIFICATION.md із живим PR. Ні код, ні реальні API, ні збірки не тестовано.
-Одна наступна дія: незалежно переглянути docs-only PR, розв'язати зауваження та погодити merge. Перевірити Drive синхронізацію, не заявляти її до підтвердження.
-Для продовження достатньо START_HERE, PROJECT_RULES, PROJECT_STATE, цього файла і live GitHub.
+Дата: 2026-11-01. Стандарт: dev-strategy v2 RC — пробне застосування, **не прийнято повністю**.
+Головне джерело істини: https://github.com/RomanZavadaM/Uvaga. Перед діями звірити живі SHA, PR, CI.
+Ініціальний main: ad8653ebcdf16507be54a929b690c8a1060e035b. Draft PR #1: https://github.com/RomanZavadaM/Uvaga/pull/1, гілка docs/organizational-start-v2-rc-20261101. Точний HEAD звірити при старті.
+Погоджено: загальноукраїнська система для населення; офіційна тривога + додаткова перевірена інформація; web/desktop/mobile, Telegram пізніше; Rust + Tauri 2 попередньо; proprietary Roman Zavada.
+Заборонено: production, публічні сповіщення, живе військове стеження та секрети в репозиторії; наразі лише docs-only.
+Перевірено: у GitHub PR перераховує 15 docs-файлів, чотири ключові прочитані повторно. Доказ VERIFICATION.md. НЕ перевірено: незалежне рев'ю, CI, код, API, функціональна доставка, restore.
+Google Drive: https://drive.google.com/drive/folders/1sPq7Ajmi4uhydjK7Wy1B-vR5IwTFVt8b — папки створені, файли **ще не синхронізовані**; BACKUPS порожня.
+Наступна одна дія: незалежне рев'ю PR #1, виправлення та рішення власника про merge. Після цього підтверджувана одностороння Drive синхронізація та окремий backup/restore test.
+Для продовження: START_HERE.md → PROJECT_RULES.md → PROJECT_STATE.md → WORKLOG.md + цей HANDOFF + live GitHub. Центральний dev-strategy не потрібний щодня.
