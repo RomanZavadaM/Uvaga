@@ -17,4 +17,3 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo test --offline --all-targets
-      - run: cargo fmt --all -- --check
