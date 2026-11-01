@@ -32,4 +32,4 @@ Full Git-history independent backup/restore is still OPEN; container GitHub DNS 
 ## One next action
 Open Issue #9 and independently review PR #1 first. Do not merge stacked children out of order. After accepted base merge, retarget child to main and require fresh CI. Separately complete full Git bundle/restore in an environment with GitHub network access.
 
-For ordinary continuation: START_HERE.md → PROJECT_RULES.md → PROJECT_STATE.md → WORKLOG.md → this HANDOFF + live GitHub. Central dev-strategy is not required in each session.
+For ordinary continuation: START_HERE.md → PROJECT_RULES.md → PROJECT_STATE.md → WORKLOG.md → this HANDOFF + live GitHub. Центральний dev-strategy не потрібний щодня.
