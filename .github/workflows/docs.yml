@@ -1,0 +1,35 @@
+name: Organizational docs checks
+on:
+  pull_request:
+    paths:
+      - '*.md'
+      - 'docs/**'
+      - 'decisions/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required project-local documents
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in             START_HERE.md PROJECT_RULES.md PROJECT_STATE.md WORKLOG.md HANDOFF_CURRENT.md             REQUIREMENTS.md ARCHITECTURE.md TEST_PLAN.md SOURCES.md SOURCE_VALIDATION.md             BACKUP_AND_SYNC.md LICENSE.md COPYRIGHT.md THIRD_PARTY_NOTICES.md CORE_EVALUATION.md
+          do
+            test -s "$f" || { echo "missing or empty: $f"; exit 1; }
+          done
+      - name: Guard critical project rules
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "Центральний dev-strategy не потрібний щодня" HANDOFF_CURRENT.md
+          grep -q "production" PROJECT_RULES.md
+          grep -q "публічні сповіщення" PROJECT_RULES.md
+          grep -q "Proprietary Software License" LICENSE.md
+          grep -q "Google Drive" BACKUP_AND_SYNC.md
+          grep -q "TTL" SOURCE_VALIDATION.md
