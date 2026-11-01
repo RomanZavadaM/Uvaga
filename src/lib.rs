@@ -5,6 +5,7 @@ pub mod source;
 pub mod store;
 pub mod territory;
 pub mod territory_mapping;
+pub mod subscriptions;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlertState {
