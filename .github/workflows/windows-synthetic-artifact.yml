@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 25
     env:
       CARGO_TARGET_DIR: target/uvaga-test
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
@@ -50,7 +51,8 @@ jobs:
             "НЕ РЕЛІЗ. НЕ PRODUCTION. НЕ СИСТЕМА РЕАЛЬНОГО ОПОВІЩЕННЯ.",
             "Target: Windows 10/11 x64",
             "Build: unsigned debug executable",
-            "GitHub head: $env:GITHUB_SHA",
+            "Source PR head: $env:SOURCE_HEAD_SHA",
+            "GitHub Actions checkout SHA: $env:GITHUB_SHA",
             "",
             "Мережа, live API, push і геолокація не підключені.",
             "Очікувана демонстрація: confirmed=active, freshness=stale, presentation=active_last_known.",
