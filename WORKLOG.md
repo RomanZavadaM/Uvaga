@@ -3,26 +3,33 @@
 ## 2026-11-01 — організаційний старт
 - Власник погодив public `RomanZavadaM/Uvaga`, Rust + Tauri 2, proprietary license за моделлю Taxo.
 - Заборонено production і публічні сповіщення до окремого рішення.
-- Створено initial README/main, docs branch, PR #1, START/RULES/STATE/WORKLOG/HANDOFF, requirements/architecture/source/test/license docs.
-- Створено структуру Google Drive PROJECT/CHECKPOINTS/BACKUPS/VERIFICATION.
+- Створено project-local continuity docs, requirements/architecture/source/test/license docs.
+- Створено Google Drive PROJECT/CHECKPOINTS/BACKUPS/VERIFICATION.
 
-## 2026-11-01 — prototype slices
-- Створено малими PR offline Rust alert core, multi-region store, source contract, localhost synthetic relay, alerts.in.ua parser, freshness, recovery/presentation state, Tauri shell та подальші territory/source/attention slices.
-- CI неодноразово запускався на GitHub; фактичні помилки Tauri icon/build були знайдені й виправлені.
-- Product-platform Tauri checks успішно проходили на Windows x64, macOS ARM64, macOS Intel.
-- Жодного live API token, production deployment чи public notification не використовувалось.
+## 2026-11-01 — prototype work
+- Створено offline Rust alert core, multi-region store, source contract, localhost relay, alerts.in.ua parser, freshness, recovery/presentation state, Tauri shell та territory/source/attention slices.
+- CI виявляв реальні Tauri build/icon defects; виправлення перевірені.
+- Product-platform Tauri checks проходили на Windows x64, macOS ARM64, macOS Intel.
+- Live API tokens, production deployment і public notifications не використовувались.
 
-## 2026-11-01 — source/recovery work
+## 2026-11-01 — source/recovery
 - Досліджено UkraineAlarm public API/application/offer та alerts.in.ua public docs.
 - Зафіксовано secret-safe relay boundary.
-- Визначено політику актуального KATOTTG: Ministry base + applicable amendment chain.
+- KATOTTG policy: Ministry base + applicable amendment chain.
 - Drive PROJECT mirror записано/readback-перевірено.
-- Створено текстовий Drive snapshot із blob-SHA markers; readback показав, що native Google Docs не доводить byte-exact restore. Full raw/git backup + restore лишається відкритим.
+- Native Google Docs source snapshot не довів byte-exact restore й був видалений; BACKUPS зараз порожній. Full raw/git backup + restore лишається відкритим.
 
-## 2026-11-01 — режим роботи
+## 2026-11-01 — execution policy
 - Один активний виконавець за замовчуванням.
-- Паралельність можлива тільки за рішенням власника; одна гілка/матеріал не редагуються одночасно двома виконавцями.
-- Issue #9 веде звичайний verification/integration workflow.
+- Паралельність можлива тільки за рішенням власника.
+- Одна гілка/матеріал не редагуються одночасно двома виконавцями.
+- Issue #9 веде verification/integration workflow.
+
+## 2026-11-01 — integration cleanup
+- PR #1 очищено, fresh docs/core CI PASS, squash merge: `556ae3f09c63cfefd8c2fba57be16dd782517603`.
+- PR #2 після squash-base перебудовано force-with-lease як один чистий r1 commit поверх main; diff = 3 files; fresh docs/core CI PASS; squash merge: `b802ee08377f5deff4922c4014801c2b171745f6`.
+- PR #3 так само перебудовано як чистий r2 commit; diff = 3 files; fresh docs/core CI PASS; squash merge: `cb7e245eb9e4d1267b74625e67bd1cf7b3d1d47f`.
+- Старі merged branches залишаються на GitHub лише тому, що доступний конектор не має delete-branch operation; вони не є активними.
 
 ## NEXT
-Звірити current PR #1 / Issue #9 / CI і почати поетапну base-first integration. Після кожного base merge — retarget наступного slice, fresh CI, перевірка, лише потім наступний merge.
+Очистити PR #8 на current main, виконати fresh CI і інтегрувати freshness slice. Далі #10 → #11.

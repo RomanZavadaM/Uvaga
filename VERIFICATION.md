@@ -1,40 +1,40 @@
 # VERIFICATION — ТривогА
 
-**Оновлено:** 2026-11-01  
-Обсяг: organizational checkpoint + offline/synthetic prototype slices.
+**Оновлено:** 2026-11-01
 
-## GitHub
-- Public repo: `RomanZavadaM/Uvaga`.
-- Initial main: `ad8653ebcdf16507be54a929b690c8a1060e035b`.
-- Verification/integration порядок: Issue #9.
-- Один активний виконавець за замовчуванням; паралельність — лише за рішенням власника.
+## Integrated GitHub state
+Current confirmed `main`: `cb7e245eb9e4d1267b74625e67bd1cf7b3d1d47f`.
 
-## Перевірений технічний стан
-- Docs/core/relay/parser/freshness/recovery/presentation/territory slices мають успішні GitHub CI checkpoints.
-- Tauri product-platform checks проходили на Windows x64, macOS ARM64 та macOS Intel.
-- Реальні CI failures на required Tauri icon/build assets були виявлені й виправлені до зелених runs.
-- Current head кожного PR потрібно повторно звіряти перед merge; старі run IDs не є безстроковим PASS.
+Merged after clean reconciliation + fresh CI:
+- PR #1 — project foundation;
+- PR #2 — r1 alert-state core;
+- PR #3 — r2 multi-region store.
 
-## Source/document audit
-UkraineAlarm public access/offer та alerts.in.ua docs досліджено без credentials/live calls. KATOTTG production policy вимагає Ministry base + applicable amendments.
-No production/public alerting performed.
+PR #2 and #3 old stacked histories were replaced force-with-lease by clean one-commit branches based on current main before merge. Final diffs contained only their intended slice files.
 
-## License
-Project proprietary. Direct dependency license audit існує; full transitive dependency/license inventory до release ще відкритий.
+## Safety / CI evidence
+- r1: fresh Organizational docs checks PASS + Rust core offline tests PASS before merge.
+- r2: fresh Organizational docs checks PASS + Rust core offline tests PASS before merge.
+- No network/live API/production/public notifications introduced.
+- Tauri product-platform checks from prototype work passed on Windows x64, macOS ARM64, macOS Intel; Tauri is not integrated to main yet.
+
+## Sources
+UkraineAlarm public access/offer, alerts.in.ua docs and KATOTTG source policy researched without credentials/live API calls.
 
 ## Drive
-PROJECT mirror записано і readback-перевірено.
-Текстовий snapshot із blob SHA markers існує, але native Google Docs нормалізує представлення тексту, тому byte-exact restore не доведений.
+PROJECT mirror exists and was read back.
+Previous native Google Docs source snapshot was removed because byte-exact restore was not proven.
+BACKUPS currently empty.
 Full raw/git backup + restore: **NOT DONE**.
 
-## Не завершено
-- Base-first merge/retarget sequence to main.
+## Not completed
+- Fresh reconciliation/integration of #8/#10/#11 and remaining slices.
 - Android/iOS build validation.
 - Live API credentials/schema/latency/webhook/security/legal acceptance.
 - Public notification/background push.
 - Full raw/git backup/restore.
 - Full transitive license gate.
 - Release artifacts/signing/installers.
-- Формальна clean-session continuity перевірка C13.
+- Formal clean-session continuity verification C13.
 
-Тести/CI, виконані в межах поточного робочого процесу, є project verification evidence. Окремий reviewer не припускається автоматично; додаткову перевірку може призначити власник.
+Issue #9 is the current integration/verification register.
