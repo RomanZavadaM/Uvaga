@@ -9,3 +9,4 @@ Google Drive: https://drive.google.com/drive/folders/1sPq7Ajmi4uhydjK7Wy1B-vR5Iw
 Доповнено правила SOURCE_VALIDATION.md і тестові сценарії TEST_PLAN.md. Незалежне рев'ю іншою особою/ШІ поки не проведено.
 Наступна одна дія: незалежне рев'ю PR #1, виправлення та рішення власника про merge. Після цього підтверджувана одностороння Drive синхронізація та окремий backup/restore test.
 Для продовження: START_HERE.md → PROJECT_RULES.md → PROJECT_STATE.md → WORKLOG.md + цей HANDOFF + live GitHub. Центральний dev-strategy не потрібний щодня.
+Кодовий етап: відкрито stacked draft PR #2 https://github.com/RomanZavadaM/Uvaga/pull/2 (base — гілка PR #1). Rust core лише для синтетичних подій. CI 41335891826 SUCCESS на попередньому HEAD 0a434aaeee8681a85db6d3752ea5a3e4f37f0b38. Після запису цього HANDOFF HEAD змінився, перевірити останню CI. Незалежне рев'ю ще не проведено. Порядок: прийняти PR #1, потім перенаправити PR #2 на main і перевірити повторно; без production.
