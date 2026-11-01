@@ -5,6 +5,7 @@ pub mod alerts_in_ua;
 
 pub mod presentation;
 pub mod source;
+pub mod subscriptions;
 pub mod store;
 pub mod territory;
 pub mod territory_mapping;
