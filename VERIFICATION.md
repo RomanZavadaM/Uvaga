@@ -1,26 +1,41 @@
 # VERIFICATION — ТривогА
-Дата: 2026-11-01. Обсяг: організаційні документи, без коду.
+Дата: 2026-11-01.
 
-## Підтверджено через GitHub
-- Публічний репозиторій RomanZavadaM/Uvaga існує.
+## GitHub organizational checkpoint
+- Репозиторій: RomanZavadaM/Uvaga.
 - Ініціальний main: ad8653ebcdf16507be54a929b690c8a1060e035b.
-- PR #1: https://github.com/RomanZavadaM/Uvaga/pull/1 — відкритий draft, не злитий.
-- API PR changed-files повернув 15 файлів, включно з усіма 12 обов'язковими документами (START, RULES, STATE, WORKLOG, HANDOFF, REQUIREMENTS, ARCHITECTURE, TEST_PLAN, SOURCES, LICENSE, COPYRIGHT, THIRD_PARTY_NOTICES) та трьома додатковими.
-- З GitHub окремо успішно прочитано START_HERE.md, LICENSE.md, HANDOFF_CURRENT.md, CORE_EVALUATION.md.
-- За переліком PR немає програмного коду й production-конфігурацій.
+- PR #1: https://github.com/RomanZavadaM/Uvaga/pull/1 — draft, не злитий.
+- Organizational docs CI: run 41337682369 — SUCCESS на пізнішому docs checkpoint.
+- Issue #9 створено як незалежний review gate: https://github.com/RomanZavadaM/Uvaga/issues/9.
 
-## Google Drive
-Створено папку «ТривогА»: https://drive.google.com/drive/folders/1sPq7Ajmi4uhydjK7Wy1B-vR5IwTFVt8b та порожні підпапки PROJECT/CHECKPOINTS/BACKUPS/VERIFICATION. **Синхронізації файлів і відновлення з backup ще не виконано**.
+## Prototype slices — підтверджені CI
+- PR #2 r1 core: run 41335891826 — SUCCESS на перевіреному code head.
+- PR #3 r2 multi-region: run 41336873203 — SUCCESS.
+- PR #4 Tauri shell: після двох FAIL через missing icon додано required icon; run 41337554330 — SUCCESS на commit 8a6b8cd1cc4ffe1036323c53578a1b5a5d33424b. Після подальшої зміни platform matrix потрібен новий live check.
+- PR #5 source contract: run 41337182862 — SUCCESS.
+- PR #6 localhost relay: run 41337322695 — SUCCESS.
+- PR #7 alerts.in.ua parser: run 41337434827 — SUCCESS.
+- PR #8 freshness model: run 41337648092 — SUCCESS.
 
-## Не перевірено
-Окреме незалежне людське/інше ШІ-рев'ю, CI, компіляцію, runtime, платформи, API, сповіщення, безпекове приймання та відновлення. Це НЕ PASS повного C01–C14.
-Наступна дія: окреме рев'ю draft PR #1, усунути зауваження, отримати рішення власника про merge; створити/перевірити Drive mirror та backup.
+Жоден з цих PR не є production-релізом і не інтегрований у main.
 
-## Додатковий checkpoint 2026-11-01
-- Створено локальну політику BACKUP_AND_SYNC.md у PR #1.
-- У Google Drive створено датований індекс checkpoint https://docs.google.com/document/d/1c4-6swE27_VFJHdJ8GrgIe8WF8pTLTNq-RONC198b64/edit у CHECKPOINTS; запис і переміщення підтверджені Google Drive.
-- Індекс — лише покажчик, не повне дзеркало документації й не резервна копія. PROJECT і BACKUPS все ще потребують наповнення й перевірки відновлення.
-- Змістовна самооцінка поточного виконавця не замінює незалежного рецензента. Перед merge перевірити C01–C14, правову модель, стан stale/unknown, критичні сценарії та доказ передачі іншому ШІ.
+## Google Drive mirror
+Root: https://drive.google.com/drive/folders/1sPq7Ajmi4uhydjK7Wy1B-vR5IwTFVt8b
+Перевірено write + readback для 5 key continuity docs. У кожному mirror записано GitHub blob SHA; після нормалізації повторних порожніх Markdown-рядків текст збігається з GitHub.
+Verification record: https://docs.google.com/document/d/1W7cGX-l0ozK7Se8Q0OEN8WM-WqanVBwv-V53JRqAlgA/edit
 
-## Доповнення 2026-11-01
-З API GitHub підтверджено 17 змінених файлів PR #1, серед них SOURCE_VALIDATION.md і BACKUP_AND_SYNC.md. Додано шість заздалегідь визначених сценаріїв review у TEST_PLAN.md. Це перевірка запису і структури автором, а не незалежний PASS.
+Це mirror, НЕ Git-history backup.
+
+## Backup attempt
+Спроба створити mirror clone та Git bundle у контейнері завершилась до отримання даних через DNS/network block: Could not resolve host github.com. Тому full Git bundle та restore test **не виконані**.
+
+## Не перевірено / не прийнято
+- незалежне людське/інше ШІ рев'ю;
+- інтеграційний merge порядок stacked PR;
+- Windows/macOS matrix після останньої зміни Tauri workflow;
+- Android/iOS build;
+- live API credentials, latency, correctness or legal terms;
+- production deployment, push/background delivery;
+- full independent Git backup/restore.
+
+Незалежний PASS не заявляти, доки Issue #9 не закритий доказами.
