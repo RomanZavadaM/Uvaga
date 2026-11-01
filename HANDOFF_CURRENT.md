@@ -9,6 +9,13 @@ Verification/integration gate: https://github.com/RomanZavadaM/Uvaga/issues/9
 
 Перед записом перевір live `main`, PR heads/bases і останні CI. Не відтворювати стан із чату.
 
+## Integrated base
+Current confirmed main after PR #3: `cb7e245eb9e4d1267b74625e67bd1cf7b3d1d47f`.
+Merged with squash + fresh CI:
+- #1 project foundation;
+- #2 r1 offline alert state;
+- #3 r2 multi-region store.
+
 ## Owner decisions
 - public product, вся Україна, alerts-plus;
 - desktop + mobile + web; Telegram later;
@@ -26,23 +33,21 @@ Verification/integration gate: https://github.com/RomanZavadaM/Uvaga/issues/9
 - official state and source freshness are separate;
 - no live military target tracking/trajectories.
 
-## Work structure
-Проєкт має stacked PR для малих перевірюваних slices. Live порядок, heads і integration rules ведуться в Issue #9. Після base merge наступний slice retarget/reconcile → fresh CI → перевірка → merge.
-
-## Verified evidence
-CI вже знаходив і допомагав виправляти реальні дефекти Tauri icon/build; Windows x64 + macOS ARM64 + macOS Intel product-platform checks проходили. Rust core/relay/parser/freshness/recovery/presentation/territory slices також мають успішні CI checkpoints. Перед інтеграцією завжди перевіряти current head, а не старий номер run із цього файла.
+## Current queue
+Issue #9 веде порядок. Наступна core-лінія: #8 freshness → #10 recovery → #11 presentation. Старі stacked heads після squash треба очищати/rebuild на current main, а не тягнути стару історію.
 
 ## Sources
 - UkraineAlarm public API/application/offer досліджено; credentials не отримувалися, live call не робився.
 - alerts.in.ua docs досліджено; токен не в клієнтах, public service потребує relay/proxy.
-- KATOTTG: production catalog має бути відтворюваним з Ministry base + applicable amendments, не зі старої копії таблиці.
+- KATOTTG: production catalog має бути відтворюваним з Ministry base + applicable amendments.
 
 ## Google Drive / backup
 Drive root: https://drive.google.com/drive/folders/1sPq7Ajmi4uhydjK7Wy1B-vR5IwTFVt8b  
 PROJECT mirror існує. GitHub залишається source of truth.
-Native Google Docs snapshot не довів byte-exact source restore; повний raw/git backup + fresh restore test залишається відкритим.
+`BACKUPS` зараз порожній після видалення неперевіреного text snapshot.
+Повний raw/git backup + fresh restore test залишається відкритим.
 
 ## One next action
-Відкрити Issue #9, звірити live PR #1 і current CI, після перевірки почати base-first integration. Паралельність — лише за прямим рішенням власника.
+Очистити PR #8 на current `main`, fresh CI, перевірка, squash merge.
 
 For ordinary continuation: `START_HERE.md → PROJECT_RULES.md → PROJECT_STATE.md → WORKLOG.md → HANDOFF_CURRENT.md → live GitHub`. Центральний dev-strategy не потрібний щодня.
