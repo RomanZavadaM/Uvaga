@@ -112,12 +112,14 @@ BACKUPS contains:
 - verified C12 Git bundle ZIP.
 
 ## Відкрите
-- formal clean-session continuity check (C13);
 - full transitive dependency/license gate before release;
 - Android/iOS build/runtime validation;
 - live API credentials/schema/latency/webhook/security acceptance only after separate owner decision;
 - push/background delivery;
 - production packaging/signing/release.
 
+## C13 continuity
+**PASS — 2026-11-02.** Clean-session state reconstruction from project-local docs + live GitHub recovered the current state, r17 PASS, C12 PASS, safety limits and next product direction without previous-chat state. See `C13_CLEAN_SESSION.md`.
+
 ## Одна наступна дія
-Провести формальну clean-session continuity перевірку: новий виконавець/нова сесія має відкрити лише project-local START/HANDOFF/STATE + live GitHub і правильно визначити фактичний стан та одну наступну дію без історії цього чату.
+Реалізувати наступний малий offline product-slice: **розширені synthetic scenarios / вибір території**, з тестами та CI, без live source adapter.
