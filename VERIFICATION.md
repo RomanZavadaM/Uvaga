@@ -332,3 +332,10 @@ PR #51 was inspected and closed unmerged as a superseded alternative under `STOP
 
 Post-merge docs-only trigger smoke: **PASS**. Checkpoint head `a2583cb91d9c580f2b064647cfa541ca6b66a976` produced only Organizational docs run `41455027345` (PASS); Windows synthetic and Windows installer workflows did not start automatically.
 
+## r22 Drive mirror verification
+**PASS — 2026-11-02.**
+
+Source GitHub main for the mirror operation: `0a85a94bb65046036f3d95d6372e0e22e58c43a3`.
+
+Verified mirrors: PROJECT_STATE, WORKLOG, HANDOFF_CURRENT, VERIFICATION. After replacing content from GitHub and removing stale mirror-only terminal sentinels, readback produced the same number of non-empty records and the exact same ordered text sequence for every source line in each document. No mismatch remained.
+
