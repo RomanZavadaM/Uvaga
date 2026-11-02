@@ -27,7 +27,7 @@ jobs:
     runs-on: windows-2025
     timeout-minutes: 40
     env:
-      CARGO_TARGET_DIR: target/uvaga-installer
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target/uvaga-installer
       SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       TAURI_CLI_VERSION: '2.12.4'
       TAURI_CLI_ARCHIVE_SHA256: '3e8687fb184bd7f10ebd8642f7715f79f4a605c0694c142a21507e8a24dc0f8b'
