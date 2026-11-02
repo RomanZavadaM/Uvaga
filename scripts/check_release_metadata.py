@@ -9,7 +9,7 @@ import tomllib
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CARGO = ROOT / 'src-tauri' / 'Cargo.toml'
 CONFIG = ROOT / 'src-tauri' / 'tauri.conf.json'
-SYNTH_WORKFLOW = ROOT / '.github' / 'workflows' / 'windows-synthetic-artifact.yml'
+RETIRED_SYNTH_WORKFLOW = ROOT / '.github' / 'workflows' / 'windows-synthetic-artifact.yml'
 INSTALLER_WORKFLOW = ROOT / '.github' / 'workflows' / 'windows-installer-candidate.yml'
 HISTORICAL_INSTALLER_WORKFLOW = ROOT / '.github' / 'workflows' / 'windows-installer-r20.yml'
 
@@ -55,14 +55,12 @@ def load() -> tuple[str, dict]:
     plugins = config.get('plugins') or {}
     require('updater' not in plugins, 'updater must not be enabled in current test scope')
 
-    synth = SYNTH_WORKFLOW.read_text(encoding='utf-8')
     installer = INSTALLER_WORKFLOW.read_text(encoding='utf-8')
-    require('r19' not in synth.lower(), 'active synthetic workflow must not emit historical r19 identity')
+    require(not RETIRED_SYNTH_WORKFLOW.exists(), 'retired standalone synthetic Windows workflow must stay absent')
     require('r20' not in installer.lower(), 'active installer workflow must not emit historical r20 identity')
-    require('Synthetic-candidate-${{ github.run_number }}' in synth, 'synthetic candidate artifact identity missing run number')
     require('Installer-candidate-${{ github.run_number }}' in installer, 'installer candidate artifact identity missing run number')
-    require('Artifact track: synthetic-candidate' in synth, 'synthetic BUILD_INFO track missing')
-    require('Artifact track: installer-candidate' in installer, 'installer BUILD_INFO track missing')
+    require('Artifact track: windows-desktop-candidate' in installer, 'canonical Windows artifact track missing')
+    require('Windows role: canonical desktop test/build/install pipeline' in installer, 'canonical Windows role metadata missing')
     require(not HISTORICAL_INSTALLER_WORKFLOW.exists(), 'historical r20 installer workflow must stay retired')
 
     return cargo_version, config
@@ -81,7 +79,7 @@ def main() -> None:
     print('product_name=verified')
     print(f'identifier={EXPECTED_IDENTIFIER}')
     print('installer=nsis/currentUser; downgrades=false; updater=absent')
-    print('artifact_identity=generic candidates; historical r19/r20 workflow labels absent')
+    print('artifact_identity=single canonical Windows installer candidate; standalone synthetic workflow retired')
 
 
 if __name__ == '__main__':
