@@ -330,5 +330,5 @@ Compare base `8729f905f17d830feba68b62c5ea72ef9e13ede3` → accepted head contai
 
 PR #51 was inspected and closed unmerged as a superseded alternative under `STOP → READ → VERIFY → RECONCILE → CONTINUE`.
 
-Post-merge docs-only trigger smoke is being performed by the checkpoint PR that records this section. Acceptance requires no automatic Windows synthetic or installer run for that docs-only diff.
+Post-merge docs-only trigger smoke: **PASS**. Checkpoint head `a2583cb91d9c580f2b064647cfa541ca6b66a976` produced only Organizational docs run `41455027345` (PASS); Windows synthetic and Windows installer workflows did not start automatically.
 
