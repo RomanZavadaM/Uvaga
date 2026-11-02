@@ -100,7 +100,8 @@
 - Unknown git/registry sources denied; GPL/AGPL/LGPL not globally allowed.
 - Remaining release-license task: generate/read back full third-party license texts and MPL source-availability notice for the exact release lock.
 
-## Execution continuity- One active executor by default; parallel work only by owner.
+## Execution continuity
+- One active executor by default; parallel work only by owner.
 - State divergence is recovered from live GitHub rather than assumed parallel work.
 - Issue #9 is the live integration register.
 
