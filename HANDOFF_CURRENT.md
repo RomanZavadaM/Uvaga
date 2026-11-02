@@ -107,6 +107,14 @@ Compliance packaging:
 - Windows `x86_64-pc-windows-msvc` normal+build closure: 222/222 external packages, missing 0, extra 0.
 - full license text + MPL evidence present.
 
+Drive BACKUPS:
+- broad compliance bundle:
+  https://drive.google.com/file/d/1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU/view?usp=drivesdk
+  — readback SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2`;
+- Windows license-text bundle:
+  https://drive.google.com/file/d/11C7VE5QZhyMtkYwbJoDVraLAe9c08bEr/view?usp=drivesdk
+  — readback SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+
 For future non-Windows release targets, repeat target-specific license-text completeness and publish required materials in a non-expiring release location.
 
 ## Safety
