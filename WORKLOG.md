@@ -67,10 +67,30 @@
 - C13: **PASS**.
 - Detailed record: `C13_CLEAN_SESSION.md`.
 
+## 2026-11-02 — r18 synthetic scenarios / territory selection
+- Predeclared acceptance created before implementation.
+- PR #34 opened: `feat(r18): add synthetic territory and fail-safe scenarios`.
+- Verified product source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`.
+- Added two whitelisted synthetic territories: `UA-46`, `UA-30`.
+- Added five fail-safe scenarios: active/fresh, active/stale, cleared/fresh, cleared/stale, unknown/unavailable.
+- Unknown territory/scenario rejected; local Tauri IPC only; IPC failure never creates clear.
+- Automated CI/artifact verification: PASS.
+- Verified artifact id `13127022813`; ZIP SHA256 `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`; `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`.
+- Subsequent PR-head changes through `cccce86708e77e6a1cd670179ebf9547d0a5f671` are README-only; comparison confirms no r18 product files changed after the verified artifact build.
+- Latest PR-head workflows also PASS: docs `41417199329`, Tauri matrix `41417199299`, Windows artifact `41417199372`.
+- Manual Windows runtime acceptance: **PENDING**. PR #34 must remain open until owner acceptance.
+
+## 2026-11-02 — README localization
+- PR #35 merged to main: `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
+- Ukrainian README remains primary/canonical.
+- Added English, French, German, Spanish, Korean and Japanese README variants.
+- Every README includes the verified r18 synthetic Windows download link, hashes and non-release/non-production warning.
+- Organizational docs/link checks: PASS.
+
 ## Execution continuity
 - One active executor by default; parallel work only by owner.
 - State divergence is recovered from live GitHub rather than assumed parallel work.
 - Issue #9 is the live integration register.
 
 ## NEXT
-Richer synthetic scenarios / territory selection before any live source adapter.
+Owner manual Windows 10/11 x64 runtime acceptance of r18 artifact `13127022813`. Do not merge PR #34 or start a live source adapter before PASS.
