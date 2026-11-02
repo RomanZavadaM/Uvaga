@@ -39,22 +39,23 @@ MPL 2.0 допускає включення MPL-коду до більшої pro
 
 Uvaga не заявляє авторських прав на ці компоненти та не перепризначає їхні ліцензії.
 
-## До production release
+## Поточний compliance status і production gate
 
-Перед публічним production-релізом потрібно окремо завершити:
+Machine-enforced license/source policy перевірена: GitHub Actions run `41423140592` — **PASS** (`cargo deny check licenses sources`).
 
-1. machine-enforced dependency/license/source policy;
-2. генерацію та перевірку повного набору сторонніх license/notice texts для exact release lock;
-3. source-availability notice для exact MPL-covered versions;
-4. повторний аудит після будь-якої зміни dependency lock.
-
-Machine-enforced license/source policy вже перевірена: GitHub Actions run `41423140592` — **PASS** (`cargo deny check licenses sources`).
-
-Для exact Windows r18 normal+build dependency closure packaging-доказ уже закритий: PR #41 / run `41426326573` — PASS, 222/222 зовнішніх пакетів, missing 0, extra 0; artifact `13131534490`, ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+Для exact Windows normal+build dependency closure packaging-доказ закритий: PR #41 / run `41426326573` — **PASS**, 222/222 зовнішніх пакетів, missing 0, extra 0; artifact `13131534490`, ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
 
 Broad exact-lock compliance bundle PR #40 також збережений: 406 crates indexed, 371 package-local notice/license captures, 35 без package-local файлів явно зафіксовані, а повні source trees усіх 5 MPL-2.0 пакетів збережені в `MPL-SOURCE-r18.tar.gz`.
 
-Це не автоматично закриває майбутні macOS/Android/iOS релізи: для кожної цільової платформи треба повторити target-specific completeness check на її exact final release lock і опублікувати необхідні матеріали у non-expiring release location.
+r19/r20 desktop build gate відтворює той самий accepted Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`. Тому exact Windows license texts можуть повторно використовуватись лише доки цей SHA збігається; будь-який dependency drift блокує build до нового аудиту.
+
+Перед **production distribution** ще потрібні:
+1. stable non-expiring розміщення full third-party license texts і exact MPL-covered source material;
+2. code signing / publisher provenance;
+3. final artifact readback і owner acceptance;
+4. повторний аудит після будь-якої зміни dependency lock.
+
+Майбутні macOS/Android/iOS релізи потребують власного target-specific completeness check на exact final release lock.
 
 ## Compliance bundle checkpoint
 
@@ -65,4 +66,4 @@ GitHub Actions run `41423995739` produced and read back artifact `13131470682` (
 - 35 have no package-local license/notice file and require supplemental license text/attribution;
 - complete vendored source for the five exact MPL-2.0 packages is preserved in `MPL-SOURCE-r18.tar.gz` inside the artifact.
 
-Therefore the source/material collection checkpoint is **PASS/PARTIAL**: MPL source is preserved and most package notices are captured, but third-party text completeness is not yet closed.
+Broad package-local-file collection саме по собі було **PASS/PARTIAL**, але окремий Windows cargo-about completeness gate пізніше закрив повні license texts як **PASS 222/222**.
