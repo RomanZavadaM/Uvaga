@@ -166,7 +166,8 @@ Machine license/source policy: **PASS**.
 
 Release packaging remains open: distributable third-party license texts + exact MPL source-availability notice must be generated/read back for the eventual release lock.
 
-## Відкрите- full transitive dependency/license gate before release;
+## Відкрите
+- third-party license/notice text + MPL source-availability packaging before release;
 - Android/iOS build/runtime validation;
 - live API credentials/schema/latency/webhook/security acceptance only after separate owner decision;
 - push/background delivery;
