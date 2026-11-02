@@ -4,7 +4,7 @@
 
 > **현재 상태:** 초기 프로토타입 / synthetic-only. production 배포, live API 자격 증명, 공개 알림 전송은 아직 없습니다. 이 애플리케이션은 공식 경보 채널을 대체하지 않으며, 메시지가 없다고 해서 위험이 없다는 뜻은 아닙니다.
 
-**README 언어:** [Українська](README.md) · [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · 한국어 · [日本語](README.ja.md)
+**README 기본 언어: [Українська](README.md).** 번역: [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · 한국어 · [日本語](README.ja.md)
 
 ## 테스트 다운로드
 
