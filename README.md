@@ -4,6 +4,24 @@
 
 > **Поточний статус:** ранній prototype / synthetic-only. Немає production deployment, live API credentials або публічної доставки сповіщень. Програма не замінює офіційні канали оповіщення; відсутність повідомлення не означає відсутність небезпеки.
 
+**Мови README:** Українська · [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
+
+## Завантаження для тестування
+
+### Windows 10/11 x64 — r18 synthetic test build
+
+[**Завантажити Uvaga-Windows-Synthetic-r18.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41415006414/artifacts/13127022813)
+
+Це **не реліз і не production-версія**. Архів призначений лише для ручної перевірки synthetic-сценаріїв у PR #34. Для завантаження GitHub Actions artifact може знадобитися вхід у GitHub.
+
+- Source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`
+- ZIP SHA256: `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`
+- `Uvaga.exe` SHA256: `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`
+- Автоматичні Windows/macOS перевірки: **PASS**
+- Ручне Windows runtime-приймання r18: **ще не завершене**
+
+У тестовій оболонці можна вибрати синтетичну територію (`UA-46` або `UA-30`) і перевірити п’ять fail-safe сценаріїв: active/fresh, active/stale, cleared/fresh, cleared/stale та unknown/unavailable.
+
 ## Заплановані платформи
 
 - Windows 10/11 x64
@@ -45,11 +63,11 @@ Windows 7 не підтримується.
 4. [HANDOFF_CURRENT.md](HANDOFF_CURRENT.md)
 5. live GitHub PR/CI
 
-Незалежне приймання активної стартової серії контролюється через GitHub Issue #9.
+Незалежне приймання та інтеграція контролюються через [GitHub Issue #9](https://github.com/RomanZavadaM/Uvaga/issues/9).
 
 ## Методологія
 
-Проєкт проходить **пробне застосування dev-strategy v2 RC**. Локальні правила самодостатні для щоденної роботи; центральний `dev-strategy` не є runtime-залежністю кожної сесії. Повне прийняття v2 RC ще не оголошено.
+Проєкт проходить **пробне застосування dev-strategy v2 RC**. C13 clean-session continuity — **PASS**. Локальні правила самодостатні для щоденної роботи; центральний `dev-strategy` не є runtime-залежністю кожної сесії. Повне прийняття v2 RC власником (C14) ще не оголошено.
 
 ## Ліцензія
 
