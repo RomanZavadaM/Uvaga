@@ -4,6 +4,11 @@ on:
     paths:
       - 'app/**'
       - 'src-tauri/**'
+      - 'README.md'
+      - 'LICENSE.md'
+      - 'THIRD_PARTY_NOTICES.md'
+      - 'scripts/check_release_metadata.py'
+      - 'scripts/verify_tauri_lock.py'
       - '.github/workflows/windows-synthetic-artifact.yml'
   workflow_dispatch:
 permissions:
@@ -18,9 +23,12 @@ jobs:
     env:
       CARGO_TARGET_DIR: target/uvaga-test
       SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      ACCEPTED_LOCK_SHA256: '6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d'
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
+      - name: Validate release metadata
+        run: python scripts/check_release_metadata.py
       - name: Restore verified dependency lock
         run: |
           cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
@@ -60,20 +68,25 @@ jobs:
 
           $exeHash = (Get-FileHash "$artifact/Uvaga.exe" -Algorithm SHA256).Hash.ToLower()
           $lockHash = (Get-FileHash "$artifact/Cargo.lock" -Algorithm SHA256).Hash.ToLower()
+          if ($lockHash -ne $env:ACCEPTED_LOCK_SHA256) { throw "Packaged lock drift: $lockHash" }
+          $appVersion = (python scripts/check_release_metadata.py --print-version).Trim()
 
           @(
-            "ТривогА — Windows synthetic test artifact r19",
+            "ТривогА — Windows synthetic CI candidate",
             "",
             "НЕ РЕЛІЗ. НЕ PRODUCTION. НЕ СИСТЕМА РЕАЛЬНОГО ОПОВІЩЕННЯ.",
+            "Artifact track: synthetic-candidate",
             "Target: Windows 10/11 x64",
             "Build: unsigned debug executable",
+            "App version: $appVersion",
             "Source PR head: $env:SOURCE_HEAD_SHA",
             "GitHub Actions checkout SHA: $env:GITHUB_SHA",
+            "GitHub Actions run: $env:GITHUB_RUN_ID",
+            "Exact Cargo.lock SHA256: $env:ACCEPTED_LOCK_SHA256",
             "",
             "Мережа, live API, push і геолокація не підключені.",
             "Default scenario: UA-46 + active_stale => confirmed=active, freshness=stale, presentation=active_last_known.",
             "UI exposes whitelisted synthetic territory/scenario selection through local Tauri IPC.",
-            "r19 hardening keeps the critical state summary above technical details and adds accessibility/static contract checks.",
             "Якщо IPC не працює, UI має показати помилку, а не відбій.",
             "",
             "SHA256 див. SHA256SUMS.txt"
@@ -87,7 +100,7 @@ jobs:
       - name: Upload Windows synthetic artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Uvaga-Windows-Synthetic-r19
+          name: Uvaga-Windows-Synthetic-candidate-${{ github.run_number }}
           path: target/uvaga-test/artifact/*
           if-no-files-found: error
           retention-days: 30
