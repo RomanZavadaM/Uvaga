@@ -102,7 +102,8 @@ Machine policy:
 
 Before production release, still generate/read back distributable third-party license texts and an exact MPL source-availability notice.
 
-## SafetyNo production, public notifications, live API application/credential, signing or release package at this stage.
+## Safety
+No production, public notifications, live API application/credential, signing or release package at this stage.
 
 ## C13 continuity result
 **PASS — 2026-11-02.**
