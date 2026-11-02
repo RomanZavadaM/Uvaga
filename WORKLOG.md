@@ -213,5 +213,5 @@ Owner-independent CI efficiency / release-checklist hardening. Owner r20 install
 - Diff was exactly 7 CI/docs/script files; no product/safety/live/signing/version changes.
 - PR #51 was discovered during clean-session reconciliation, reviewed, documented and closed unmerged as a superseded alternative.
 - r22 result: docs-only edits no longer auto-run expensive Windows synthetic/installer builds; heavy workflows keep manual `workflow_dispatch`; `RELEASE_CHECKLIST.md` and cheap CI-scope guard added.
-- This post-merge docs PR is the practical docs-only trigger smoke; heavy Windows workflows must not auto-run.
+- Post-merge docs-only trigger smoke: PASS on head `a2583cb91d9c580f2b064647cfa541ca6b66a976`; only Organizational docs `41455027345` ran and passed; no Windows synthetic/installer automatic run.
 
