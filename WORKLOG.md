@@ -242,3 +242,8 @@ Owner-independent CI efficiency / release-checklist hardening. Owner r20 install
 - Added a 12-combination presentation/safety test matrix and a previously-confirmed-clear freshness-degradation regression test; production code unchanged.
 - Six exact-head CI groups passed: `41465383756`, `41465383823`, `41465383783`, `41465383772`, `41465383761`, `41465383938`.
 - Owner screenshots show running synthetic Windows application and a fresh confirmed clear, not completion of owner r20 installer/visual manual acceptance. Stale clear remains to be manually confirmed.
+
+## 2026-11-02 — r28 scoped threat model integrated
+- PR #63 head `6164e8c9be7c0b351450a8d47734cc9d91799d00`, merged main `b12037d37eb34b7cb63629e84f7553090a6ec523`.
+- Added offline `ScopedThreatBook` keyed by `TerritoryKey × ThreatCategory` with tests for category independence, narrow scope, stale clear, invalid and unverified events.
+- CI PASS: `41480748060`, `41480748027`, `41480747944`, `41480747832`, `41480747878`. No live/source/UI/version changes.

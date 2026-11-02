@@ -331,3 +331,6 @@ Next owner-independent work may continue as read-only audit or narrowly scoped h
 
 ## r25 — integrated, CI PASS
 PR #59 head `7267e0a62615bbae1e4caf15403f15f67b0aff89` squash-merged to `d358cfa9b850b612d94823f7c7d73d0f08fa5f8c`. Automated presentation matrix now tests all 12 state/freshness combinations and loss of a previously fresh confirmed clear. Six workflow groups PASS. No production changes, owner manual acceptance remains pending. Next: owner-independent audit only, pending owner Windows verification of stale-clear scenario; no public release/live sources/signing/version bump.
+
+## r28 — ACCEPTED AUTOMATED, owner-independent
+PR #63 `6164e8c9be7c0b351450a8d47734cc9d91799d00` → main `b12037d37eb34b7cb63629e84f7553090a6ec523`. All five exact-head CI groups PASS. New offline category × territory model; no live behavior. Next: offline property/recovery/overlap audits, then owner review of source-adapter contracts. Installer manual QA deferred by owner; no code signing/public release/live sources/GPS/notifications.
