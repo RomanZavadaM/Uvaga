@@ -370,3 +370,12 @@ Organizational docs `41458780488` PASS; UI contract `41458780620` PASS. Scope wa
 - Squash main `d358cfa9b850b612d94823f7c7d73d0f08fa5f8c`.
 - Scope exactly two files, only new tests and acceptance criteria; no production changes.
 - Manual Windows evidence received: synthetic mode/app shell, active-fresh and cleared-fresh. It does not establish cleared-stale manual PASS, installer full acceptance or public-release readiness.
+
+## r28 scoped category × territory CI
+**PASS — 2026-11-02.** PR #63 exact head `6164e8c9be7c0b351450a8d47734cc9d91799d00`; merged main `b12037d37eb34b7cb63629e84f7553090a6ec523`.
+- Rust offline core `41480747944`: success.
+- Local synthetic relay `41480748027`: success.
+- Windows synthetic `41480747832`: success.
+- Tauri Windows/macOS `41480748060`: success.
+- Windows installer candidate `41480747878`: success.
+- Diff: `src/lib.rs`, new `src/threat_scope.rs`. Production UI and live integration untouched. Manual installer acceptance still pending.
