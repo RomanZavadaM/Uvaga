@@ -311,3 +311,12 @@ Drive PROJECT mirrors for PROJECT_STATE / WORKLOG / HANDOFF_CURRENT / VERIFICATI
 
 Continue owner-independent hardening only. Owner r20 installer/visual acceptance remains pending; do not start live API/source adapter, credentials, push/public notifications, production deployment, code signing, public release or version bump.
 
+## r23 — root core → desktop CI coverage
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #55 head `f9d3365262671532261c2725946fc5d0cce7c281` merged as `f5b6417a4a7508c9677039c2ee8159748b44c193`. Because desktop has `uvaga-core = { path = ".." }`, root `Cargo.toml` / `src/**` now trigger existing Windows synthetic, installer and Tauri Windows/macOS gates. CI-scope guard protects this contract. All six r23 workflow groups passed.
+
+No product/safety behavior changed. Owner r20 installer/visual acceptance remains pending; live source/credentials, push/public notifications, production deployment, code signing, public release and version bump remain owner-only gates.
+
+Next owner-independent work: audit CI/repository housekeeping and release evidence consistency; do not start owner-gated production/live work.
+

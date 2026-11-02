@@ -222,3 +222,11 @@ Owner-independent CI efficiency / release-checklist hardening. Owner r20 install
 - Readback: exact ordered match for all non-empty source lines in all four documents; counts equal; first mismatch = none.
 - Result: Drive PROJECT mirror readback PASS.
 
+## 2026-11-02 — r23 root-core desktop trigger coverage integrated
+- Proven dependency: `src-tauri/Cargo.toml` → `uvaga-core = { path = ".." }`.
+- PR #55 head `f9d3365262671532261c2725946fc5d0cce7c281`; merged main `f5b6417a4a7508c9677039c2ee8159748b44c193`.
+- Added root `Cargo.toml` + `src/**` triggers to Windows synthetic, installer and Tauri matrix; Tauri also covers the lock verifier.
+- CI-scope guard now requires those root-core paths in all three desktop workflows.
+- Final CI PASS: `41456408496`, `41456408492`, `41456408540`, `41456408314`, `41456408686`, `41456408563`.
+- No product/safety/lock/version/live/signing change.
+

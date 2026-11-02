@@ -339,3 +339,14 @@ Source GitHub main for the mirror operation: `0a85a94bb65046036f3d95d6372e0e22e5
 
 Verified mirrors: PROJECT_STATE, WORKLOG, HANDOFF_CURRENT, VERIFICATION. After replacing content from GitHub and removing stale mirror-only terminal sentinels, readback produced the same number of non-empty records and the exact same ordered text sequence for every source line in each document. No mismatch remained.
 
+## r23 root-core desktop CI coverage verification
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+Accepted head `f9d3365262671532261c2725946fc5d0cce7c281`; merged main `f5b6417a4a7508c9677039c2ee8159748b44c193`.
+
+Source evidence: `src-tauri/Cargo.toml` contains `uvaga-core = { path = ".." }`. Trigger contract now covers root `Cargo.toml` + `src/**` in Windows synthetic, Windows installer and Tauri platform workflows; Tauri also covers `scripts/verify_tauri_lock.py`. CI scope checker verifies the required root-core paths and continued exclusion of broad docs-only heavy triggers.
+
+Final runs: CI scope `41456408496` PASS; release metadata `41456408492` PASS; docs `41456408540` PASS; Tauri Windows/macOS `41456408314` PASS; Windows synthetic `41456408686` PASS; Windows installer `41456408563` PASS.
+
+Changed scope was CI/docs only. Product logic, safety mapping, dependency lock, app version, signing/updater/live integration were unchanged.
+
