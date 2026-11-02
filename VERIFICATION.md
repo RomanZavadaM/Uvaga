@@ -350,3 +350,12 @@ Final runs: CI scope `41456408496` PASS; release metadata `41456408492` PASS; do
 
 Changed scope was CI/docs only. Product logic, safety mapping, dependency lock, app version, signing/updater/live integration were unchanged.
 
+## r24 release-evidence wording verification
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+Accepted head `7d1e1de930ea8ef76fcfe0166be0290912252a6c`; merged main `fba06b8406e1169d176610c13c0cb9638600d704`.
+
+Verified across UA/EN/FR/DE/ES/KO/JA: historical r20 artifact URL `41447023597/13142977634`, historical r19 artifact URL `41442359441/13140138112`, r20 ZIP SHA256 `a8a00e0c7f20282d13673ba1fd3de353d4500d9cf36b1d40ed7be3c86ee33d3f`, and r19 ZIP SHA256 `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad` remained unchanged. Stale “latest automated desktop-hardening build” wording was removed from every localized README.
+
+Organizational docs `41458780488` PASS; UI contract `41458780620` PASS. Scope was documentation only.
+
