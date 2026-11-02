@@ -98,7 +98,14 @@
 - Machine policy run `41423140592`: PASS.
 - cargo-deny 0.20.2 pinned by action commit; `licenses sources` check PASS.
 - Unknown git/registry sources denied; GPL/AGPL/LGPL not globally allowed.
-- Remaining release-license task: generate/read back full third-party license texts and MPL source-availability notice for the exact release lock.
+- Broad compliance bundle PR #40 merged: exact lock, 406 crates indexed, 371 package-local license/notice captures, 35 explicitly unresolved by package-local-file scan, all 5 MPL source trees archived.
+- Final Windows license-text PR #41 merged.
+- Final Windows license-text run `41426326573`: PASS.
+- Artifact `13131534490`, ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+- Exact Windows normal+build external closure: 222; cargo-about external set: 222; missing 0; extra 0.
+- Full Markdown license texts and MPL evidence present.
+- Windows r18 third-party text completeness: **PASS**.
+- Future macOS/Android/iOS releases require their own target-specific completeness run and non-expiring distribution packaging.
 
 ## Execution continuity
 - One active executor by default; parallel work only by owner.

@@ -143,7 +143,31 @@ Machine policy:
 - unknown registry/git sources are denied;
 - GPL/AGPL/LGPL identifiers are not in the global license allow-list.
 
-Remaining release obligation: generate and read back distributable third-party license texts plus exact MPL source-availability notice for the release lock.
+Broad compliance bundle:
+- final PR #40 run `41424208874`: PASS;
+- artifact `13130384607`;
+- ZIP SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2` — local readback exact match;
+- 406 crates indexed;
+- 371 with captured package-local LICENSE/COPYING/NOTICE/COPYRIGHT/UNLICENSE files;
+- 35 without package-local files explicitly reported;
+- `MPL-SOURCE-r18.tar.gz` contains complete vendored source trees for all five reviewed MPL-2.0 packages.
+
+Exact Windows r18 license-text completeness:
+- final PR #41 run `41426326573`: **PASS**;
+- artifact `13131534490`;
+- ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e` — local readback exact match;
+- cargo-about 0.9.2 binary archive SHA256 `1c03e5890238562497c2d89a3b75b02560af349c1fc3e713d3284f532a5cd748`;
+- target `x86_64-pc-windows-msvc`;
+- dependency scope normal+build, dev excluded;
+- independent Windows cargo-tree external set: 222;
+- cargo-about external set: 222;
+- missing: 0; extra: 0;
+- full Markdown license text present;
+- MPL-2.0 and cssparser evidence present.
+
+**Windows r18 third-party text completeness: PASS.**
+
+This PASS is target-specific. Future macOS/Android/iOS release targets require their own exact-lock target-specific compliance run and non-expiring release packaging.
 
 ## Source/legal checks
 - UkraineAlarm public request page/offer checked without accepting/applying.
@@ -152,7 +176,7 @@ Remaining release obligation: generate and read back distributable third-party l
 - no live API credential used.
 
 ## Still open
-- third-party license/notice text + MPL source-availability packaging before release;
+- target-specific third-party compliance packaging for future macOS/Android/iOS releases;
 - Android/iOS validation;
 - live API access/security/latency/schema acceptance;
 - push/background delivery;

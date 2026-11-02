@@ -50,7 +50,11 @@ Uvaga не заявляє авторських прав на ці компоне
 
 Machine-enforced license/source policy вже перевірена: GitHub Actions run `41423140592` — **PASS** (`cargo deny check licenses sources`).
 
-До production release ще не закритий саме packaging-підетап: повний набір сторонніх license/notice texts та exact MPL source-availability notice для фінального release lock.
+Для exact Windows r18 normal+build dependency closure packaging-доказ уже закритий: PR #41 / run `41426326573` — PASS, 222/222 зовнішніх пакетів, missing 0, extra 0; artifact `13131534490`, ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+
+Broad exact-lock compliance bundle PR #40 також збережений: 406 crates indexed, 371 package-local notice/license captures, 35 без package-local файлів явно зафіксовані, а повні source trees усіх 5 MPL-2.0 пакетів збережені в `MPL-SOURCE-r18.tar.gz`.
+
+Це не автоматично закриває майбутні macOS/Android/iOS релізи: для кожної цільової платформи треба повторити target-specific completeness check на її exact final release lock і опублікувати необхідні матеріали у non-expiring release location.
 
 ## Compliance bundle checkpoint
 

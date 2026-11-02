@@ -100,7 +100,14 @@ Machine policy:
 - MPL only for 5 exact reviewed crates;
 - unknown git/registry dependencies denied.
 
-Before production release, still generate/read back distributable third-party license texts and an exact MPL source-availability notice.
+Compliance packaging:
+- PR #40 broad exact-lock bundle: generation/readback PASS; 406 crates indexed; all 5 MPL source trees preserved; package-local-file scan is partial (371/406).
+- PR #41 exact Windows license-text generation: **PASS**.
+- run `41426326573`; artifact `13131534490`; ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+- Windows `x86_64-pc-windows-msvc` normal+build closure: 222/222 external packages, missing 0, extra 0.
+- full license text + MPL evidence present.
+
+For future non-Windows release targets, repeat target-specific license-text completeness and publish required materials in a non-expiring release location.
 
 ## Safety
 No production, public notifications, live API application/credential, signing or release package at this stage.

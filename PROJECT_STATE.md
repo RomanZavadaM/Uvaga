@@ -164,10 +164,17 @@ Machine license/source policy: **PASS**.
 - unknown registries/git dependencies denied;
 - GPL/AGPL/LGPL are not globally allowed.
 
-Release packaging remains open: distributable third-party license texts + exact MPL source-availability notice must be generated/read back for the eventual release lock.
+Third-party compliance packaging checkpoints:
+- broad exact-lock bundle: PASS for generation/readback; 406 crates indexed, 371 with package-local notice/license files, 35 without package-local files explicitly reported;
+- complete vendored source for all 5 reviewed MPL-2.0 packages preserved in `MPL-SOURCE-r18.tar.gz`;
+- exact Windows r18 normal+build license-text completeness: **PASS** — 222/222 external packages, missing 0, extra 0;
+- Windows license-text artifact id `13131534490`, ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`;
+- target scope is `x86_64-pc-windows-msvc`, normal+build dependencies, dev excluded.
+
+For any future macOS/Android/iOS release, run the same target-specific completeness check for that exact final release lock. Production distribution must place the required notices/license texts and MPL source-availability material in a non-expiring release location.
 
 ## Відкрите
-- third-party license/notice text + MPL source-availability packaging before release;
+- target-specific third-party compliance packaging for future macOS/Android/iOS release artifacts;
 - Android/iOS build/runtime validation;
 - live API credentials/schema/latency/webhook/security acceptance only after separate owner decision;
 - push/background delivery;

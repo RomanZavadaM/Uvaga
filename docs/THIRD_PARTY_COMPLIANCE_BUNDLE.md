@@ -32,12 +32,12 @@ Build a concrete compliance-support artifact from the same verified r18 `Cargo.l
 
 ## Verification result
 
-GitHub Actions run `41423995739`: **PASS**.
+GitHub Actions final run `41424208874`: **PASS**.
 
 Readback artifact:
-- id `13131470682`;
+- id `13130384607`;
 - name `Uvaga-r18-third-party-compliance-bundle`;
-- ZIP SHA256 `b91319651fe2ffa9d7983195fcc6e82bee77ed8357d36459aedb8a83c2a7d160` — exact match to GitHub digest;
+- ZIP SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2` — exact match to GitHub digest;
 - 406 crates.io packages indexed;
 - 371 packages have one or more captured package-local LICENSE/COPYING/NOTICE/COPYRIGHT/UNLICENSE files;
 - 35 packages have no such package-local file and remain explicitly unresolved for supplemental license text/attribution;
@@ -46,4 +46,4 @@ Readback artifact:
 
 **Bundle generation/readback: PASS.**
 
-**Third-party text completeness gate: PARTIAL / PENDING** because 35 crates require supplemental text/attribution handling. Next planned evidence step: pinned `cargo-about` generation against the same exact lock.
+**Broad package-local-file capture: PARTIAL by design** because 35 crates do not ship a package-local notice/license file. The follow-up pinned cargo-about Windows target check is now complete separately: PR #41 / run `41426326573` PASS with 222/222 Windows normal+build external packages and full generated license texts.
