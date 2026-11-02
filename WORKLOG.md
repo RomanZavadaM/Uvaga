@@ -87,8 +87,20 @@
 - Every README includes the verified r18 synthetic Windows download link, hashes and non-release/non-production warning.
 - Organizational docs/link checks: PASS.
 
-## Execution continuity
-- One active executor by default; parallel work only by owner.
+## 2026-11-02 — dependency/license inventory and policy
+- Exact verified r18 Cargo.lock reused; no newly resolved graph used as evidence.
+- Inventory run `41422471078`: PASS.
+- Inventory artifact `13130467223`, ZIP SHA256 `afc0c0a75986fc68ea836a2cf7778353735dfdcb8bb24e5b99368e23ca351f7f`.
+- 408 packages: 2 local proprietary path packages + 406 crates.io packages.
+- No external git/non-registry dependencies and no missing Cargo license expressions.
+- `THIRD_PARTY_NOTICES.md` corrected from stale docs-only wording.
+- MPL-2.0 reviewed as exact transitive exceptions: cssparser 0.37.0, cssparser-macros 0.7.1, dtoa-short 0.3.5, option-ext 0.2.0, selectors 0.38.0.
+- Machine policy run `41423140592`: PASS.
+- cargo-deny 0.20.2 pinned by action commit; `licenses sources` check PASS.
+- Unknown git/registry sources denied; GPL/AGPL/LGPL not globally allowed.
+- Remaining release-license task: generate/read back full third-party license texts and MPL source-availability notice for the exact release lock.
+
+## Execution continuity- One active executor by default; parallel work only by owner.
 - State divergence is recovered from live GitHub rather than assumed parallel work.
 - Issue #9 is the live integration register.
 
