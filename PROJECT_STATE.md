@@ -221,6 +221,57 @@ https://drive.google.com/file/d/1Gjza0jCCQlGX8TDuPEUF49lX0g3iZ2BH/view?usp=drive
 
 r19 is not a production release. Owner visual sanity of the redesigned layout remains pending; r18 remains the last owner-manually accepted UI baseline.
 
+## r20 — Windows installer / release-readiness
+**INTEGRATED / AUTOMATED INSTALLER PASS / OWNER INSTALLER UX PENDING — 2026-11-02.**
+
+PR #47 merged squash to main:
+`e913edf6bb62249806afc7c19ac8c19e2cde1166`.
+
+Final accepted PR head:
+`96a7953a2388811716c9c13001fcf9ca3d5b79c2`.
+
+Installer profile:
+- Windows 10/11 x64;
+- NSIS current-user install, no admin requirement;
+- installer languages UA/EN/FR/DE/ES/KO/JA;
+- embedded WebView2 bootstrapper;
+- `allowDowngrades=false`;
+- unsigned test artifact; no updater or production release;
+- exact accepted application Cargo.lock enforced fail-closed;
+- Tauri CLI pinned to 2.12.4.
+
+Final CI:
+- docs `41447023650`: PASS;
+- Tauri Windows/macOS matrix `41447023564`: PASS;
+- Windows synthetic artifact `41447023544`: PASS;
+- Windows NSIS installer `41447023597`: **PASS**.
+
+Installer smoke verified automatically:
+- exact dependency lock restored;
+- application tests PASS;
+- NSIS installer built;
+- installer and release EXE verified `NotSigned`;
+- silent current-user install PASS;
+- HKCU uninstall registration PASS;
+- installed application launch smoke PASS;
+- silent uninstall PASS;
+- installed executable and uninstall registration removed.
+
+Final r20 artifact:
+- artifact id `13142977634`;
+- ZIP SHA256 `a8a00e0c7f20282d13673ba1fd3de353d4500d9cf36b1d40ed7be3c86ee33d3f`;
+- installer SHA256 `dc8f128e73983d28c4093edd0434d4a8eed140a29718cd09faa99c13bf9f8588`;
+- release `Uvaga.exe` SHA256 `636aa7d7ec6e5cf485dfda219d107115dba7d3dc79c0b5a995d4e08efc4aab30`;
+- Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- internal SHA256SUMS: all entries PASS;
+- package includes proprietary license, SECURITY, Windows distribution notes, full Windows third-party license texts and MPL source-availability notice.
+
+Drive BACKUPS:
+https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/view?usp=drivesdk
+— Drive readback is byte-identical to GitHub artifact; SHA256 exact match.
+
+This is **not a production release**. Owner manual installer/visual sanity remains pending. Code signing, public release and live-source integration remain separate owner gates.
+
 ## Dependency / license gate
 Exact r18 dependency inventory: **PASS**.
 - inventory run `41422471078`;
@@ -257,4 +308,4 @@ For any future macOS/Android/iOS release, run the same target-specific completen
 **PASS — 2026-11-02.** Clean-session state reconstruction from project-local docs + live GitHub recovered the current state, r17 PASS, C12 PASS, safety limits and next product direction without previous-chat state. See `C13_CLEAN_SESSION.md`.
 
 ## Одна наступна дія
-r20: release-readiness для Windows — unsigned NSIS test installer candidate, packaging metadata, SECURITY/distribution docs і checksum/readback. Live source adapter не починати автоматично.
+Owner manual Windows installer/visual sanity для r20. До нього можна продовжувати лише owner-independent hardening/documentation; code signing, public release та live source adapter не починати автоматично.

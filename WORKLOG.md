@@ -179,4 +179,18 @@ r19 is not a production release. Owner visual sanity of the redesigned layout re
 - Issue #9 is the live integration register.
 
 ## NEXT
-r20 Windows release-readiness: unsigned NSIS test installer candidate + distribution/security docs + checksum/readback. Do not start live-source integration automatically.
+Owner manual Windows installer/visual sanity for r20. Until then continue only owner-independent hardening/documentation; no code signing, public release or live-source integration automatically.
+
+## 2026-11-02 — r20 Windows installer / release-readiness
+- PR #47 merged squash: `e913edf6bb62249806afc7c19ac8c19e2cde1166`.
+- Final PR head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`.
+- Final CI PASS: docs `41447023650`, Tauri matrix `41447023564`, Windows artifact `41447023544`, NSIS installer `41447023597`.
+- Automated installer smoke PASS: current-user silent install, HKCU registration, launch smoke, silent uninstall.
+- Installer/release EXE confirmed unsigned by Authenticode as intended for r20 test candidate.
+- Artifact id `13142977634`; ZIP SHA256 `a8a00e0c7f20282d13673ba1fd3de353d4500d9cf36b1d40ed7be3c86ee33d3f`.
+- Installer SHA256 `dc8f128e73983d28c4093edd0434d4a8eed140a29718cd09faa99c13bf9f8588`.
+- Release EXE SHA256 `636aa7d7ec6e5cf485dfda219d107115dba7d3dc79c0b5a995d4e08efc4aab30`.
+- Exact Cargo.lock remains `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`.
+- Internal SHA256SUMS readback: PASS.
+- Drive BACKUPS copy `1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX` downloaded back and matched GitHub artifact byte-for-byte.
+- Owner installer UX/manual sanity: **PENDING**. Not a production release.

@@ -8,6 +8,23 @@
 
 ## Descarga de prueba
 
+### Windows 10/11 x64 — candidato instalador NSIS r20
+
+[**Descargar Uvaga-Windows-Installer-r20.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
+
+Este es un **instalador de prueba sin firma, no una versión de producción**. CI ya verificó instalación silenciosa current-user, registro HKCU, inicio de la aplicación instalada y desinstalación silenciosa. La aceptación visual/UX del instalador por el propietario sigue pendiente.
+
+- Source head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
+- Merge r20: `e913edf6bb62249806afc7c19ac8c19e2cde1166`
+- SHA256 ZIP: `a8a00e0c7f20282d13673ba1fd3de353d4500d9cf36b1d40ed7be3c86ee33d3f`
+- SHA256 instalador: `dc8f128e73983d28c4093edd0434d4a8eed140a29718cd09faa99c13bf9f8588`
+- SHA256 release `Uvaga.exe`: `636aa7d7ec6e5cf485dfda219d107115dba7d3dc79c0b5a995d4e08efc4aab30`
+- SHA256 exacto `Cargo.lock`: `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`
+- Smoke NSIS instalación/inicio/desinstalación: **PASS**
+- Aceptación visual/instalador del propietario: **PENDING**
+
+Copia Drive: https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/view?usp=drivesdk
+
 ### Windows 10/11 x64 — build sintética r19
 
 [**Descargar Uvaga-Windows-Synthetic-r19.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)

@@ -188,6 +188,38 @@ https://drive.google.com/file/d/1Gjza0jCCQlGX8TDuPEUF49lX0g3iZ2BH/view?usp=drive
 
 r19 is not a production release. Owner visual sanity of the redesigned layout remains pending; r18 remains the last owner-manually accepted UI baseline.
 
+## r20 Windows installer verification
+**INTEGRATED / AUTOMATED PASS / OWNER INSTALLER UX PENDING — 2026-11-02.**
+
+PR #47 final head `96a7953a2388811716c9c13001fcf9ca3d5b79c2`; merged main `e913edf6bb62249806afc7c19ac8c19e2cde1166`.
+
+Final evidence:
+- docs `41447023650`: PASS;
+- Tauri matrix `41447023564`: PASS;
+- Windows synthetic artifact `41447023544`: PASS;
+- NSIS installer `41447023597`: PASS;
+- artifact `13142977634`;
+- ZIP SHA256 `a8a00e0c7f20282d13673ba1fd3de353d4500d9cf36b1d40ed7be3c86ee33d3f`;
+- installer SHA256 `dc8f128e73983d28c4093edd0434d4a8eed140a29718cd09faa99c13bf9f8588`;
+- release EXE SHA256 `636aa7d7ec6e5cf485dfda219d107115dba7d3dc79c0b5a995d4e08efc4aab30`;
+- Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`.
+
+Automated install acceptance:
+- Authenticode status NotSigned: PASS;
+- silent current-user install: PASS;
+- HKCU uninstall registration: PASS;
+- installed app launch smoke: PASS;
+- silent uninstall: PASS;
+- executable removed after uninstall: PASS;
+- HKCU uninstall registration removed: PASS;
+- internal artifact SHA256SUMS: PASS.
+
+Drive readback:
+https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/view?usp=drivesdk
+— downloaded back, byte-identical to GitHub artifact, SHA256 exact match.
+
+Scope: automated release-readiness only. Owner installer UX/manual acceptance, code signing, public release and production/live integration remain pending.
+
 ## README localization verification
 PR #35 merged to main at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
 Ukrainian primary README plus EN/FR/DE/ES/KO/JA translations are present; local Markdown link validation PASS.
@@ -258,4 +290,4 @@ This PASS is target-specific. Future macOS/Android/iOS release targets require t
 - Android/iOS validation;
 - live API access/security/latency/schema acceptance;
 - push/background delivery;
-- signing/installers/release/production.
+- owner installer UX acceptance, code signing, public release and production.
