@@ -87,7 +87,11 @@
 - critical cleared/stale: PASS; UI shows stale data and `Відбій потребує повторного підтвердження`, never a current safe all-clear.
 - PR #34 reconciled with main `1b1c1d011dd427fd5c2a1fcd9b83054e6e3a9bd2`; reconciled product head `00044595f40b48b19e086e3e8a2a81cfaa48bfb5`.
 - Fresh reconciled-head checks PASS: docs `41437451193`, Tauri matrix `41437451223`, Windows artifact `41437451346`.
-- r18 manual acceptance: **PASS; merge checkpoint pending only**.
+- r18 manual acceptance: **PASS**.
+- Final acceptance-checkpoint head `cb444fd31bd4f2e574944c7917df5452f154b12e`: docs `41438228543` PASS, Tauri matrix `41438228579` PASS, Windows artifact `41438228529` PASS.
+- PR #34 merged squash to main: `61c0662d941e388858f5214c14860ec92a586905`.
+- Post-merge open PR count: 0.
+- r18 is **integrated and accepted**.
 
 ## 2026-11-02 — README localization
 - PR #35 merged to main: `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
@@ -125,4 +129,4 @@
 - Issue #9 is the live integration register.
 
 ## NEXT
-Merge PR #34 squash after the final documentation checkpoint check passes. Then synchronize GitHub state to Drive. Do not start a live source adapter without a separate owner decision.
+Synchronize the final merged r18 state to Drive. After that, wait for a separate owner decision on the next product slice; do not start a live source adapter automatically.
