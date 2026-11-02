@@ -118,9 +118,10 @@ BACKUPS contains:
   — SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`, Drive readback exact match.
 
 ## r18 — richer synthetic scenarios / territory selection
-**AUTOMATED PASS / MANUAL WINDOWS PASS / MERGE PENDING — 2026-11-02.**
+**INTEGRATED / AUTOMATED PASS / MANUAL WINDOWS PASS — 2026-11-02.**
 
-Open PR: #34 `feat(r18): add synthetic territory and fail-safe scenarios`.
+PR #34 `feat(r18): add synthetic territory and fail-safe scenarios` merged squash to main:
+`61c0662d941e388858f5214c14860ec92a586905`.
 
 Verified manual-test product source head:
 `a2c945034bfea58b3ff5890ea53862831c1b502a`.
@@ -129,10 +130,17 @@ After owner acceptance, PR #34 was reconciled with main `1b1c1d011dd427fd5c2a1fc
 Reconciled product head:
 `00044595f40b48b19e086e3e8a2a81cfaa48bfb5`.
 
-The reconciliation preserved current main documentation/license checkpoints and applies only six r18 product/workflow files over main. Fresh checks on this reconciled product head:
+The reconciliation preserved current main documentation/license checkpoints and applied only six r18 product/workflow files over main. Fresh checks on reconciled product head:
 - Organizational docs checks `41437451193`: PASS;
 - Tauri shell product-platform checks `41437451223`: PASS;
 - Windows synthetic artifact `41437451346`: PASS.
+
+Final acceptance-checkpoint head `cb444fd31bd4f2e574944c7917df5452f154b12e` also passed:
+- Organizational docs checks `41438228543`;
+- Tauri shell product-platform checks `41438228579`;
+- Windows synthetic artifact `41438228529`.
+
+After merge, live main = `61c0662d941e388858f5214c14860ec92a586905`; open PR count = 0.
 
 Verified manual-test artifact remains the r18 artifact built from `a2c945...`:
 - artifact id `13127022813`;
@@ -199,4 +207,4 @@ For any future macOS/Android/iOS release, run the same target-specific completen
 **PASS — 2026-11-02.** Clean-session state reconstruction from project-local docs + live GitHub recovered the current state, r17 PASS, C12 PASS, safety limits and next product direction without previous-chat state. See `C13_CLEAN_SESSION.md`.
 
 ## Одна наступна дія
-Злити PR #34 squash **тільки після PASS фінального docs-check на head із цим acceptance checkpoint**. Після merge оновити Drive mirrors. Live source adapter не починати без окремого рішення власника.
+Зафіксувати post-merge checkpoint у Drive та перейти до планування наступного продуктового кроку лише після окремого рішення власника. Live source adapter не починати автоматично.
