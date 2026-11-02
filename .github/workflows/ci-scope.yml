@@ -1,0 +1,26 @@
+name: CI scope checks
+on:
+  pull_request:
+    paths:
+      - 'RELEASE_CHECKLIST.md'
+      - 'scripts/check_ci_scope.py'
+      - '.github/workflows/ci-scope.yml'
+      - '.github/workflows/windows-synthetic-artifact.yml'
+      - '.github/workflows/windows-installer-candidate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Validate expensive workflow scope and release checklist
+        run: python scripts/check_ci_scope.py
