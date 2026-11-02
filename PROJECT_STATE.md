@@ -379,3 +379,14 @@ Owner r20 installer UX/manual sanity remains pending. Code signing, public relea
 
 After r22 post-merge main `0a85a94bb65046036f3d95d6372e0e22e58c43a3`, Drive mirrors for `PROJECT_STATE.md`, `WORKLOG.md`, `HANDOFF_CURRENT.md` and `VERIFICATION.md` were rewritten from GitHub source of truth. Stale mirror sentinel tails were removed. Readback compared every non-empty GitHub line with every Drive paragraph in order: all four mirrors matched exactly with equal counts and no mismatch.
 
+## r23 — root core → desktop CI coverage
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #55 final head `f9d3365262671532261c2725946fc5d0cce7c281`; squash-merged to main as `f5b6417a4a7508c9677039c2ee8159748b44c193`.
+
+The coverage gap was proven from source: `src-tauri/Cargo.toml` declares `uvaga-core = { path = ".." }`. r23 therefore adds root `Cargo.toml` and `src/**` to existing Windows synthetic, Windows installer and Tauri platform trigger contracts; Tauri also reacts to `scripts/verify_tauri_lock.py`. The cheap CI-scope guard now fails closed if root-core desktop coverage is removed.
+
+Final CI PASS: scope `41456408496`, release metadata `41456408492`, docs `41456408540`, Tauri Windows/macOS `41456408314`, Windows synthetic `41456408686`, Windows installer `41456408563`.
+
+No product/safety behavior, Cargo.lock, version, signing, updater, live source, credentials, notifications or production deployment changed. The standalone synthetic workflow and Windows Tauri matrix remain intact; superseded PR #51 consolidation was not restored.
+
