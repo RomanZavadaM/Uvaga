@@ -95,8 +95,8 @@ readme_paths = [
     ROOT / "README.ja.md",
 ]
 pending_pattern = re.compile(
-    r"r18[^\n]{0,140}(ще не завершене|pending|en attente|ausstehend|pendiente|대기 중|保留中)",
-    re.IGNORECASE,
+    r"^[-*] [^\n]*r18[^\n]*(ще не завершене|pending|en attente|ausstehend|pendiente|대기 중|保留中)",
+    re.IGNORECASE | re.MULTILINE,
 )
 for path in readme_paths:
     text = path.read_text(encoding="utf-8")
