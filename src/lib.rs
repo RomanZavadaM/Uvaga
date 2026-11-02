@@ -2,6 +2,7 @@
 //! All timestamps are integer UTC epoch seconds supplied by caller.
 
 pub mod alerts_in_ua;
+pub mod origin_correlation;
 pub mod attention;
 pub mod katottg_staging;
 
