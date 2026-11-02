@@ -64,12 +64,12 @@ C12 scope is Git source/history only. Production state/data backup remains a sep
 ## Safety
 No production, public notifications, live API application/credential, signing or release package at this stage.
 
-## One next action
-Run a formal clean-session continuity trial using only project-local documents + live GitHub. It must recover:
-- current integrated prototype;
-- r17 manual PASS;
-- C12 PASS;
-- production/live API prohibition;
-- next product direction: richer synthetic scenarios/territory selection before any live source adapter.
+## C13 continuity result
+**PASS — 2026-11-02.**
 
-After successful clean-session trial, update C13 evidence and decide the next prototype slice.
+The clean session recovered the actual state from project-local documents + live GitHub without relying on prior chat. It independently confirmed the start main `3a254e4a6edb3bcd2294cb0905ab7ddae4f1ca61`, no open PR, r17 manual PASS, C12 PASS, safety limits and the correct next direction.
+
+Detailed evidence: `C13_CLEAN_SESSION.md`.
+
+## One next action
+Implement the next small offline prototype slice: **richer synthetic scenarios / territory selection**, with tests and CI, still without any live source adapter, live credentials, public notifications, production deployment, signing or release package.
