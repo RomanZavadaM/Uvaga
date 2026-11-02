@@ -8,20 +8,22 @@
 
 ## Test download
 
-### Windows 10/11 x64 — r18 synthetic test build
+### Windows 10/11 x64 — r19 synthetic test build
 
-[**Download Uvaga-Windows-Synthetic-r18.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41415006414/artifacts/13127022813)
+[**Download Uvaga-Windows-Synthetic-r19.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-This is **not a release and not a production build**. It is the verified r18 synthetic test build; Windows manual acceptance is complete and the changes are integrated into `main`. GitHub may require you to sign in before downloading an Actions artifact.
+This is **not a release and not a production build**. It is the latest automated desktop-hardening build. r18 remains the last Windows build manually accepted by the owner; owner visual sanity for r19 is still pending. GitHub may require sign-in to download the Actions artifact.
 
-- Source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`
-- ZIP SHA256: `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`
-- `Uvaga.exe` SHA256: `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`
-- Automated Windows/macOS checks: **PASS**
-- Manual Windows runtime acceptance for r18: **PASS — 2026-11-02**
-- r18 integrated into `main`: `61c0662d941e388858f5214c14860ec92a586905`
+- Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
+- ZIP SHA256: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
+- `Uvaga.exe` SHA256: `c9afe5873aad563dd6f07b51a6b05cc64fac3057e91f1127d2794b3372b7b593`
+- `Cargo.lock` SHA256: `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`
+- UI contract / Windows / macOS ARM / macOS Intel: **PASS**
+- r19 integrated into `main`: `1af2e5d2c53a00619172056bab9fde746daff988`
+- Owner visual sanity for r19: **PENDING**
+- r18 owner manual runtime acceptance: **PASS — 2026-11-02**
 
-The test shell lets you choose a synthetic territory (`UA-46` or `UA-30`) and exercise five fail-safe scenarios: active/fresh, active/stale, cleared/fresh, cleared/stale, and unknown/unavailable.
+r19 makes the critical state more compact and accessible, adds a fail-closed dependency-lock gate, and produces a self-describing test artifact. Synthetic territories and five fail-safe scenarios remain local; no live source is connected.
 
 ## Planned platforms
 

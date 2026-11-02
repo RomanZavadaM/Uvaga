@@ -8,20 +8,22 @@
 
 ## Test-Download
 
-### Windows 10/11 x64 — r18 Synthetic-Test-Build
+### Windows 10/11 x64 — r19 Synthetic-Test-Build
 
-[**Uvaga-Windows-Synthetic-r18.zip herunterladen**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41415006414/artifacts/13127022813)
+[**Uvaga-Windows-Synthetic-r19.zip herunterladen**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-Dies ist **kein Release und kein Production-Build**. Es handelt sich um den verifizierten r18-Synthetic-Test-Build; die manuelle Windows-Abnahme ist abgeschlossen und die Änderungen sind in `main` integriert. Für den Download eines GitHub-Actions-Artefakts kann eine Anmeldung bei GitHub erforderlich sein.
+Dies ist **kein Release und kein Production-Build**. Es ist der neueste automatisiert geprüfte Desktop-Hardening-Build. r18 bleibt der letzte vom Eigentümer manuell akzeptierte Windows-Build; die visuelle Eigentümerprüfung für r19 steht noch aus.
 
-- Source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`
-- ZIP SHA256: `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`
-- `Uvaga.exe` SHA256: `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`
-- Automatisierte Windows/macOS-Prüfungen: **PASS**
-- Manuelle Windows-Runtime-Abnahme für r18: **PASS — 2026-11-02**
-- r18 in `main` integriert: `61c0662d941e388858f5214c14860ec92a586905`
+- Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
+- ZIP SHA256: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
+- `Uvaga.exe` SHA256: `c9afe5873aad563dd6f07b51a6b05cc64fac3057e91f1127d2794b3372b7b593`
+- `Cargo.lock` SHA256: `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`
+- UI-Vertrag / Windows / macOS ARM / macOS Intel: **PASS**
+- r19 in `main` integriert: `1af2e5d2c53a00619172056bab9fde746daff988`
+- Visuelle Eigentümerprüfung r19: **PENDING**
+- r18 manuelle Runtime-Abnahme: **PASS — 2026-11-02**
 
-Die Testoberfläche erlaubt die Auswahl eines synthetischen Gebiets (`UA-46` oder `UA-30`) und fünf Fail-safe-Szenarien: active/fresh, active/stale, cleared/fresh, cleared/stale und unknown/unavailable.
+r19 macht den kritischen Status kompakter und zugänglicher, ergänzt einen fail-closed Dependency-Lock und erzeugt ein selbstdokumentierendes Test-Artefakt. Live-Quellen bleiben getrennt.
 
 ## Geplante Plattformen
 
