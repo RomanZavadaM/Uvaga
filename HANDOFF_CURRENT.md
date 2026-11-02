@@ -61,12 +61,15 @@ https://drive.google.com/file/d/1ybaj5qBhXWNprZ7v4GLvIZeDXTr4xobp/view?usp=drive
 
 C12 scope is Git source/history only. Production state/data backup remains a separate future concern if such state is introduced.
 
-## r18 current trial state
-**AUTOMATED PASS / MANUAL WINDOWS PASS / MERGE PENDING — 2026-11-02.**
+## r18 integrated state
+**AUTOMATED PASS / MANUAL WINDOWS PASS / MERGED — 2026-11-02.**
 
-Open PR: #34.
+PR #34 merged squash to main:
+`61c0662d941e388858f5214c14860ec92a586905`.
+
 Verified manual-test product source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`.
 Reconciled product head: `00044595f40b48b19e086e3e8a2a81cfaa48bfb5`.
+Final acceptance-checkpoint head: `cb444fd31bd4f2e574944c7917df5452f154b12e`.
 
 PR #34 was reconciled with current main `1b1c1d011dd427fd5c2a1fcd9b83054e6e3a9bd2` without replaying stale README/state/license changes.
 
@@ -74,6 +77,14 @@ Fresh reconciled-head checks:
 - docs `41437451193`: PASS;
 - Tauri Windows/macOS matrix `41437451223`: PASS;
 - Windows synthetic artifact `41437451346`: PASS.
+
+Final acceptance-checkpoint checks:
+- docs `41438228543`: PASS;
+- Tauri Windows/macOS matrix `41438228579`: PASS;
+- Windows synthetic artifact `41438228529`: PASS.
+
+Post-merge live main: `61c0662d941e388858f5214c14860ec92a586905`.
+Open PR count after merge: 0.
 
 Owner manual Windows screenshots confirm:
 - UA-46 and UA-30 switching;
@@ -137,4 +148,4 @@ The clean session recovered the actual state from project-local documents + live
 Detailed evidence: `C13_CLEAN_SESSION.md`.
 
 ## One next action
-Merge PR #34 squash after the final docs-check for this acceptance checkpoint passes; then sync Drive mirrors. Do not start live-source integration without a separate owner decision.
+Sync the merged r18 state to Drive. Then wait for a separate owner decision before starting any live-source integration or next product slice.
