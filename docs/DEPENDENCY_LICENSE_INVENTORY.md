@@ -36,4 +36,16 @@ The inventory workflow must fail if the downloaded lock does not match this hash
 
 ## Result state
 
-Until the inventory artifact is read back and reviewed, dependency/license gate remains **PENDING**.
+Inventory run `41422471078`: **PASS**.
+
+Readback artifact:
+- id `13130467223`;
+- ZIP SHA256 `afc0c0a75986fc68ea836a2cf7778353735dfdcb8bb24e5b99368e23ca351f7f`;
+- 408 packages = 2 path/workspace + 406 crates.io;
+- 0 non-registry external sources;
+- 0 missing Cargo license expressions;
+- 0 license-file-only packages.
+
+Detailed classification: `docs/DEPENDENCY_LICENSE_REVIEW.md`.
+
+Inventory gate is **PASS**. Machine-enforced license policy / distributable notice gate remains **PENDING**.
