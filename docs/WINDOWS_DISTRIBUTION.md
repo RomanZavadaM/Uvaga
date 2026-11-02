@@ -27,9 +27,10 @@ Official Tauri references:
 
 Historical accepted artifacts keep their original r19/r20 names, IDs and hashes in project evidence. Active workflows must not reuse those revision labels for newer source heads.
 
-Current active CI naming:
-- synthetic: `Uvaga-Windows-Synthetic-candidate-<run>`;
-- installer: `Uvaga-Windows-Installer-candidate-<run>`.
+Current active Windows CI naming:
+- installer/release-executable candidate: `Uvaga-Windows-Installer-candidate-<run>`.
+
+The standalone active Windows synthetic workflow was retired in r22 to avoid duplicate Windows compilation. Historical r17/r18/r19/r21 synthetic artifacts remain immutable evidence. The canonical Windows candidate still runs exact-lock tests, builds the release executable and NSIS installer, verifies unsigned provenance, performs install/launch/uninstall smoke, and packages checksums/licenses.
 
 Each candidate metadata file records app version, source head, GitHub checkout SHA and run ID.
 
