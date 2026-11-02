@@ -35,6 +35,7 @@ jobs:
             SOURCE_VALIDATION.md \
             BACKUP_AND_SYNC.md \
             REPOSITORY_GOVERNANCE.md \
+            RELEASE_CHECKLIST.md \
             LICENSE.md \
             COPYRIGHT.md \
             THIRD_PARTY_NOTICES.md \

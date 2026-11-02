@@ -4,11 +4,6 @@ on:
     paths:
       - 'app/**'
       - 'src-tauri/**'
-      - 'README.md'
-      - 'LICENSE.md'
-      - 'THIRD_PARTY_NOTICES.md'
-      - 'SECURITY.md'
-      - 'docs/WINDOWS_DISTRIBUTION.md'
       - 'scripts/check_release_metadata.py'
       - 'scripts/verify_tauri_lock.py'
       - '.github/workflows/windows-installer-candidate.yml'
