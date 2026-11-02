@@ -122,8 +122,30 @@ Automated acceptance covers build/tests/artifact/checksums only. Visual/runtime 
 PR #35 merged to main at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
 Ukrainian primary README plus EN/FR/DE/ES/KO/JA translations are present; local Markdown link validation PASS.
 
-## Source/legal checks
-- UkraineAlarm public request page/offer checked without accepting/applying.
+## Dependency / license verification
+**Inventory PASS / machine policy PASS — 2026-11-02.**
+
+Exact locked inventory:
+- source r18 Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- run `41422471078`: PASS;
+- artifact `13130467223`;
+- artifact ZIP SHA256 `afc0c0a75986fc68ea836a2cf7778353735dfdcb8bb24e5b99368e23ca351f7f`;
+- package count 408;
+- 406 crates.io + 2 local/path;
+- 0 unknown external sources;
+- 0 missing Cargo license expressions.
+
+Machine policy:
+- run `41423140592`: PASS;
+- `cargo deny check licenses sources`: PASS;
+- cargo-deny 0.20.2 via pinned action commit `3c6349835b2b7b196a839186cb8b78e02f7b5f25`;
+- MPL-2.0 is exception-scoped to 5 exact reviewed crates, not globally allowed;
+- unknown registry/git sources are denied;
+- GPL/AGPL/LGPL identifiers are not in the global license allow-list.
+
+Remaining release obligation: generate and read back distributable third-party license texts plus exact MPL source-availability notice for the release lock.
+
+## Source/legal checks- UkraineAlarm public request page/offer checked without accepting/applying.
 - KATOTTG uses cutoff/amendment-chain policy.
 - alerts.in.ua remains aggregator/proxy candidate only.
 - no live API credential used.

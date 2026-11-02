@@ -48,4 +48,6 @@ Uvaga не заявляє авторських прав на ці компоне
 3. source-availability notice для exact MPL-covered versions;
 4. повторний аудит після будь-якої зміни dependency lock.
 
-До завершення цих пунктів dependency/license release gate залишається **не закритим**.
+Machine-enforced license/source policy вже перевірена: GitHub Actions run `41423140592` — **PASS** (`cargo deny check licenses sources`).
+
+До production release ще не закритий саме packaging-підетап: повний набір сторонніх license/notice texts та exact MPL source-availability notice для фінального release lock.
