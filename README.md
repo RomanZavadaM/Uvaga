@@ -12,7 +12,7 @@
 
 [**Завантажити Uvaga-Windows-Installer-r20.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
 
-Це **unsigned test installer, не production release**. CI уже перевірив current-user silent install, HKCU registration, запуск встановленого застосунку та silent uninstall. Ручне owner-приймання installer UX ще не виконане.
+Це **unsigned test installer, не production release**. CI уже перевірив current-user silent install, HKCU registration, запуск встановленого застосунку та silent uninstall. Ручне owner-приймання installer UX ще не виконане. r20 лишається останнім заархівованим installer test candidate з повним automated install/uninstall evidence; r21–r23 були CI/release-process hardening і не створювали нового owner-accepted release artifact.
 
 - Source head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
 - r20 merge: `e913edf6bb62249806afc7c19ac8c19e2cde1166`
@@ -29,7 +29,7 @@ Drive backup: https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/
 
 [**Завантажити Uvaga-Windows-Synthetic-r19.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-Це **не реліз і не production-версія**. Це останній автоматично перевірений desktop hardening build. r18 залишається останньою версією, яку власник вручну прийняв на Windows; для r19 owner visual sanity ще не виконане. Для завантаження GitHub Actions artifact може знадобитися вхід у GitHub.
+Це **не реліз і не production-версія**. Це історичний r19 synthetic desktop-hardening build, збережений як перевірюване evidence. r18 залишається останньою версією, яку власник вручну прийняв на Windows; для r19 owner visual sanity ще не виконане. Для завантаження GitHub Actions artifact може знадобитися вхід у GitHub.
 
 - Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
 - ZIP SHA256: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
