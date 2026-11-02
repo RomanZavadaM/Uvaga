@@ -55,7 +55,7 @@ function setControlsDisabled(disabled) {
 }
 
 function setPresentationKind(kind) {
-  bridge.dataset.presentation = allowedPresentationKinds.has(kind) ? kind : "unknown";
+  bridge.dataset.presentationKind = allowedPresentationKinds.has(kind) ? kind : "unknown";
 }
 
 function setVersion(value) {
