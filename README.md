@@ -8,6 +8,23 @@
 
 ## Завантаження для тестування
 
+### Windows 10/11 x64 — r20 NSIS installer candidate
+
+[**Завантажити Uvaga-Windows-Installer-r20.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
+
+Це **unsigned test installer, не production release**. CI уже перевірив current-user silent install, HKCU registration, запуск встановленого застосунку та silent uninstall. Ручне owner-приймання installer UX ще не виконане.
+
+- Source head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
+- r20 merge: `e913edf6bb62249806afc7c19ac8c19e2cde1166`
+- ZIP SHA256: `a8a00e0c7f20282d13673ba1fd3de353d4500d9cf36b1d40ed7be3c86ee33d3f`
+- Installer SHA256: `dc8f128e73983d28c4093edd0434d4a8eed140a29718cd09faa99c13bf9f8588`
+- Release `Uvaga.exe` SHA256: `636aa7d7ec6e5cf485dfda219d107115dba7d3dc79c0b5a995d4e08efc4aab30`
+- Exact `Cargo.lock` SHA256: `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`
+- NSIS install/launch/uninstall smoke: **PASS**
+- Owner installer/visual sanity: **PENDING**
+
+Drive backup: https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/view?usp=drivesdk
+
 ### Windows 10/11 x64 — r19 synthetic test build
 
 [**Завантажити Uvaga-Windows-Synthetic-r19.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
