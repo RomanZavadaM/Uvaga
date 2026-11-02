@@ -5,7 +5,10 @@ import pathlib
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SYNTH = ROOT / '.github' / 'workflows' / 'windows-synthetic-artifact.yml'
 INSTALLER = ROOT / '.github' / 'workflows' / 'windows-installer-candidate.yml'
+TAURI = ROOT / '.github' / 'workflows' / 'tauri-shell.yml'
 CHECKLIST = ROOT / 'RELEASE_CHECKLIST.md'
+
+REQUIRED_CORE_PATHS = {'Cargo.toml', 'src/**'}
 
 FORBIDDEN_DOC_PATHS = {
     'README.md',
@@ -51,10 +54,14 @@ def validate_heavy(path: pathlib.Path) -> None:
     bad = sorted(paths & FORBIDDEN_DOC_PATHS)
     require(not bad, f'{path.name}: documentation-only paths trigger heavy workflow: {bad}')
     require('  workflow_dispatch:' in text, f'{path.name}: workflow_dispatch must stay available for final candidate')
+    missing_core = sorted(REQUIRED_CORE_PATHS - paths)
+    require(not missing_core, f'{path.name}: root core paths missing from desktop coverage: {missing_core}')
 
 
 validate_heavy(SYNTH)
 validate_heavy(INSTALLER)
+validate_heavy(TAURI)
+require('scripts/verify_tauri_lock.py' in pull_request_paths(TAURI), 'tauri-shell.yml: lock verifier changes must trigger platform checks')
 
 checklist = CHECKLIST.read_text(encoding='utf-8')
 for phrase in [
@@ -70,4 +77,6 @@ for phrase in [
 print('CI scope contract: PASS')
 print(f'synthetic_pr_paths={sorted(pull_request_paths(SYNTH))}')
 print(f'installer_pr_paths={sorted(pull_request_paths(INSTALLER))}')
+print(f'tauri_pr_paths={sorted(pull_request_paths(TAURI))}')
+print('root_core_desktop_coverage=PASS')
 print('docs_only_heavy_triggers=0')
