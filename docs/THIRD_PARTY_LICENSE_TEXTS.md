@@ -26,10 +26,10 @@ Complement the broad 406-crate lock inventory/compliance bundle with a distribut
 6. The set of external package name/version pairs emitted by cargo-about must equal that independent `cargo tree` Windows normal+build closure on the Windows host. This intentionally includes Windows-host build dependencies such as SDK-discovery helpers.
 7. Global accepted licenses match the reviewed permissive policy; GPL/AGPL/LGPL are not globally accepted.
 8. MPL-2.0 is accepted only for the five reviewed crate names in cargo-about config; cargo-deny remains the version-exact enforcement layer.
-9. Generate both machine-readable JSON and human-readable Markdown containing full license texts and the crates using each text.
+9. Run cargo-about only once to generate machine-readable JSON, then deterministically render human-readable Markdown from that same verified JSON; both outputs contain full license texts and the crates using each text.
 10. The Markdown must identify that it is generated from the exact r18 Windows lock/target and is not a substitute for Uvaga's proprietary LICENSE.
 11. The generation must fail if cargo-about cannot reasonably determine any dependency license.
-12. Upload output, config, template, exact lock, Windows closure summary and evidence anchor as an Actions artifact.
+12. Upload JSON/Markdown output, config, exact lock, Windows closure summary and evidence anchor as an Actions artifact.
 13. Download/read back the artifact before declaring Windows text-completeness PASS.
 14. No live source adapter, credentials, public notifications, production deployment, signing or release is introduced.
 
@@ -42,3 +42,7 @@ Complement the broad 406-crate lock inventory/compliance bundle with a distribut
 - Linux-host raw `cargo metadata.resolve` comparison was rejected because it over-counted target/optional dependencies.
 - Linux-host `cargo tree --target windows` comparison was rejected because host-side Windows build dependencies (`vswhom`, `vswhom-sys`, `winreg`) are not present when the host itself is Linux.
 - Final acceptance therefore requires Windows-host set equality rather than suppressing those three packages manually.
+
+## CI efficiency
+
+The initial proof run used cargo-about twice (JSON + Handlebars) and passed. The final workflow intentionally uses one cargo-about `--locked --offline --fail` scan and renders Markdown from that exact JSON to avoid a redundant second dependency/license analysis.
