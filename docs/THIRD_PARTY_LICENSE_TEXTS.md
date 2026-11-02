@@ -22,8 +22,8 @@ Complement the broad 406-crate lock inventory/compliance bundle with a distribut
 2. Download cargo-about 0.9.2 from its GitHub release and verify the pinned binary archive SHA256.
 3. Fetch the exact locked dependency graph once, then run cargo-about with `--locked --offline --fail`.
 4. `cargo-about` is explicitly scoped to target `x86_64-pc-windows-msvc`, includes build dependencies, and excludes dev-only dependencies.
-5. Generate a separate Cargo metadata view filtered to the Windows target and traverse the root graph over normal+build edges.
-6. The set of external package name/version pairs emitted by cargo-about must equal that independently derived Windows normal+build closure.
+5. Derive an independent Windows package set with `cargo tree --target x86_64-pc-windows-msvc --edges normal,build`; keep filtered Cargo metadata only to distinguish registry vs local packages.
+6. The set of external package name/version pairs emitted by cargo-about must equal that independent `cargo tree` Windows normal+build closure.
 7. Global accepted licenses match the reviewed permissive policy; GPL/AGPL/LGPL are not globally accepted.
 8. MPL-2.0 is accepted only for the five reviewed crate names in cargo-about config; cargo-deny remains the version-exact enforcement layer.
 9. Generate both machine-readable JSON and human-readable Markdown containing full license texts and the crates using each text.
