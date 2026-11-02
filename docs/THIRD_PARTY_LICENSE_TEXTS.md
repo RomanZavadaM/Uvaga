@@ -14,16 +14,16 @@ Complement the broad 406-crate lock inventory/compliance bundle with a distribut
 - artifact: `Uvaga-Windows-Synthetic-r18` / id `13127022813`;
 - exact `Cargo.lock` SHA256: `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
 - cargo-about version: `0.9.2`;
-- Linux x86_64 musl release asset SHA256: `9099a59e820c38a68b9d65f300662a567d56562f9a10f6aa4c7e86c17c2566af`.
+- Windows x86_64 MSVC release asset SHA256: `1c03e5890238562497c2d89a3b75b02560af349c1fc3e713d3284f532a5cd748`.
 
 ## Acceptance criteria
 
 1. Verify the exact r18 Cargo.lock before generation.
-2. Download cargo-about 0.9.2 from its GitHub release and verify the pinned binary archive SHA256.
+2. Run on `windows-2025`, matching the host OS class used by the r18 Windows build; download cargo-about 0.9.2 Windows x86_64 MSVC from its GitHub release and verify the pinned binary archive SHA256.
 3. Fetch the exact locked dependency graph once, then run cargo-about with `--locked --offline --fail`.
 4. `cargo-about` is explicitly scoped to target `x86_64-pc-windows-msvc`, includes build dependencies, and excludes dev-only dependencies.
 5. Derive an independent Windows package set with `cargo tree --target x86_64-pc-windows-msvc --edges normal,build`; keep filtered Cargo metadata only to distinguish registry vs local packages.
-6. The set of external package name/version pairs emitted by cargo-about must equal that independent `cargo tree` Windows normal+build closure.
+6. The set of external package name/version pairs emitted by cargo-about must equal that independent `cargo tree` Windows normal+build closure on the Windows host. This intentionally includes Windows-host build dependencies such as SDK-discovery helpers.
 7. Global accepted licenses match the reviewed permissive policy; GPL/AGPL/LGPL are not globally accepted.
 8. MPL-2.0 is accepted only for the five reviewed crate names in cargo-about config; cargo-deny remains the version-exact enforcement layer.
 9. Generate both machine-readable JSON and human-readable Markdown containing full license texts and the crates using each text.
@@ -36,3 +36,9 @@ Complement the broad 406-crate lock inventory/compliance bundle with a distribut
 ## Result state
 
 **PENDING** until workflow output is read back.
+
+## Rejected validation attempts
+
+- Linux-host raw `cargo metadata.resolve` comparison was rejected because it over-counted target/optional dependencies.
+- Linux-host `cargo tree --target windows` comparison was rejected because host-side Windows build dependencies (`vswhom`, `vswhom-sys`, `winreg`) are not present when the host itself is Linux.
+- Final acceptance therefore requires Windows-host set equality rather than suppressing those three packages manually.
