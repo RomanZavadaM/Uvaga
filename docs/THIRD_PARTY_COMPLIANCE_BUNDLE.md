@@ -30,4 +30,20 @@ Build a concrete compliance-support artifact from the same verified r18 `Cargo.l
 
 ## Result
 
-Gate remains **PENDING** until the generated artifact is downloaded/read back and unresolved license-file cases are reviewed.
+## Verification result
+
+GitHub Actions run `41423995739`: **PASS**.
+
+Readback artifact:
+- id `13131470682`;
+- name `Uvaga-r18-third-party-compliance-bundle`;
+- ZIP SHA256 `b91319651fe2ffa9d7983195fcc6e82bee77ed8357d36459aedb8a83c2a7d160` — exact match to GitHub digest;
+- 406 crates.io packages indexed;
+- 371 packages have one or more captured package-local LICENSE/COPYING/NOTICE/COPYRIGHT/UNLICENSE files;
+- 35 packages have no such package-local file and remain explicitly unresolved for supplemental license text/attribution;
+- `MPL-SOURCE-r18.tar.gz` contains all five reviewed MPL-2.0 source trees;
+- `MPL_SOURCE_AVAILABILITY.md` lists exact MPL versions and upstream repositories.
+
+**Bundle generation/readback: PASS.**
+
+**Third-party text completeness gate: PARTIAL / PENDING** because 35 crates require supplemental text/attribution handling. Next planned evidence step: pinned `cargo-about` generation against the same exact lock.
