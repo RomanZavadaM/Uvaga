@@ -3,104 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="dark light">
-  <title>ТривогА</title>
+  <meta name="color-scheme" content="dark">
+  <title>ТривогА — синтетичний режим</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" defer></script>
 </head>
 <body>
   <main class="shell">
-    <header>
+    <header class="app-header">
       <div>
         <p class="eyebrow">ТривогА</p>
         <h1>Оперативне інформування про небезпеку</h1>
       </div>
-      <span class="mode">СИНТЕТИЧНИЙ РЕЖИМ</span>
+      <div class="header-badges" aria-label="Режим і версія">
+        <span class="mode">СИНТЕТИЧНИЙ РЕЖИМ</span>
+        <span class="version">v<span data-app-version>—</span></span>
+      </div>
     </header>
 
-    <section class="notice" aria-live="polite">
+    <section class="notice" role="note" aria-label="Попередження про тестовий режим">
       <strong>Це не система реального оповіщення.</strong>
       <span>Території й сценарії нижче — локальні тестові fixtures. Живі джерела, push-повідомлення та production не підключені.</span>
     </section>
 
-    <section class="bridge" aria-labelledby="bridge-title">
-      <div class="bridge-head">
-        <div>
-          <p class="label">Offline UI ↔ Rust core</p>
-          <h2 id="bridge-title">
+    <section class="bridge" data-bridge data-presentation="unknown" aria-labelledby="bridge-title" aria-busy="true">
+      <div class="summary">
+        <div class="summary-main">
+          <p class="label">Безпечне представлення</p>
+          <h2 class="summary-state" id="bridge-title" data-presentation>Очікую стан…</h2>
+        </div>
+        <div class="summary-meta" aria-label="Територія і свіжість">
+          <span class="summary-pill">
             <span data-region-name>Синтетична територія</span>
-            <span class="territory-code" data-region>—</span>
-          </h2>
+            <strong data-region>—</strong>
+          </span>
+          <span class="summary-pill" data-freshness>Стан джерела невідомий</span>
         </div>
       </div>
 
       <div class="controls" aria-label="Синтетичний сценарій">
-        <label>
-          <span>Територія</span>
-          <select data-territory>
-            <option value="UA-46">Львівська область · UA-46</option>
-            <option value="UA-30">м. Київ · UA-30</option>
-          </select>
-        </label>
+        <label for="territory-select">Територія</label>
+        <select id="territory-select" data-territory>
+          <option value="UA-46">Львівська область · UA-46</option>
+          <option value="UA-30">м. Київ · UA-30</option>
+        </select>
 
-        <label>
-          <span>Сценарій</span>
-          <select data-scenario>
-            <option value="active_stale">Тривога активна · дані застаріли</option>
-            <option value="active_fresh">Тривога активна · дані актуальні</option>
-            <option value="cleared_fresh">Відбій підтверджений · дані актуальні</option>
-            <option value="cleared_stale">Відбій був підтверджений · дані застаріли</option>
-            <option value="unknown_unavailable">Стан невідомий · джерело недоступне</option>
-          </select>
-        </label>
+        <label for="scenario-select">Сценарій</label>
+        <select id="scenario-select" data-scenario>
+          <option value="active_stale">Тривога активна · дані застаріли</option>
+          <option value="active_fresh">Тривога активна · дані актуальні</option>
+          <option value="cleared_fresh">Відбій підтверджений · дані актуальні</option>
+          <option value="cleared_stale">Відбій був підтверджений · дані застаріли</option>
+          <option value="unknown_unavailable">Стан невідомий · джерело недоступне</option>
+        </select>
 
         <button type="button" data-refresh>Показати сценарій</button>
       </div>
 
-      <p class="bridge-status" data-status data-kind="loading" aria-live="polite">
+      <p class="bridge-status" data-status data-kind="loading" role="status" aria-live="polite" aria-atomic="true">
         Очікую локальний Rust core…
       </p>
 
-      <dl class="status-grid">
+      <dl class="status-grid" aria-label="Деталі стану">
         <div>
           <dt>Підтверджений стан</dt>
           <dd data-confirmed>—</dd>
         </div>
         <div>
           <dt>Свіжість джерела</dt>
-          <dd data-freshness>—</dd>
+          <dd data-freshness-detail>—</dd>
         </div>
         <div>
-          <dt>Безпечне представлення</dt>
-          <dd data-presentation>—</dd>
+          <dt>Тестова послідовність</dt>
+          <dd data-issued>—</dd>
         </div>
       </dl>
 
       <p class="raw" data-raw>—</p>
     </section>
 
-    <section class="explain" aria-label="Що перевіряє цей етап">
-      <article class="card active">
-        <p class="label">Fail-safe</p>
-        <h2>Застарілі дані не створюють безпеку</h2>
-        <p>Активна тривога залишається активною last-known, а застарілий відбій вимагає повторного підтвердження.</p>
-      </article>
+    <details class="explain-details">
+      <summary>Що саме перевіряє синтетичний режим</summary>
+      <section class="explain" aria-label="Що перевіряє цей етап">
+        <article class="card active">
+          <p class="label">Fail-safe</p>
+          <h2>Застарілі дані не створюють безпеку</h2>
+          <p>Активна тривога залишається активною last-known, а застарілий відбій вимагає повторного підтвердження.</p>
+        </article>
 
-      <article class="card stale">
-        <p class="label">Territory</p>
-        <h2>Вибір без live-джерел</h2>
-        <p>UI передає тільки дозволений локальний код території й сценарій у Rust command. Невідомі значення Rust відхиляє.</p>
-      </article>
+        <article class="card stale">
+          <p class="label">Territory</p>
+          <h2>Вибір без live-джерел</h2>
+          <p>UI передає тільки дозволений локальний код території й сценарій у Rust command. Невідомі значення Rust відхиляє.</p>
+        </article>
 
-      <article class="card clear">
-        <p class="label">IPC</p>
-        <h2>Без HTTP і токенів</h2>
-        <p>WebView працює через локальний Tauri IPC. Мережа, live API, push і геолокація не використовуються.</p>
-      </article>
-    </section>
+        <article class="card clear">
+          <p class="label">IPC</p>
+          <h2>Без HTTP і токенів</h2>
+          <p>WebView працює через локальний Tauri IPC. Мережа, live API, push і геолокація не використовуються.</p>
+        </article>
+      </section>
+    </details>
 
     <footer>
-      <span>Тестова оболонка r18</span>
+      <span>Тестова оболонка r19 · v<span data-app-version>—</span></span>
       <span>Без мережі · без push · без геолокації</span>
     </footer>
   </main>
