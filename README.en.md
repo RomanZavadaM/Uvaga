@@ -12,7 +12,7 @@
 
 [**Download Uvaga-Windows-Installer-r20.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
 
-This is an **unsigned test installer, not a production release**. CI has already verified current-user silent install, HKCU registration, installed-app launch, and silent uninstall. Owner installer UX acceptance is still pending.
+This is an **unsigned test installer, not a production release**. CI has already verified current-user silent install, HKCU registration, installed-app launch, and silent uninstall. Owner installer UX acceptance is still pending. r20 remains the latest archived installer test candidate with full automated install/uninstall evidence; r21–r23 were CI/release-process hardening and did not create a newer owner-accepted release artifact.
 
 - Source head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
 - r20 merge: `e913edf6bb62249806afc7c19ac8c19e2cde1166`
@@ -29,7 +29,7 @@ Drive backup: https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/
 
 [**Download Uvaga-Windows-Synthetic-r19.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-This is **not a release and not a production build**. It is the latest automated desktop-hardening build. r18 remains the last Windows build manually accepted by the owner; owner visual sanity for r19 is still pending. GitHub may require sign-in to download the Actions artifact.
+This is **not a release and not a production build**. It is a historical r19 synthetic desktop-hardening build retained as verifiable evidence. r18 remains the last Windows build manually accepted by the owner; owner visual sanity for r19 is still pending. GitHub may require sign-in to download the Actions artifact.
 
 - Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
 - ZIP SHA256: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
