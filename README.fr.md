@@ -12,7 +12,7 @@
 
 [**Télécharger Uvaga-Windows-Installer-r20.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
 
-Ceci est un **installateur de test non signé, pas une version production**. Le CI a déjà validé l’installation silencieuse current-user, l’enregistrement HKCU, le lancement de l’application installée et la désinstallation silencieuse. La validation UX du propriétaire reste en attente.
+Ceci est un **installateur de test non signé, pas une version production**. Le CI a déjà validé l’installation silencieuse current-user, l’enregistrement HKCU, le lancement de l’application installée et la désinstallation silencieuse. La validation UX du propriétaire reste en attente. r20 reste le dernier candidat installateur de test archivé avec preuve automatisée complète d’installation/désinstallation ; r21–r23 ont durci le CI/processus de release sans produire de nouvel artefact de release accepté par le propriétaire.
 
 - Source head : `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
 - Merge r20 : `e913edf6bb62249806afc7c19ac8c19e2cde1166`
@@ -29,7 +29,7 @@ Sauvegarde Drive : https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnG
 
 [**Télécharger Uvaga-Windows-Synthetic-r19.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-Ceci n’est **ni une version publiée ni une build de production**. C’est la dernière build de durcissement desktop validée automatiquement. r18 reste la dernière build Windows acceptée manuellement par le propriétaire ; le contrôle visuel propriétaire de r19 est encore en attente.
+Ceci n’est **ni une version publiée ni une build de production**. Il s’agit d’une build synthétique historique r19 de durcissement desktop, conservée comme preuve vérifiable. r18 reste la dernière build Windows acceptée manuellement par le propriétaire ; le contrôle visuel propriétaire de r19 est encore en attente.
 
 - Source head : `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
 - SHA256 ZIP : `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
