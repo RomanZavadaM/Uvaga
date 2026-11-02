@@ -1,7 +1,9 @@
-name: Windows NSIS installer candidate
+name: Windows desktop installer candidate
 on:
   pull_request:
     paths:
+      - 'Cargo.toml'
+      - 'src/**'
       - 'app/**'
       - 'src-tauri/**'
       - 'README.md'
@@ -189,7 +191,8 @@ jobs:
             "ТривогА — Windows NSIS CI candidate",
             "",
             "НЕ PRODUCTION RELEASE. UNSIGNED TEST ARTIFACT.",
-            "Artifact track: installer-candidate",
+            "Artifact track: windows-desktop-candidate",
+            "Windows role: canonical desktop test/build/install pipeline",
             "App version: $appVersion",
             "Source head: $env:SOURCE_HEAD_SHA",
             "GitHub checkout SHA: $env:GITHUB_SHA",
