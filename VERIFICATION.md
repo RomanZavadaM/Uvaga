@@ -1,9 +1,14 @@
 # VERIFICATION — ТривогА
 
-**Оновлено:** 2026-11-01
+**Оновлено:** 2026-11-02
 
 ## Integrated product state
-Last integrated product-code base: `bba0bd82351fa06f20dbe144e8ac487b81314e4f` (r16).
+r16 product-code base:
+`bba0bd82351fa06f20dbe144e8ac487b81314e4f`.
+
+r17 artifact workflow/manual acceptance merged:
+`0ea256b3cc1a72250a8fa06e3098d13fe780b770`.
+
 Live `main` must always be checked in GitHub.
 
 Integrated prototype verifies:
@@ -26,7 +31,7 @@ r16 PR #27:
 
 ## r17 build verification
 PR #28 source head:
-`2a9ef7e1d30c50a42dedcf822a2c8728a6d1d490`
+`2a9ef7e1d30c50a42dedcf822a2c8728a6d1d490`.
 
 Final workflow run:
 `41352681448` — PASS.
@@ -35,7 +40,7 @@ GitHub artifact:
 - id `13102550016`;
 - digest `sha256:c02fab2a009e85ea3b9218f800e00c8e53be24f6e8b5789f3e188344bf281c98`.
 
-Downloaded ZIP was independently unpacked/read back:
+Downloaded ZIP independently unpacked/read back:
 - `Uvaga.exe` — 12,201,472 bytes;
   SHA256 `220a15adc02ab03ff2f067f01a3f67a31b97fc88c01eb46a0633d4ee9022acd8`;
 - `Cargo.lock` — 104,041 bytes;
@@ -48,8 +53,22 @@ Drive raw backup:
 `Uvaga-Windows-Synthetic-r17-2a9ef7e1-20261101.zip`
 in `ТривогА/BACKUPS`.
 
-**Manual Windows runtime acceptance: NOT YET DONE.**
-Therefore r17 is not accepted/merged yet.
+## r17 manual runtime acceptance
+**PASS — 2026-11-02.**
+
+Owner screenshot evidence confirms:
+- executable starts on Windows;
+- visible title `ТривогА — синтетичний режим`;
+- explicit non-real-alerting warning;
+- local Tauri IPC success;
+- UA-46;
+- confirmed state active;
+- source freshness stale;
+- presentation active-last-known;
+- synthetic marker visible;
+- no false clear.
+
+PR #28 merged after manual acceptance.
 
 ## Source/legal checks
 - UkraineAlarm public request page/offer checked without accepting/applying.
@@ -64,7 +83,6 @@ Therefore r17 is not accepted/merged yet.
 - full Git history bundle + clean restore: **NOT DONE**.
 
 ## Still open
-- r17 manual Windows runtime acceptance;
 - full Git bundle/restore (C12);
 - full transitive dependency/license gate before release;
 - Android/iOS validation;
