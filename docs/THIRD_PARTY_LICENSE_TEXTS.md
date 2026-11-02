@@ -35,7 +35,24 @@ Complement the broad 406-crate lock inventory/compliance bundle with a distribut
 
 ## Result state
 
-**PENDING** until workflow output is read back.
+**PASS — 2026-11-02.**
+
+Final verification:
+- head `19a317df2e1a3169d26b63036fafc21f02438748`;
+- docs run `41426326526`: PASS;
+- Windows license-text run `41426326573`: PASS;
+- artifact `13131534490`;
+- artifact ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e` — download/readback exact match;
+- exact Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- Windows normal+build external closure 222;
+- cargo-about external set 222;
+- missing 0; extra 0;
+- full Markdown license text present;
+- MPL-2.0 + cssparser evidence present.
+
+**Windows r18 third-party text completeness: PASS.**
+
+Scope remains target-specific; future non-Windows release targets require their own completeness run.
 
 ## Rejected validation attempts
 
