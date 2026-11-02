@@ -30,4 +30,21 @@ Territory labels in this slice are deliberate local test fixtures. They are not 
 
 ## Manual runtime acceptance
 
-A Windows runtime check is still required before calling the r18 UI behavior manually accepted. CI success alone proves build/tests, not visual/runtime UX.
+**PASS — 2026-11-02.**
+
+Owner executed the verified Windows r18 artifact and supplied screenshots confirming:
+- UA-46 and UA-30 territory selection;
+- active + fresh → active current;
+- active + stale → active last-known;
+- cleared + fresh → cleared current;
+- cleared + stale → clear requires refresh/reconfirmation;
+- unknown + unavailable → unknown / insufficient data;
+- local Tauri IPC success;
+- explicit synthetic/not-real-alerting warning.
+
+Critical acceptance criterion #5 is confirmed manually: **a stale previous clear is never presented as current clear**.
+
+After acceptance, PR #34 was reconciled with current main. Fresh checks on reconciled product head `00044595f40b48b19e086e3e8a2a81cfaa48bfb5`:
+- docs `41437451193`: PASS;
+- Tauri Windows/macOS matrix `41437451223`: PASS;
+- Windows synthetic artifact `41437451346`: PASS.
