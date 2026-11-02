@@ -117,4 +117,56 @@ mod tests {
                 > PresentationState::ClearedCurrent.attention_rank()
         );
     }
+    #[test]
+    fn every_state_freshness_combination_preserves_fail_safe_contract() {
+        let states = [
+            AlertState::Unknown,
+            AlertState::Active,
+            AlertState::Cleared,
+        ];
+        let freshnesses = [
+            SourceFreshness::Unknown,
+            SourceFreshness::Fresh,
+            SourceFreshness::Stale,
+            SourceFreshness::Unavailable,
+        ];
+        let mut checked = 0;
+        for state in states {
+            for freshness in freshnesses {
+                let actual = presentation_state(&status(state, freshness));
+                let expected = match (state, freshness) {
+                    (AlertState::Unknown, _) => PresentationState::Unknown,
+                    (AlertState::Active, SourceFreshness::Fresh) => PresentationState::ActiveCurrent,
+                    (AlertState::Active, _) => PresentationState::ActiveLastKnown,
+                    (AlertState::Cleared, SourceFreshness::Fresh) => PresentationState::ClearedCurrent,
+                    (AlertState::Cleared, _) => PresentationState::ClearNeedsRefresh,
+                };
+                assert_eq!(actual, expected, "state={state:?}, freshness={freshness:?}");
+                assert_eq!(
+                    actual.may_show_as_safe(),
+                    state == AlertState::Cleared && freshness == SourceFreshness::Fresh,
+                    "safe gate: state={state:?}, freshness={freshness:?}"
+                );
+                checked += 1;
+            }
+        }
+        assert_eq!(checked, 12);
+    }
+
+    #[test]
+    fn previously_fresh_clear_becomes_unconfirmed_when_source_degrades() {
+        let mut cleared = status(AlertState::Cleared, SourceFreshness::Fresh);
+        assert_eq!(presentation_state(&cleared), PresentationState::ClearedCurrent);
+        for freshness in [
+            SourceFreshness::Stale,
+            SourceFreshness::Unavailable,
+            SourceFreshness::Unknown,
+        ] {
+            cleared.set_source_freshness(freshness);
+            let visible = presentation_state(&cleared);
+            assert_eq!(visible, PresentationState::ClearNeedsRefresh);
+            assert!(!visible.may_show_as_safe());
+        }
+    }
+
 }
