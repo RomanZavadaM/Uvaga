@@ -21,8 +21,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
-      - name: Generate dependency lock
-        run: cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
+      - name: Restore verified dependency lock
+        run: |
+          cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
+          cargo update --manifest-path src-tauri/Cargo.toml -p cc --precise 1.10.0
+          python scripts/verify_tauri_lock.py
       - name: Test offline Tauri bridge
         run: cargo test --locked --manifest-path src-tauri/Cargo.toml
       - name: Build unsigned debug executable
