@@ -310,3 +310,25 @@ This PASS is target-specific. Future macOS/Android/iOS release targets require t
 - live API access/security/latency/schema acceptance;
 - push/background delivery;
 - owner installer UX acceptance, code signing, public release and production.
+
+## r22 CI efficiency / release-checklist verification
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+Accepted PR #52 head: `4376a23820c5232eaa148526ff17b82e6184964f`.
+Merged main: `9087e6fda537333092df8e5010d5a9f3f0d5ac11`.
+
+Pre-merge evidence:
+- Release metadata `41453727274`: PASS;
+- Organizational docs `41453727294`: PASS;
+- CI scope `41453727434`: PASS;
+- Windows synthetic `41453727373`: PASS;
+- Windows NSIS installer `41453727648`: PASS.
+
+Installer run additionally completed exact dependency-lock validation, application tests, accepted Windows license-text retrieval, unsigned NSIS build, Authenticode/bundle verification, silent current-user install, launch smoke, silent uninstall and artifact upload.
+
+Compare base `8729f905f17d830feba68b62c5ea72ef9e13ede3` → accepted head contains exactly 7 CI/docs/script files. Product logic, safety mapping, dependency lock, live API, signing, updater and version were unchanged.
+
+PR #51 was inspected and closed unmerged as a superseded alternative under `STOP → READ → VERIFY → RECONCILE → CONTINUE`.
+
+Post-merge docs-only trigger smoke is being performed by the checkpoint PR that records this section. Acceptance requires no automatic Windows synthetic or installer run for that docs-only diff.
+
