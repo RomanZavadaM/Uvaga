@@ -1,17 +1,17 @@
-name: Windows NSIS test installer r20
+name: Windows NSIS installer candidate
 on:
   pull_request:
     paths:
       - 'app/**'
       - 'src-tauri/**'
-      - 'README*.md'
+      - 'README.md'
       - 'LICENSE.md'
       - 'THIRD_PARTY_NOTICES.md'
       - 'SECURITY.md'
       - 'docs/WINDOWS_DISTRIBUTION.md'
-      - 'docs/WINDOWS_INSTALLER_R20.md'
+      - 'scripts/check_release_metadata.py'
       - 'scripts/verify_tauri_lock.py'
-      - '.github/workflows/windows-installer-r20.yml'
+      - '.github/workflows/windows-installer-candidate.yml'
   workflow_dispatch:
 
 permissions:
@@ -39,6 +39,9 @@ jobs:
       - uses: actions/checkout@v7
 
       - uses: dtolnay/rust-toolchain@stable
+
+      - name: Validate release metadata
+        run: python scripts/check_release_metadata.py
 
       - name: Restore exact accepted application dependency lock
         run: |
@@ -106,8 +109,8 @@ jobs:
 
           $installerSig = Get-AuthenticodeSignature $installer.FullName
           $exeSig = Get-AuthenticodeSignature $releaseExe
-          if ($installerSig.Status -ne "NotSigned") { throw "Installer must remain unsigned in r20: $($installerSig.Status)" }
-          if ($exeSig.Status -ne "NotSigned") { throw "Release executable must remain unsigned in r20: $($exeSig.Status)" }
+          if ($installerSig.Status -ne "NotSigned") { throw "Installer must remain unsigned in candidate scope: $($installerSig.Status)" }
+          if ($exeSig.Status -ne "NotSigned") { throw "Release executable must remain unsigned in candidate scope: $($exeSig.Status)" }
 
           "INSTALLER_PATH=$($installer.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "RELEASE_EXE_PATH=$releaseExe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
@@ -115,7 +118,7 @@ jobs:
       - name: Silent current-user install and launch smoke
         shell: pwsh
         run: |
-          $installDir = Join-Path $env:RUNNER_TEMP "Uvaga-r20-install"
+          $installDir = Join-Path $env:RUNNER_TEMP "Uvaga-candidate-install"
           Remove-Item $installDir -Recurse -Force -ErrorAction SilentlyContinue
 
           $proc = Start-Process -FilePath $env:INSTALLER_PATH -ArgumentList @("/S", "/D=$installDir") -Wait -PassThru
@@ -165,11 +168,11 @@ jobs:
       - name: Prepare self-describing installer artifact
         shell: pwsh
         run: |
-          $out = Join-Path $env:CARGO_TARGET_DIR "r20-artifact"
+          $out = Join-Path $env:CARGO_TARGET_DIR "installer-artifact"
           New-Item -ItemType Directory -Force -Path $out | Out-Null
           New-Item -ItemType Directory -Force -Path "$out/third-party" | Out-Null
 
-          Copy-Item $env:INSTALLER_PATH "$out/Uvaga-Setup-r20-unsigned.exe"
+          Copy-Item $env:INSTALLER_PATH "$out/Uvaga-Setup-unsigned.exe"
           Copy-Item $env:RELEASE_EXE_PATH "$out/Uvaga.exe"
           Copy-Item "src-tauri/Cargo.lock" "$out/Cargo.lock"
           Copy-Item "README.md" "$out/README.md"
@@ -180,12 +183,17 @@ jobs:
           Copy-Item ".audit/license-texts/THIRD_PARTY_LICENSES.md" "$out/third-party/THIRD_PARTY_LICENSES.md"
           Copy-Item ".audit/license-texts/WINDOWS_GRAPH_COVERAGE.json" "$out/third-party/WINDOWS_GRAPH_COVERAGE.json"
 
+          $appVersion = (python scripts/check_release_metadata.py --print-version).Trim()
+
           @(
-            "ТривогА — r20 Windows NSIS test installer candidate",
+            "ТривогА — Windows NSIS CI candidate",
             "",
             "НЕ PRODUCTION RELEASE. UNSIGNED TEST ARTIFACT.",
+            "Artifact track: installer-candidate",
+            "App version: $appVersion",
             "Source head: $env:SOURCE_HEAD_SHA",
             "GitHub checkout SHA: $env:GITHUB_SHA",
+            "GitHub Actions run: $env:GITHUB_RUN_ID",
             "Tauri CLI: $env:TAURI_CLI_VERSION",
             "Tauri CLI archive SHA256: $env:TAURI_CLI_ARCHIVE_SHA256",
             "Target: Windows 10/11 x64",
@@ -203,7 +211,7 @@ jobs:
             "Broad compliance/source bundle Drive backup:",
             "https://drive.google.com/file/d/1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU/view?usp=drivesdk",
             "Bundle ZIP SHA256: af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2",
-            "This r20 candidate is a test artifact. Any production release requires a non-expiring source-availability location."
+            "This CI candidate is a test artifact. Any production release requires a non-expiring source-availability location."
           ) | Set-Content -Encoding utf8 "$out/MPL_SOURCE_AVAILABILITY.txt"
 
           $entries = Get-ChildItem -Path $out -File -Recurse | Where-Object { $_.Name -ne "SHA256SUMS.txt" } | Sort-Object FullName
@@ -214,16 +222,16 @@ jobs:
           }
           $lines | Set-Content -Encoding ascii "$out/SHA256SUMS.txt"
 
-          $installerHash = (Get-FileHash "$out/Uvaga-Setup-r20-unsigned.exe" -Algorithm SHA256).Hash.ToLower()
+          $installerHash = (Get-FileHash "$out/Uvaga-Setup-unsigned.exe" -Algorithm SHA256).Hash.ToLower()
           $exeHash = (Get-FileHash "$out/Uvaga.exe" -Algorithm SHA256).Hash.ToLower()
           Write-Host "Installer SHA256: $installerHash"
           Write-Host "Release EXE SHA256: $exeHash"
           Write-Host "Accepted Cargo.lock SHA256: $env:ACCEPTED_LOCK_SHA256"
 
-      - name: Upload r20 installer candidate
+      - name: Upload installer candidate
         uses: actions/upload-artifact@v4
         with:
-          name: Uvaga-Windows-Installer-r20
-          path: target/uvaga-installer/r20-artifact/**
+          name: Uvaga-Windows-Installer-candidate-${{ github.run_number }}
+          path: target/uvaga-installer/installer-artifact/**
           if-no-files-found: error
           retention-days: 30

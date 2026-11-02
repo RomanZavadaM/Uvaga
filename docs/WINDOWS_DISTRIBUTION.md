@@ -23,6 +23,22 @@ Official Tauri references:
 - https://v2.tauri.app/reference/config/
 - https://v2.tauri.app/distribute/
 
+## Active CI candidate identity
+
+Historical accepted artifacts keep their original r19/r20 names, IDs and hashes in project evidence. Active workflows must not reuse those revision labels for newer source heads.
+
+Current active CI naming:
+- synthetic: `Uvaga-Windows-Synthetic-candidate-<run>`;
+- installer: `Uvaga-Windows-Installer-candidate-<run>`.
+
+Each candidate metadata file records app version, source head, GitHub checkout SHA and run ID.
+
+## Version consistency
+
+The Windows app/installer version is currently `0.1.0`. r21 does not bump it.
+
+`src-tauri/Cargo.toml` and `src-tauri/tauri.conf.json` must declare the same app version; CI fails on drift. A public-release version bump is a separate owner-approved checkpoint because it changes release identity and the generated Cargo.lock checkpoint.
+
 ## Provenance
 
 Installer candidate приймається тільки якщо:
