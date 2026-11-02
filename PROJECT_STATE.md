@@ -374,3 +374,8 @@ Post-merge docs-only trigger smoke: **PASS**. On checkpoint head `a2583cb91d9c58
 
 Owner r20 installer UX/manual sanity remains pending. Code signing, public release, live credentials/source integration, push notifications and production deployment remain owner-only gates.
 
+## r22 Drive PROJECT mirror readback
+**PASS — 2026-11-02.**
+
+After r22 post-merge main `0a85a94bb65046036f3d95d6372e0e22e58c43a3`, Drive mirrors for `PROJECT_STATE.md`, `WORKLOG.md`, `HANDOFF_CURRENT.md` and `VERIFICATION.md` were rewritten from GitHub source of truth. Stale mirror sentinel tails were removed. Readback compared every non-empty GitHub line with every Drive paragraph in order: all four mirrors matched exactly with equal counts and no mismatch.
+
