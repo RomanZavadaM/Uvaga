@@ -148,8 +148,25 @@ Scope implemented in PR #34:
 Merged to `main` via PR #35 at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
 Ukrainian is primary/canonical; translations: English, French, German, Spanish, Korean, Japanese. All README variants link to the verified r18 synthetic Windows test artifact and mark it clearly as non-release/non-production.
 
-## Відкрите
-- full transitive dependency/license gate before release;
+## Dependency / license gate
+Exact r18 dependency inventory: **PASS**.
+- inventory run `41422471078`;
+- artifact `13130467223`;
+- 408 packages = 2 local/path + 406 crates.io;
+- no external git/non-registry dependencies;
+- no missing Cargo license expressions.
+
+Machine license/source policy: **PASS**.
+- policy run `41423140592`;
+- cargo-deny 0.20.2, action pinned to `3c6349835b2b7b196a839186cb8b78e02f7b5f25`;
+- permissive licenses explicitly allowed;
+- MPL-2.0 only as exact exceptions for 5 reviewed crates;
+- unknown registries/git dependencies denied;
+- GPL/AGPL/LGPL are not globally allowed.
+
+Release packaging remains open: distributable third-party license texts + exact MPL source-availability notice must be generated/read back for the eventual release lock.
+
+## Відкрите- full transitive dependency/license gate before release;
 - Android/iOS build/runtime validation;
 - live API credentials/schema/latency/webhook/security acceptance only after separate owner decision;
 - push/background delivery;
