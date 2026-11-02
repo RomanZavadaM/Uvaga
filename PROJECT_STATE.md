@@ -109,7 +109,13 @@ Drive PROJECT mirror exists.
 BACKUPS contains:
 - raw Tauri Cargo.lock checkpoint;
 - verified r17 Windows ZIP;
-- verified C12 Git bundle ZIP.
+- verified C12 Git bundle ZIP;
+- exact r18 broad third-party compliance bundle:
+  https://drive.google.com/file/d/1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU/view?usp=drivesdk
+  — SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2`, Drive readback exact match;
+- exact r18 Windows third-party license-text bundle:
+  https://drive.google.com/file/d/11C7VE5QZhyMtkYwbJoDVraLAe9c08bEr/view?usp=drivesdk
+  — SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`, Drive readback exact match.
 
 ## r18 — richer synthetic scenarios / territory selection
 **AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
