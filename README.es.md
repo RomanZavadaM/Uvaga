@@ -4,7 +4,7 @@
 
 > **Estado actual:** prototipo temprano / solo sintético. No existe despliegue de producción, credenciales de API en vivo ni entrega pública de notificaciones. La aplicación no sustituye los canales oficiales de alerta; la ausencia de un mensaje no significa ausencia de peligro.
 
-**Idiomas del README:** [Українська](README.md) · [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · Español · [한국어](README.ko.md) · [日本語](README.ja.md)
+**Idioma principal del README: [Українська](README.md).** Traducciones: [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · Español · [한국어](README.ko.md) · [日本語](README.ja.md)
 
 ## Descarga de prueba
 
