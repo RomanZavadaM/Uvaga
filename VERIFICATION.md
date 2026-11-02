@@ -70,6 +70,21 @@ Drive verification document:
 Scope limit:
 This C12 evidence does not cover future production databases, secrets, provider credentials, device tokens or user data.
 
+## C13 clean-session continuity
+**PASS — 2026-11-02.**
+
+A clean session reconstructed state from project-local documents and live GitHub only.
+
+Verified:
+- live start main `3a254e4a6edb3bcd2294cb0905ab7ddae4f1ca61`;
+- no open pull requests;
+- r17 Windows manual runtime PASS plus successful Actions run `41352681448`;
+- C12 clean Git restore PASS plus successful post-merge run `41405252149`;
+- current production/live-credential/public-notification restrictions;
+- correct next product slice: richer synthetic scenarios / territory selection, without live source adapter.
+
+Detailed evidence: `C13_CLEAN_SESSION.md`.
+
 ## Source/legal checks
 - UkraineAlarm public request page/offer checked without accepting/applying.
 - KATOTTG uses cutoff/amendment-chain policy.
@@ -77,7 +92,6 @@ This C12 evidence does not cover future production databases, secrets, provider 
 - no live API credential used.
 
 ## Still open
-- formal clean-session continuity trial (C13);
 - full transitive dependency/license gate before release;
 - Android/iOS validation;
 - live API access/security/latency/schema acceptance;

@@ -57,10 +57,20 @@
 - C12: **PASS for Git repository source/history**.
 - Future production databases/secrets/user state remain outside this checkpoint.
 
+## 2026-11-02 — C13 clean-session continuity
+- Formal clean-session continuity trial completed from project-local GitHub docs + live GitHub only.
+- Start main independently verified as `3a254e4a6edb3bcd2294cb0905ab7ddae4f1ca61`.
+- Open PR count: 0.
+- r17 Actions evidence re-read at job level: run `41352681448` PASS.
+- C12 post-merge Actions evidence re-read at job/artifact level: run `41405252149` PASS; artifact `13123246036` present and not expired.
+- Safety/permission limits recovered correctly.
+- C13: **PASS**.
+- Detailed record: `C13_CLEAN_SESSION.md`.
+
 ## Execution continuity
 - One active executor by default; parallel work only by owner.
 - State divergence is recovered from live GitHub rather than assumed parallel work.
 - Issue #9 is the live integration register.
 
 ## NEXT
-Formal clean-session continuity trial (C13), then richer synthetic scenarios/territory selection before any live source adapter.
+Richer synthetic scenarios / territory selection before any live source adapter.

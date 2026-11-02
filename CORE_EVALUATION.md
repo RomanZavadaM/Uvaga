@@ -14,12 +14,12 @@
 - C10 release/handoff identity: **release N/A**; handoff has exact product SHA/artifact hashes/next action.
 - C11 project docs + mirror discipline: **так** — GitHub authoritative; Drive is mirror/backup only.
 - C12 backup/restore: **так для Git repository source/history** — post-merge all-refs bundle created, verified, restored cleanly to exact main SHA, fsck PASS, restored Rust tests PASS, raw artifact preserved in Drive and read back. Production data/state backup remains N/A until such state exists.
-- C13 continuation without chat: **частково operationally demonstrated** — state divergence was recovered from live GitHub and continuity docs are self-contained. Formal clean-session trial remains the next evidence.
+- C13 continuation without chat: **так — PASS 2026-11-02**. Clean-session trial reconstructed the project from project-local docs + live GitHub, independently confirmed live main `3a254e4a6edb3bcd2294cb0905ab7ddae4f1ca61`, no open PR, r17 manual PASS, C12 PASS, safety limits and the correct next product action. Evidence: `C13_CLEAN_SESSION.md`.
 - C14 revision/status/owner acceptance: **частково** — v2 RC trial; owner acceptance «прийнято» ще немає.
 
 Додаткові acceptance evidence:
 - r17 manual Windows runtime: **PASS 2026-11-02**.
-- C12 Git bundle/restore: **PASS 2026-11-02**.
+- C12 Git bundle/restore: **PASS 2026-11-02**.\n- C13 clean-session continuity: **PASS 2026-11-02**.
 
 Висновок: **НЕ ПРИЙНЯТО повністю**.
-Найближчі відкриті докази: formal clean-session continuity check (C13), потім owner acceptance C14.
+Найближчий відкритий методологічний доказ: owner acceptance C14. Product work continues with richer synthetic scenarios / territory selection before any live source adapter.
