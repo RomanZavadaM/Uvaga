@@ -61,6 +61,29 @@ https://drive.google.com/file/d/1ybaj5qBhXWNprZ7v4GLvIZeDXTr4xobp/view?usp=drive
 
 C12 scope is Git source/history only. Production state/data backup remains a separate future concern if such state is introduced.
 
+## r18 current trial state
+**AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
+
+Open PR: #34.
+Verified product source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`.
+Current PR head: `cccce86708e77e6a1cd670179ebf9547d0a5f671`.
+
+The commits after `a2c945...` are README-only; compare shows no product/source changes after the artifact used for manual acceptance.
+
+Automated checks on current PR head:
+- docs `41417199329`: PASS;
+- Tauri Windows/macOS matrix `41417199299`: PASS;
+- Windows synthetic artifact `41417199372`: PASS.
+
+Manual-test artifact:
+- id `13127022813`;
+- ZIP SHA256 `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`;
+- `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`.
+
+r18 implements synthetic territory selection and five fail-safe scenarios only. No live adapter/credentials/public notifications/production/signing/release.
+
+README localization is already merged independently via PR #35; Ukrainian is primary, with EN/FR/DE/ES/KO/JA translations.
+
 ## Safety
 No production, public notifications, live API application/credential, signing or release package at this stage.
 
@@ -72,4 +95,4 @@ The clean session recovered the actual state from project-local documents + live
 Detailed evidence: `C13_CLEAN_SESSION.md`.
 
 ## One next action
-Implement the next small offline prototype slice: **richer synthetic scenarios / territory selection**, with tests and CI, still without any live source adapter, live credentials, public notifications, production deployment, signing or release package.
+Run the verified r18 Windows artifact on Windows 10/11 x64 and complete the predeclared manual checklist. Until owner PASS: keep PR #34 open and do not start live-source integration.
