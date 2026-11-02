@@ -9,6 +9,9 @@ import tomllib
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CARGO = ROOT / 'src-tauri' / 'Cargo.toml'
 CONFIG = ROOT / 'src-tauri' / 'tauri.conf.json'
+SYNTH_WORKFLOW = ROOT / '.github' / 'workflows' / 'windows-synthetic-artifact.yml'
+INSTALLER_WORKFLOW = ROOT / '.github' / 'workflows' / 'windows-installer-candidate.yml'
+HISTORICAL_INSTALLER_WORKFLOW = ROOT / '.github' / 'workflows' / 'windows-installer-r20.yml'
 
 EXPECTED_PRODUCT = 'ТривогА'
 EXPECTED_IDENTIFIER = 'ua.zavada.uvaga'
@@ -52,6 +55,16 @@ def load() -> tuple[str, dict]:
     plugins = config.get('plugins') or {}
     require('updater' not in plugins, 'updater must not be enabled in current test scope')
 
+    synth = SYNTH_WORKFLOW.read_text(encoding='utf-8')
+    installer = INSTALLER_WORKFLOW.read_text(encoding='utf-8')
+    require('r19' not in synth.lower(), 'active synthetic workflow must not emit historical r19 identity')
+    require('r20' not in installer.lower(), 'active installer workflow must not emit historical r20 identity')
+    require('Synthetic-candidate-${{ github.run_number }}' in synth, 'synthetic candidate artifact identity missing run number')
+    require('Installer-candidate-${{ github.run_number }}' in installer, 'installer candidate artifact identity missing run number')
+    require('Artifact track: synthetic-candidate' in synth, 'synthetic BUILD_INFO track missing')
+    require('Artifact track: installer-candidate' in installer, 'installer BUILD_INFO track missing')
+    require(not HISTORICAL_INSTALLER_WORKFLOW.exists(), 'historical r20 installer workflow must stay retired')
+
     return cargo_version, config
 
 
@@ -68,6 +81,7 @@ def main() -> None:
     print(f'product={EXPECTED_PRODUCT}')
     print(f'identifier={EXPECTED_IDENTIFIER}')
     print('installer=nsis/currentUser; downgrades=false; updater=absent')
+    print('artifact_identity=generic candidates; historical r19/r20 workflow labels absent')
 
 
 if __name__ == '__main__':
