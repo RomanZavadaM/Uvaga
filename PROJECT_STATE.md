@@ -1,11 +1,17 @@
 # PROJECT_STATE — ТривогА
 
-**Оновлено:** 2026-11-01  
+**Оновлено:** 2026-11-02  
 **Repository:** `RomanZavadaM/Uvaga`  
 **Методологія:** dev-strategy v2 RC — пробне застосування, не прийнято повністю.
 
-## Інтегрований продукт-код
-Last integrated product-code base: `bba0bd82351fa06f20dbe144e8ac487b81314e4f` (r16).
+## Інтегрований стан
+r16 product-code base:
+`bba0bd82351fa06f20dbe144e8ac487b81314e4f`.
+
+r17 Windows synthetic artifact workflow + manual runtime acceptance merged:
+`0ea256b3cc1a72250a8fa06e3098d13fe780b770`.
+
+Live `main` SHA на початку кожної сесії читати з GitHub, а не відновлювати з чату.
 
 До `main` уже інтегровані:
 - fail-safe official alert state, freshness, recovery і presentation;
@@ -18,15 +24,12 @@ Last integrated product-code base: `bba0bd82351fa06f20dbe144e8ac487b81314e4f` (r
 - KATOTTG cutoff/amendment policy + staging validator;
 - UkraineAlarm public-offer audit;
 - deterministic attention ranking;
-- r16 local Tauri UI ↔ Rust core bridge.
+- r16 local Tauri UI ↔ Rust core bridge;
+- r17 checksumed Windows synthetic test-artifact workflow.
 
-Live `main` SHA на початку кожної сесії читати з GitHub, а не відновлювати з чату.
-
-## Поточний checkpoint — r17
-Open draft PR #28: Windows synthetic runtime artifact.
-
+## r17 acceptance — PASS
 Final verified source head:
-`2a9ef7e1d30c50a42dedcf822a2c8728a6d1d490`
+`2a9ef7e1d30c50a42dedcf822a2c8728a6d1d490`.
 
 CI run `41352681448`: PASS.
 - generate Cargo.lock: PASS;
@@ -39,8 +42,17 @@ Verified artifact:
 - `Cargo.lock` SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
 - ZIP SHA256 `c02fab2a009e85ea3b9218f800e00c8e53be24f6e8b5789f3e188344bf281c98`.
 
-**Manual Windows 10/11 x64 runtime acceptance: PENDING.**
-PR #28 не зливати до результату ручного запуску власником.
+**Manual Windows 10/11 x64 runtime acceptance: PASS, 2026-11-02.**
+
+Owner screenshot evidence confirms:
+- application starts;
+- synthetic/not-real-alerting warning is visible;
+- local Tauri IPC succeeds;
+- region = UA-46;
+- confirmed state = active;
+- source freshness = stale;
+- presentation = active_last_known;
+- no false clear is displayed.
 
 ## Safety invariants
 - source outage/timeout/TTL/auth/schema error never creates official clear;
@@ -62,11 +74,10 @@ PR #28 не зливати до результату ручного запуск
 ## Drive / recovery
 GitHub — source of truth.
 Drive PROJECT mirror exists.
-BACKUPS currently contains raw Tauri Cargo.lock checkpoint and the verified r17 Windows ZIP.
-Full Git-history backup + fresh restore test is still open.
+BACKUPS contains raw Tauri Cargo.lock checkpoint and the verified r17 Windows ZIP.
+Full Git-history backup + clean restore test is still open.
 
 ## Відкрите
-- manual runtime acceptance of r17;
 - full Git bundle + restore test (C12);
 - full transitive dependency/license gate before release;
 - Android/iOS build/runtime validation;
@@ -75,4 +86,4 @@ Full Git-history backup + fresh restore test is still open.
 - production packaging/signing/release.
 
 ## Одна наступна дія
-Власник запускає r17 `Uvaga.exe` на Windows 10/11 x64 і повідомляє фактичний результат. Після PASS — merge PR #28; після FAIL — зафіксувати симптом і виправити до merge.
+Створити перевірений Git-history bundle із current main, виконати clean restore/check у CI, зберегти raw bundle + checksum у Drive BACKUPS і зафіксувати результат як C12 evidence.
