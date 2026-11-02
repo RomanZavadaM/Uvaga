@@ -73,6 +73,8 @@ require("Це не система реального оповіщення." in H
 require('role="status"' in HTML and 'aria-live="polite"' in HTML, "accessible live status missing")
 require('aria-busy="true"' in HTML, "initial aria-busy state missing")
 require("data-app-version" in HTML, "app version surface missing")
+require('data-bridge data-presentation-kind="unknown"' in HTML, "bridge presentation-kind surface missing")
+require(HTML.count(" data-presentation>") == 1, "presentation output selector must be unique")
 
 require(
     'clear_needs_refresh: "Відбій потребує повторного підтвердження"' in JS,
