@@ -390,3 +390,12 @@ Final CI PASS: scope `41456408496`, release metadata `41456408492`, docs `414564
 
 No product/safety behavior, Cargo.lock, version, signing, updater, live source, credentials, notifications or production deployment changed. The standalone synthetic workflow and Windows Tauri matrix remain intact; superseded PR #51 consolidation was not restored.
 
+## r24 — localized release-evidence wording consistency
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #57 head `7d1e1de930ea8ef76fcfe0166be0290912252a6c`; squash-merged to main as `fba06b8406e1169d176610c13c0cb9638600d704`.
+
+UA/EN/FR/DE/ES/KO/JA README release-status wording is now consistent: r19 is historical synthetic evidence, r20 is the archived unsigned installer test candidate with owner installer/visual acceptance still PENDING, and later CI/release-process hardening is not a new owner-accepted/public release artifact. Historical r19/r20 URLs, source/merge SHAs and SHA256 values were preserved.
+
+Organizational docs `41458780488`: PASS. UI contract `41458780620`: PASS. No heavy Windows/Tauri run was triggered by this docs-only change.
+
