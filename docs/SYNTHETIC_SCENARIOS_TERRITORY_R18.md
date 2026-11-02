@@ -48,3 +48,10 @@ After acceptance, PR #34 was reconciled with current main. Fresh checks on recon
 - docs `41437451193`: PASS;
 - Tauri Windows/macOS matrix `41437451223`: PASS;
 - Windows synthetic artifact `41437451346`: PASS.
+
+Final acceptance-checkpoint head `cb444fd31bd4f2e574944c7917df5452f154b12e` also passed:
+- docs `41438228543`;
+- Tauri Windows/macOS matrix `41438228579`;
+- Windows synthetic artifact `41438228529`.
+
+PR #34 merged squash to main at `61c0662d941e388858f5214c14860ec92a586905`.

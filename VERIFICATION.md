@@ -86,7 +86,7 @@ Verified:
 Detailed evidence: `C13_CLEAN_SESSION.md`.
 
 ## r18 synthetic territory/scenario verification
-**AUTOMATED PASS / MANUAL WINDOWS PASS / MERGE PENDING — 2026-11-02.**
+**INTEGRATED / AUTOMATED PASS / MANUAL WINDOWS PASS — 2026-11-02.**
 
 PR #34 verified product source head:
 `a2c945034bfea58b3ff5890ea53862831c1b502a`.
@@ -103,6 +103,21 @@ Fresh reconciled-head automated evidence:
 - Organizational docs checks `41437451193`: PASS;
 - Tauri shell product-platform checks `41437451223`: PASS;
 - Windows synthetic test artifact `41437451346`: PASS.
+
+Final acceptance-checkpoint head:
+`cb444fd31bd4f2e574944c7917df5452f154b12e`.
+
+Final pre-merge evidence:
+- Organizational docs checks `41438228543`: PASS;
+- Tauri shell product-platform checks `41438228579`: PASS;
+- Windows synthetic test artifact `41438228529`: PASS.
+
+PR #34 merged squash to main:
+`61c0662d941e388858f5214c14860ec92a586905`.
+
+Post-merge GitHub verification:
+- live main equals the merge SHA above;
+- open PR count = 0.
 
 Manual-test artifact evidence from verified product head `a2c945...`:
 - artifact id `13127022813`;
