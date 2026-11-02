@@ -20,16 +20,41 @@
 
     <section class="notice" aria-live="polite">
       <strong>Це не система реального оповіщення.</strong>
-      <span>Живі джерела, push-повідомлення та production ще не підключені.</span>
+      <span>Території й сценарії нижче — локальні тестові fixtures. Живі джерела, push-повідомлення та production не підключені.</span>
     </section>
 
     <section class="bridge" aria-labelledby="bridge-title">
       <div class="bridge-head">
         <div>
           <p class="label">Offline UI ↔ Rust core</p>
-          <h2 id="bridge-title">Синтетичний стан регіону <span data-region>—</span></h2>
+          <h2 id="bridge-title">
+            <span data-region-name>Синтетична територія</span>
+            <span class="territory-code" data-region>—</span>
+          </h2>
         </div>
-        <button type="button" data-refresh>Оновити тестовий стан</button>
+      </div>
+
+      <div class="controls" aria-label="Синтетичний сценарій">
+        <label>
+          <span>Територія</span>
+          <select data-territory>
+            <option value="UA-46">Львівська область · UA-46</option>
+            <option value="UA-30">м. Київ · UA-30</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Сценарій</span>
+          <select data-scenario>
+            <option value="active_stale">Тривога активна · дані застаріли</option>
+            <option value="active_fresh">Тривога активна · дані актуальні</option>
+            <option value="cleared_fresh">Відбій підтверджений · дані актуальні</option>
+            <option value="cleared_stale">Відбій був підтверджений · дані застаріли</option>
+            <option value="unknown_unavailable">Стан невідомий · джерело недоступне</option>
+          </select>
+        </label>
+
+        <button type="button" data-refresh>Показати сценарій</button>
       </div>
 
       <p class="bridge-status" data-status data-kind="loading" aria-live="polite">
@@ -57,25 +82,25 @@
     <section class="explain" aria-label="Що перевіряє цей етап">
       <article class="card active">
         <p class="label">Fail-safe</p>
-        <h2>Активний стан не зникає</h2>
-        <p>Синтетичний сигнал приходить із Rust core. Застаріле джерело не створює відбій.</p>
+        <h2>Застарілі дані не створюють безпеку</h2>
+        <p>Активна тривога залишається активною last-known, а застарілий відбій вимагає повторного підтвердження.</p>
       </article>
 
       <article class="card stale">
-        <p class="label">IPC</p>
-        <h2>Без HTTP</h2>
-        <p>WebView викликає локальну Tauri command. Мережа, токени та зовнішні API не використовуються.</p>
+        <p class="label">Territory</p>
+        <h2>Вибір без live-джерел</h2>
+        <p>UI передає тільки дозволений локальний код території й сценарій у Rust command. Невідомі значення Rust відхиляє.</p>
       </article>
 
       <article class="card clear">
-        <p class="label">Scope</p>
-        <h2>Тільки тестовий міст</h2>
-        <p>Цей етап доводить зв’язок UI з core, але не підключає реальні тривоги чи сповіщення.</p>
+        <p class="label">IPC</p>
+        <h2>Без HTTP і токенів</h2>
+        <p>WebView працює через локальний Tauri IPC. Мережа, live API, push і геолокація не використовуються.</p>
       </article>
     </section>
 
     <footer>
-      <span>Тестова оболонка r16</span>
+      <span>Тестова оболонка r18</span>
       <span>Без мережі · без push · без геолокації</span>
     </footer>
   </main>
