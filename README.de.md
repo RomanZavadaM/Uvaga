@@ -4,7 +4,7 @@
 
 > **Aktueller Status:** früher Prototyp / ausschließlich synthetisch. Es gibt kein Production-Deployment, keine Live-API-Zugangsdaten und keine öffentliche Benachrichtigungszustellung. Die Anwendung ersetzt keine offiziellen Warnkanäle; das Ausbleiben einer Meldung bedeutet nicht, dass keine Gefahr besteht.
 
-**README-Sprachen:** [Українська](README.md) · [English](README.en.md) · [Français](README.fr.md) · Deutsch · [Español](README.es.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
+**Primäre README-Sprache: [Українська](README.md).** Übersetzungen: [English](README.en.md) · [Français](README.fr.md) · Deutsch · [Español](README.es.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
 
 ## Test-Download
 
