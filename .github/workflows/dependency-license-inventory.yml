@@ -1,0 +1,162 @@
+name: Dependency license inventory
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/dependency-license-inventory.yml'
+      - 'docs/DEPENDENCY_LICENSE_INVENTORY.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  inventory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      R18_RUN_ID: '41415006414'
+      R18_ARTIFACT_NAME: 'Uvaga-Windows-Synthetic-r18'
+      R18_LOCK_SHA256: '6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d'
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Download verified r18 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .audit/r18
+          gh run download "$R18_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "$R18_ARTIFACT_NAME" \
+            --dir .audit/r18
+
+      - name: Verify exact r18 Cargo.lock
+        run: |
+          echo "$R18_LOCK_SHA256  .audit/r18/Cargo.lock" | sha256sum --check --strict
+          cp .audit/r18/Cargo.lock src-tauri/Cargo.lock
+
+      - name: Collect Cargo metadata from locked graph
+        run: |
+          mkdir -p .audit/out
+          cargo metadata \
+            --locked \
+            --format-version 1 \
+            --manifest-path src-tauri/Cargo.toml \
+            > .audit/out/cargo-metadata.json
+
+      - name: Build license inventory
+        run: |
+          python3 - <<'PY'
+          import csv
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          out = Path('.audit/out')
+          metadata = json.loads((out / 'cargo-metadata.json').read_text(encoding='utf-8'))
+
+          rows = []
+          license_counts = Counter()
+          missing_license = []
+          license_file_only = []
+          non_registry_external = []
+          registry_count = 0
+          path_count = 0
+
+          for package in metadata['packages']:
+              source = package.get('source')
+              license_expr = package.get('license')
+              license_file = package.get('license_file')
+
+              if source is None:
+                  source_kind = 'path/workspace'
+                  path_count += 1
+              elif source.startswith('registry+https://github.com/rust-lang/crates.io-index'):
+                  source_kind = 'crates.io'
+                  registry_count += 1
+              else:
+                  source_kind = 'external-other'
+                  non_registry_external.append({
+                      'name': package['name'],
+                      'version': package['version'],
+                      'source': source,
+                  })
+
+              if license_expr:
+                  license_counts[license_expr] += 1
+              else:
+                  missing_license.append({
+                      'name': package['name'],
+                      'version': package['version'],
+                      'license_file': license_file,
+                      'source': source,
+                  })
+                  if license_file:
+                      license_file_only.append({
+                          'name': package['name'],
+                          'version': package['version'],
+                          'license_file': license_file,
+                      })
+
+              rows.append({
+                  'name': package['name'],
+                  'version': package['version'],
+                  'license': license_expr or '',
+                  'license_file': license_file or '',
+                  'source_kind': source_kind,
+                  'source': source or '',
+              })
+
+          rows.sort(key=lambda r: (r['name'], r['version'], r['source']))
+
+          with (out / 'license-inventory.tsv').open('w', encoding='utf-8', newline='') as handle:
+              writer = csv.DictWriter(
+                  handle,
+                  fieldnames=['name', 'version', 'license', 'license_file', 'source_kind', 'source'],
+                  delimiter='\t',
+              )
+              writer.writeheader()
+              writer.writerows(rows)
+
+          summary = {
+              'package_count': len(rows),
+              'path_workspace_count': path_count,
+              'crates_io_count': registry_count,
+              'non_registry_external': non_registry_external,
+              'missing_license_expression': missing_license,
+              'license_file_only': license_file_only,
+              'license_expression_counts': dict(sorted(license_counts.items())),
+          }
+          (out / 'license-summary.json').write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Record evidence anchor
+        run: |
+          {
+            echo "source_run=$R18_RUN_ID"
+            echo "artifact=$R18_ARTIFACT_NAME"
+            echo "cargo_lock_sha256=$R18_LOCK_SHA256"
+            echo "source_pr=34"
+            echo "purpose=inventory-only; not an approved license allow-list"
+          } > .audit/out/EVIDENCE.txt
+
+      - name: Upload dependency/license inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uvaga-r18-dependency-license-inventory
+          path: .audit/out/*
+          if-no-files-found: error
+          retention-days: 30
