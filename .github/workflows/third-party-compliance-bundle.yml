@@ -1,0 +1,196 @@
+name: Third-party compliance bundle
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/third-party-compliance-bundle.yml'
+      - 'docs/THIRD_PARTY_COMPLIANCE_BUNDLE.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bundle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      R18_RUN_ID: '41415006414'
+      R18_ARTIFACT_NAME: 'Uvaga-Windows-Synthetic-r18'
+      R18_LOCK_SHA256: '6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d'
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Download and verify exact r18 dependency lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .audit/r18 .audit/out
+          gh run download "$R18_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "$R18_ARTIFACT_NAME" \
+            --dir .audit/r18
+          echo "$R18_LOCK_SHA256  .audit/r18/Cargo.lock" | sha256sum --check --strict
+          cp .audit/r18/Cargo.lock src-tauri/Cargo.lock
+
+      - name: Collect locked metadata
+        run: |
+          cargo metadata --locked --format-version 1 --manifest-path src-tauri/Cargo.toml > .audit/out/cargo-metadata.json
+
+      - name: Vendor exact registry sources
+        run: |
+          cargo vendor --locked --versioned-dirs --manifest-path src-tauri/Cargo.toml .audit/vendor > .audit/out/vendor-config.toml
+
+      - name: Build compliance bundle contents
+        run: |
+          python3 - <<'PY'
+          import csv
+          import json
+          import shutil
+          import tarfile
+          from pathlib import Path
+
+          out = Path('.audit/out')
+          vendor = Path('.audit/vendor')
+          metadata = json.loads((out / 'cargo-metadata.json').read_text(encoding='utf-8'))
+          license_root = out / 'THIRD-PARTY-LICENSE-FILES'
+          license_root.mkdir(parents=True, exist_ok=True)
+
+          patterns = ('LICENSE', 'COPYING', 'NOTICE', 'COPYRIGHT', 'UNLICENSE')
+          rows = []
+          unresolved = []
+          registry_packages = []
+
+          for package in metadata['packages']:
+              source = package.get('source') or ''
+              if not source.startswith('registry+https://github.com/rust-lang/crates.io-index'):
+                  continue
+
+              name = package['name']
+              version = package['version']
+              registry_packages.append((name, version))
+              source_dir = vendor / f'{name}-{version}'
+              if not source_dir.is_dir():
+                  raise SystemExit(f'missing vendored source directory: {source_dir}')
+
+              captured = []
+              for path in sorted(source_dir.rglob('*')):
+                  if not path.is_file():
+                      continue
+                  upper = path.name.upper()
+                  if not any(upper.startswith(prefix) for prefix in patterns):
+                      continue
+                  rel = path.relative_to(source_dir)
+                  dest = license_root / f'{name}-{version}' / rel
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copy2(path, dest)
+                  captured.append(str(rel))
+
+              if not captured:
+                  unresolved.append({
+                      'name': name,
+                      'version': version,
+                      'license': package.get('license'),
+                      'repository': package.get('repository'),
+                  })
+
+              rows.append({
+                  'name': name,
+                  'version': version,
+                  'license': package.get('license') or '',
+                  'repository': package.get('repository') or '',
+                  'captured_file_count': len(captured),
+                  'captured_files': ' | '.join(captured),
+              })
+
+          rows.sort(key=lambda r: (r['name'], r['version']))
+          with (out / 'THIRD_PARTY_INDEX.tsv').open('w', encoding='utf-8', newline='') as handle:
+              writer = csv.DictWriter(
+                  handle,
+                  fieldnames=['name','version','license','repository','captured_file_count','captured_files'],
+                  delimiter='\t',
+              )
+              writer.writeheader()
+              writer.writerows(rows)
+
+          mpl_expected = [
+              ('cssparser', '0.37.0'),
+              ('cssparser-macros', '0.7.1'),
+              ('dtoa-short', '0.3.5'),
+              ('option-ext', '0.2.0'),
+              ('selectors', '0.38.0'),
+          ]
+          package_lookup = {(p['name'], p['version']): p for p in metadata['packages']}
+          mpl_rows = []
+          with tarfile.open(out / 'MPL-SOURCE-r18.tar.gz', 'w:gz') as tar:
+              for name, version in mpl_expected:
+                  package = package_lookup.get((name, version))
+                  if package is None:
+                      raise SystemExit(f'missing expected MPL package: {name}@{version}')
+                  if package.get('license') != 'MPL-2.0':
+                      raise SystemExit(f'unexpected MPL license expression for {name}@{version}: {package.get("license")}')
+                  source_dir = vendor / f'{name}-{version}'
+                  if not source_dir.is_dir():
+                      raise SystemExit(f'missing MPL source directory: {source_dir}')
+                  tar.add(source_dir, arcname=f'{name}-{version}')
+                  mpl_rows.append({
+                      'name': name,
+                      'version': version,
+                      'repository': package.get('repository') or '',
+                  })
+
+          mpl_note = [
+              '# MPL-2.0 source availability — r18 checkpoint',
+              '',
+              'This compliance artifact contains `MPL-SOURCE-r18.tar.gz` with the complete vendored source trees for the exact MPL-2.0 package versions used by the verified r18 Cargo.lock.',
+              '',
+              '| Crate | Version | Upstream |',
+              '| --- | --- | --- |',
+          ]
+          for row in mpl_rows:
+              mpl_note.append(f"| `{row['name']}` | `{row['version']}` | {row['repository']} |")
+          mpl_note += [
+              '',
+              'This is a prototype compliance checkpoint. A production release must publish the equivalent source-availability material for its exact final dependency lock in a non-expiring release location.',
+              '',
+          ]
+          (out / 'MPL_SOURCE_AVAILABILITY.md').write_text('\n'.join(mpl_note), encoding='utf-8')
+
+          summary = {
+              'registry_package_count': len(rows),
+              'packages_with_captured_license_notice_files': sum(1 for r in rows if r['captured_file_count'] > 0),
+              'packages_without_captured_license_notice_files': unresolved,
+              'mpl_source_packages': mpl_rows,
+          }
+          (out / 'COMPLIANCE_SUMMARY.json').write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Record evidence anchor
+        run: |
+          {
+            echo "source_run=$R18_RUN_ID"
+            echo "source_artifact=$R18_ARTIFACT_NAME"
+            echo "cargo_lock_sha256=$R18_LOCK_SHA256"
+            echo "source_pr=34"
+            echo "purpose=prototype third-party compliance support bundle"
+          } > .audit/out/EVIDENCE.txt
+
+      - name: Upload compliance bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uvaga-r18-third-party-compliance-bundle
+          path: .audit/out/*
+          if-no-files-found: error
+          retention-days: 30
