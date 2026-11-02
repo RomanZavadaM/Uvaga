@@ -370,7 +370,7 @@ r22 removes documentation-only automatic triggers from heavy Windows synthetic/i
 
 Unexpected PR #51 was reconciled from live GitHub and closed unmerged as a superseded alternative. No product/safety/live/signing/version change from #51 was integrated.
 
-This post-merge documentation PR is also the docs-only trigger smoke for r22. Heavy Windows workflows must remain absent from its automatic runs.
+Post-merge docs-only trigger smoke: **PASS**. On checkpoint head `a2583cb91d9c580f2b064647cfa541ca6b66a976`, only Organizational docs run `41455027345` started and passed; Windows synthetic/installer workflows did not auto-run.
 
 Owner r20 installer UX/manual sanity remains pending. Code signing, public release, live credentials/source integration, push notifications and production deployment remain owner-only gates.
 
