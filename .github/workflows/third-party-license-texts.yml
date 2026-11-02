@@ -55,6 +55,15 @@ jobs:
       - name: Fetch exact locked dependency sources
         run: cargo fetch --locked --manifest-path src-tauri/Cargo.toml
 
+      - name: Derive independent Windows normal-build closure
+        run: |
+          cargo metadata \
+            --locked \
+            --filter-platform x86_64-pc-windows-msvc \
+            --format-version 1 \
+            --manifest-path src-tauri/Cargo.toml \
+            > .audit/out/windows-metadata.json
+
       - name: Generate machine-readable full license data
         run: |
           .audit/bin/cargo-about generate \
@@ -77,12 +86,67 @@ jobs:
             --output-file .audit/out/THIRD_PARTY_LICENSES.md \
             about.hbs
 
-      - name: Validate generated output
+      - name: Validate generated output and Windows graph coverage
         run: |
           test -s .audit/out/THIRD_PARTY_LICENSES.json
           test -s .audit/out/THIRD_PARTY_LICENSES.md
           grep -q 'third-party license texts' .audit/out/THIRD_PARTY_LICENSES.md
           grep -q 'MPL-2.0' .audit/out/THIRD_PARTY_LICENSES.md
+          python3 - <<'PY'
+          import json
+          from collections import deque
+          from pathlib import Path
+
+          out = Path('.audit/out')
+          meta = json.loads((out / 'windows-metadata.json').read_text(encoding='utf-8'))
+          about = json.loads((out / 'THIRD_PARTY_LICENSES.json').read_text(encoding='utf-8'))
+
+          packages = {p['id']: p for p in meta['packages']}
+          nodes = {n['id']: n for n in meta['resolve']['nodes']}
+          root = meta['resolve']['root']
+          if not root:
+              raise SystemExit('Windows metadata has no resolve.root')
+
+          seen = {root}
+          queue = deque([root])
+          while queue:
+              current = queue.popleft()
+              for dep in nodes[current].get('deps', []):
+                  kinds = dep.get('dep_kinds', [])
+                  if kinds and all(k.get('kind') == 'dev' for k in kinds):
+                      continue
+                  target = dep['pkg']
+                  if target not in seen:
+                      seen.add(target)
+                      queue.append(target)
+
+          expected = {
+              (packages[p]['name'], packages[p]['version'])
+              for p in seen
+              if (packages[p].get('source') or '').startswith('registry+')
+          }
+          actual = {
+              (entry['package']['name'], entry['package']['version'])
+              for entry in about['crates']
+              if (entry['package'].get('source') or '').startswith('registry+')
+          }
+
+          missing = sorted(expected - actual)
+          extra = sorted(actual - expected)
+          summary = {
+              'windows_normal_build_external_count': len(expected),
+              'cargo_about_external_count': len(actual),
+              'missing_from_cargo_about': missing,
+              'extra_in_cargo_about': extra,
+          }
+          (out / 'WINDOWS_GRAPH_COVERAGE.json').write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          if missing or extra:
+              raise SystemExit('cargo-about output does not exactly match Windows normal+build dependency closure')
+          PY
           cp src-tauri/Cargo.lock .audit/out/Cargo.lock
           cp about.toml .audit/out/about.toml
           cp about.hbs .audit/out/about.hbs
@@ -92,7 +156,9 @@ jobs:
             echo "cargo_lock_sha256=$R18_LOCK_SHA256"
             echo "cargo_about_version=$CARGO_ABOUT_VERSION"
             echo "cargo_about_archive_sha256=$CARGO_ABOUT_SHA256"
-            echo "purpose=exact-r18 third-party full license text generation"
+            echo "target=x86_64-pc-windows-msvc"
+            echo "dependency_scope=normal+build; dev excluded"
+            echo "purpose=exact-r18 Windows third-party full license text generation"
           } > .audit/out/EVIDENCE.txt
 
       - name: Upload full third-party license texts
