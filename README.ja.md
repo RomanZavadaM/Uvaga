@@ -12,7 +12,7 @@
 
 [**Uvaga-Windows-Installer-r20.zip をダウンロード**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
 
-これは **未署名のテスト installer で、production release ではありません**。CI は current-user silent install、HKCU 登録、インストール済みアプリ起動、silent uninstall を検証済みです。所有者による installer UX / visual sanity はまだ保留中です。
+これは **未署名のテスト installer で、production release ではありません**。CI は current-user silent install、HKCU 登録、インストール済みアプリ起動、silent uninstall を検証済みです。所有者による installer UX / visual sanity はまだ保留中です。r20 は完全な automated install/uninstall evidence を保持する最新の archived installer test candidate であり、r21–r23 は CI/release-process hardening で、新しい owner-accepted release artifact は作成していません。
 
 - Source head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
 - r20 merge: `e913edf6bb62249806afc7c19ac8c19e2cde1166`
@@ -29,7 +29,7 @@ Drive backup: https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/
 
 [**Uvaga-Windows-Synthetic-r19.zip をダウンロード**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-これは **正式リリースでも production build でもありません**。最新の自動検証済み desktop hardening build です。r18 は所有者が Windows で手動受け入れした最後の build で、r19 の owner visual sanity はまだ保留中です。
+これは **正式リリースでも production build でもありません**。検証可能な evidence として保存されている歴史的な r19 synthetic desktop-hardening build です。r18 は所有者が Windows で手動受け入れした最後の build で、r19 の owner visual sanity はまだ保留中です。
 
 - Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
 - ZIP SHA256: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
