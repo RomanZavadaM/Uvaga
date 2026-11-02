@@ -320,3 +320,12 @@ No product/safety behavior changed. Owner r20 installer/visual acceptance remain
 
 Next owner-independent work: audit CI/repository housekeeping and release evidence consistency; do not start owner-gated production/live work.
 
+## r24 — release evidence wording consistency
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #57 merged as `fba06b8406e1169d176610c13c0cb9638600d704`. All planned README languages now describe r19/r20 evidence consistently without changing historical download URLs or hashes. r20 owner installer/visual acceptance remains PENDING; no later hardening step is presented as a public or owner-accepted release.
+
+Docs `41458780488` PASS; UI contract `41458780620` PASS. No product/safety/CI trigger/version/live/signing change.
+
+Next owner-independent work may continue as read-only audit or narrowly scoped hardening. Do not cross owner gates: live source/credentials, push/public notifications, production deployment, code signing, public release or version bump.
+

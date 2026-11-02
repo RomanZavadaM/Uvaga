@@ -230,3 +230,10 @@ Owner-independent CI efficiency / release-checklist hardening. Owner r20 install
 - Final CI PASS: `41456408496`, `41456408492`, `41456408540`, `41456408314`, `41456408686`, `41456408563`.
 - No product/safety/lock/version/live/signing change.
 
+## 2026-11-02 — r24 release evidence wording consistency integrated
+- PR #57 head `7d1e1de930ea8ef76fcfe0166be0290912252a6c`; merged main `fba06b8406e1169d176610c13c0cb9638600d704`.
+- Updated UA/EN/FR/DE/ES/KO/JA README wording: r19 historical evidence; r20 archived installer test candidate; later hardening is not a new accepted/public release.
+- Preserved historical artifact URLs, source/merge SHAs and r19/r20 hashes.
+- Windows distribution wording no longer ties the unchanged `0.1.0` version statement specifically to r21.
+- Docs `41458780488` PASS; UI contract `41458780620` PASS; no heavy desktop rebuild.
+
