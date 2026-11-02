@@ -359,3 +359,14 @@ Verified across UA/EN/FR/DE/ES/KO/JA: historical r20 artifact URL `41447023597/1
 
 Organizational docs `41458780488` PASS; UI contract `41458780620` PASS. Scope was documentation only.
 
+## r25 fail-safe presentation verification
+**PASS — exact PR head `7267e0a62615bbae1e4caf15403f15f67b0aff89`.**
+- Rust core offline tests `41465383756` success.
+- Local synthetic relay `41465383823` success.
+- Windows synthetic `41465383783` success.
+- Tauri platform matrix `41465383772` success.
+- Windows NSIS installer candidate `41465383761` success.
+- Organizational docs `41465383938` success.
+- Squash main `d358cfa9b850b612d94823f7c7d73d0f08fa5f8c`.
+- Scope exactly two files, only new tests and acceptance criteria; no production changes.
+- Manual Windows evidence received: synthetic mode/app shell, active-fresh and cleared-fresh. It does not establish cleared-stale manual PASS, installer full acceptance or public-release readiness.

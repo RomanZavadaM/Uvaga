@@ -237,3 +237,8 @@ Owner-independent CI efficiency / release-checklist hardening. Owner r20 install
 - Windows distribution wording no longer ties the unchanged `0.1.0` version statement specifically to r21.
 - Docs `41458780488` PASS; UI contract `41458780620` PASS; no heavy desktop rebuild.
 
+## 2026-11-02 — r25 fail-safe matrix integrated
+- PR #59 exact head `7267e0a62615bbae1e4caf15403f15f67b0aff89` → squash main `d358cfa9b850b612d94823f7c7d73d0f08fa5f8c`.
+- Added a 12-combination presentation/safety test matrix and a previously-confirmed-clear freshness-degradation regression test; production code unchanged.
+- Six exact-head CI groups passed: `41465383756`, `41465383823`, `41465383783`, `41465383772`, `41465383761`, `41465383938`.
+- Owner screenshots show running synthetic Windows application and a fresh confirmed clear, not completion of owner r20 installer/visual manual acceptance. Stale clear remains to be manually confirmed.
