@@ -1,0 +1,20 @@
+# ТривогА / Uvaga — third-party license texts
+
+> Generated evidence for the verified r18 dependency lock.
+> This document covers third-party dependency licenses only and does not replace Uvaga's proprietary `LICENSE.md`.
+
+{{#each licenses}}
+---
+
+## {{name}} (`{{id}}`)
+
+Used by:
+{{#each used_by}}
+- `{{crate.name}}` `{{crate.version}}`{{#if crate.repository}} — {{crate.repository}}{{/if}}
+{{/each}}
+
+```text
+{{{text}}}
+```
+
+{{/each}}
