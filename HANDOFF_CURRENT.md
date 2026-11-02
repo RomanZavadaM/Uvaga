@@ -305,7 +305,7 @@ PR #51 was an earlier aggressive CI-consolidation alternative. It was found by l
 
 r22 keeps current heavy product gates, removes broad docs-only automatic triggers, keeps manual exact-ref `workflow_dispatch`, and adds `RELEASE_CHECKLIST.md` plus a CI-scope guard.
 
-Current post-merge task: verify this docs-only checkpoint PR does not automatically launch Windows synthetic/installer workflows, then synchronize Drive PROJECT mirrors with readback.
+Post-merge docs-only trigger smoke: **PASS** on head `a2583cb91d9c580f2b064647cfa541ca6b66a976`; only Organizational docs run `41455027345` started and passed. Windows synthetic/installer did not auto-run. Next: synchronize Drive PROJECT mirrors with readback.
 
 After that, continue owner-independent hardening only. Owner r20 installer/visual acceptance remains pending; do not start live API/source adapter, credentials, push/public notifications, production deployment, code signing, public release or version bump.
 
