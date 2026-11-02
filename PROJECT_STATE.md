@@ -11,6 +11,9 @@ r16 product-code base:
 r17 Windows synthetic artifact workflow + manual runtime acceptance merged:
 `0ea256b3cc1a72250a8fa06e3098d13fe780b770`.
 
+C12 Git backup/restore checkpoint main:
+`81c3855112006d9350077b2a5b38f62e3701f73d`.
+
 Live `main` SHA на початку кожної сесії читати з GitHub, а не відновлювати з чату.
 
 До `main` уже інтегровані:
@@ -25,7 +28,8 @@ Live `main` SHA на початку кожної сесії читати з GitH
 - UkraineAlarm public-offer audit;
 - deterministic attention ranking;
 - r16 local Tauri UI ↔ Rust core bridge;
-- r17 checksumed Windows synthetic test-artifact workflow.
+- r17 checksumed Windows synthetic test-artifact workflow;
+- C12 Git bundle backup + clean restore workflow.
 
 ## r17 acceptance — PASS
 Final verified source head:
@@ -54,6 +58,34 @@ Owner screenshot evidence confirms:
 - presentation = active_last_known;
 - no false clear is displayed.
 
+## C12 Git backup / restore — PASS
+Accepted source checkpoint:
+`81c3855112006d9350077b2a5b38f62e3701f73d`.
+
+Post-merge workflow run:
+`41405252149` — PASS.
+
+GitHub artifact:
+- id `13123246036`;
+- ZIP digest `d236ae8b26179f44e64365b20f08484a65e1730633e7319386d2a14ecbe4de06`.
+
+Inner bundle:
+- `Uvaga-all-refs.bundle`;
+- SHA256 `943ee4667b69871d8f851afb2695396a6a5a5ea6c820433c5f3083bcfdcf7a53`.
+
+Verified:
+- bundle verify: PASS;
+- clean restore from bundle: PASS;
+- restored HEAD equals source main exactly: PASS;
+- `git fsck --full`: PASS;
+- restored root Rust tests in CI: PASS;
+- artifact readback/checksum: PASS.
+
+Raw bundle ZIP preserved in Drive BACKUPS:
+https://drive.google.com/file/d/1ybaj5qBhXWNprZ7v4GLvIZeDXTr4xobp/view?usp=drivesdk
+
+Scope: C12 PASS applies to Git repository source/history. Future production databases, secrets, provider credentials, device tokens or user data require separate backup/restore procedures if introduced.
+
 ## Safety invariants
 - source outage/timeout/TTL/auth/schema error never creates official clear;
 - aggregator/supplemental data cannot self-promote to official state;
@@ -74,11 +106,13 @@ Owner screenshot evidence confirms:
 ## Drive / recovery
 GitHub — source of truth.
 Drive PROJECT mirror exists.
-BACKUPS contains raw Tauri Cargo.lock checkpoint and the verified r17 Windows ZIP.
-Full Git-history backup + clean restore test is still open.
+BACKUPS contains:
+- raw Tauri Cargo.lock checkpoint;
+- verified r17 Windows ZIP;
+- verified C12 Git bundle ZIP.
 
 ## Відкрите
-- full Git bundle + restore test (C12);
+- formal clean-session continuity check (C13);
 - full transitive dependency/license gate before release;
 - Android/iOS build/runtime validation;
 - live API credentials/schema/latency/webhook/security acceptance only after separate owner decision;
@@ -86,4 +120,4 @@ Full Git-history backup + clean restore test is still open.
 - production packaging/signing/release.
 
 ## Одна наступна дія
-Створити перевірений Git-history bundle із current main, виконати clean restore/check у CI, зберегти raw bundle + checksum у Drive BACKUPS і зафіксувати результат як C12 evidence.
+Провести формальну clean-session continuity перевірку: новий виконавець/нова сесія має відкрити лише project-local START/HANDOFF/STATE + live GitHub і правильно визначити фактичний стан та одну наступну дію без історії цього чату.

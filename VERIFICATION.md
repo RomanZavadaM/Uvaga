@@ -6,69 +6,69 @@
 r16 product-code base:
 `bba0bd82351fa06f20dbe144e8ac487b81314e4f`.
 
-r17 artifact workflow/manual acceptance merged:
+r17 artifact/manual acceptance:
 `0ea256b3cc1a72250a8fa06e3098d13fe780b770`.
+
+C12 source/history backup checkpoint:
+`81c3855112006d9350077b2a5b38f62e3701f73d`.
 
 Live `main` must always be checked in GitHub.
 
-Integrated prototype verifies:
-- official alert state separated from source freshness;
-- source loss cannot create clear;
-- recovery resets freshness conservatively;
-- stale clear is not current clear;
-- trusted-source admission and immutable event-version identity;
-- provider territory mapping before core identity;
-- hierarchical subscription overlap;
-- deterministic attention ranking;
-- local Tauri UI ↔ Rust core IPC without HTTP/live source.
-
-## Desktop CI
-r16 PR #27:
-- Windows bridge unit test: PASS;
-- macOS ARM64 compile: PASS;
-- macOS Intel compile: PASS;
-- organizational docs check: PASS.
-
-## r17 build verification
-PR #28 source head:
-`2a9ef7e1d30c50a42dedcf822a2c8728a6d1d490`.
-
-Final workflow run:
-`41352681448` — PASS.
-
-GitHub artifact:
-- id `13102550016`;
-- digest `sha256:c02fab2a009e85ea3b9218f800e00c8e53be24f6e8b5789f3e188344bf281c98`.
-
-Downloaded ZIP independently unpacked/read back:
-- `Uvaga.exe` — 12,201,472 bytes;
-  SHA256 `220a15adc02ab03ff2f067f01a3f67a31b97fc88c01eb46a0633d4ee9022acd8`;
-- `Cargo.lock` — 104,041 bytes;
-  SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
-- `SHA256SUMS.txt`: both entries PASS;
-- `TEST_ARTIFACT.txt`: correct source head + distinct Actions checkout SHA;
-- downloaded ZIP SHA256 equals GitHub artifact digest: PASS.
-
-Drive raw backup:
-`Uvaga-Windows-Synthetic-r17-2a9ef7e1-20261101.zip`
-in `ТривогА/BACKUPS`.
-
-## r17 manual runtime acceptance
+## r17 manual runtime
 **PASS — 2026-11-02.**
 
 Owner screenshot evidence confirms:
 - executable starts on Windows;
-- visible title `ТривогА — синтетичний режим`;
-- explicit non-real-alerting warning;
+- explicit synthetic/not-real-alerting warning;
 - local Tauri IPC success;
 - UA-46;
 - confirmed state active;
 - source freshness stale;
 - presentation active-last-known;
-- synthetic marker visible;
 - no false clear.
 
-PR #28 merged after manual acceptance.
+## C12 Git backup/restore
+**PASS — 2026-11-02 for Git repository source/history.**
+
+Post-merge run:
+`41405252149` — PASS.
+
+Accepted source main:
+`81c3855112006d9350077b2a5b38f62e3701f73d`.
+
+GitHub artifact:
+- id `13123246036`;
+- ZIP digest `sha256:d236ae8b26179f44e64365b20f08484a65e1730633e7319386d2a14ecbe4de06`.
+
+Bundle:
+- `Uvaga-all-refs.bundle`;
+- SHA256 `943ee4667b69871d8f851afb2695396a6a5a5ea6c820433c5f3083bcfdcf7a53`.
+
+CI evidence:
+- fetch all branches/tags: PASS;
+- bundle create/verify: PASS;
+- clean restore from bundle: PASS;
+- restored HEAD equals source main: PASS;
+- `git fsck --full`: PASS;
+- restored Rust tests: PASS;
+- artifact upload: PASS.
+
+Additional readback:
+- downloaded artifact ZIP SHA equals GitHub digest: PASS;
+- inner SHA256SUMS: PASS;
+- bundle verify: PASS;
+- bundle reports complete history: PASS;
+- independent clean restore reproduces exact source main SHA: PASS;
+- fsck: PASS.
+
+Drive raw backup:
+https://drive.google.com/file/d/1ybaj5qBhXWNprZ7v4GLvIZeDXTr4xobp/view?usp=drivesdk
+
+Drive verification document:
+`ТривогА — verification — C12 Git bundle restore — 2026-11-02`.
+
+Scope limit:
+This C12 evidence does not cover future production databases, secrets, provider credentials, device tokens or user data.
 
 ## Source/legal checks
 - UkraineAlarm public request page/offer checked without accepting/applying.
@@ -76,14 +76,8 @@ PR #28 merged after manual acceptance.
 - alerts.in.ua remains aggregator/proxy candidate only.
 - no live API credential used.
 
-## Backup status
-- project continuity mirror: exists;
-- raw Tauri lock artifact: preserved;
-- raw r17 Windows artifact: preserved and checksum-verified;
-- full Git history bundle + clean restore: **NOT DONE**.
-
 ## Still open
-- full Git bundle/restore (C12);
+- formal clean-session continuity trial (C13);
 - full transitive dependency/license gate before release;
 - Android/iOS validation;
 - live API access/security/latency/schema acceptance;
