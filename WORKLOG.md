@@ -179,7 +179,7 @@ r19 is not a production release. Owner visual sanity of the redesigned layout re
 - Issue #9 is the live integration register.
 
 ## NEXT
-Owner manual Windows installer/visual sanity for r20. Until then continue only owner-independent hardening/documentation; no code signing, public release or live-source integration automatically.
+Owner-independent CI efficiency / release-checklist hardening. Owner r20 installer/visual sanity remains pending; no code signing, public release or live-source integration automatically.
 
 ## 2026-11-02 — r20 Windows installer / release-readiness
 - PR #47 merged squash: `e913edf6bb62249806afc7c19ac8c19e2cde1166`.
@@ -194,3 +194,13 @@ Owner manual Windows installer/visual sanity for r20. Until then continue only o
 - Internal SHA256SUMS readback: PASS.
 - Drive BACKUPS copy `1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX` downloaded back and matched GitHub artifact byte-for-byte.
 - Owner installer UX/manual sanity: **PENDING**. Not a production release.
+
+## 2026-11-02 — r21 artifact identity / version metadata
+- PR #49 merged squash: `68223a2b29c04f762c41d6bed6a4fd70def764e4`.
+- Final head `df8f37f9e981ce336252af5a00b2713186049ed6`.
+- Release metadata/docs/synthetic/installer checks: PASS.
+- Active artifact names are now provenance-neutral candidates with run numbers; historical r19/r20 evidence remains immutable.
+- Version consistency gate enforces Cargo app version == Tauri config version; current prototype version remains 0.1.0.
+- Initial Windows metadata failures were diagnostic-only cp1252 Unicode output; assertions had passed; fixed with ASCII-safe diagnostics.
+- Synthetic candidate artifact `13145036714`, ZIP SHA256 `3147ce551e99918cae90ff0752ff998b25fff5df9c71577e71e4d4a8e3ab7630`.
+- Installer candidate artifact `13144614348`, ZIP SHA256 `32d69221465da743fe1e7e6503653eda8daf0572591b3a7af3f9302f5a5ca14c`.

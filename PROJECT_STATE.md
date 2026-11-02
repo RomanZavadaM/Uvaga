@@ -272,6 +272,49 @@ https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/view?usp=drive
 
 This is **not a production release**. Owner manual installer/visual sanity remains pending. Code signing, public release and live-source integration remain separate owner gates.
 
+## r21 — artifact identity / version metadata hardening
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #49 merged squash to main:
+`68223a2b29c04f762c41d6bed6a4fd70def764e4`.
+
+Final accepted head:
+`df8f37f9e981ce336252af5a00b2713186049ed6`.
+
+Implemented:
+- active synthetic workflow now emits generic `Uvaga-Windows-Synthetic-candidate-<run>`;
+- active installer workflow now emits generic `Uvaga-Windows-Installer-candidate-<run>`;
+- historical r19/r20 artifact IDs and hashes remain immutable evidence;
+- old historical `windows-installer-r20.yml` retired;
+- app version consistency gate requires `src-tauri/Cargo.toml == tauri.conf.json`;
+- current prototype app version remains `0.1.0`;
+- candidate metadata records app version, source head, checkout SHA, run ID and exact dependency lock;
+- release metadata gate also protects identifier, publisher, NSIS/currentUser, downgrade policy, WebView2 policy, installer languages and updater absence.
+
+Final CI:
+- release metadata `41451415389`: PASS;
+- docs `41451415439`: PASS;
+- synthetic candidate `41451415417`: PASS;
+- installer candidate `41451415391`: PASS including install/launch/uninstall smoke.
+
+Synthetic candidate evidence:
+- artifact `13145036714`;
+- name `Uvaga-Windows-Synthetic-candidate-34`;
+- ZIP SHA256 `3147ce551e99918cae90ff0752ff998b25fff5df9c71577e71e4d4a8e3ab7630`;
+- EXE SHA256 `6da7e7ae5267301f46715ede343b417c34296dbd27e71b6d22c28d75dc77d46b`;
+- internal SHA256SUMS: PASS.
+
+Installer candidate evidence:
+- artifact `13144614348`;
+- name `Uvaga-Windows-Installer-candidate-3`;
+- ZIP SHA256 `32d69221465da743fe1e7e6503653eda8daf0572591b3a7af3f9302f5a5ca14c`;
+- installer SHA256 `d236a650c691a530fb96cfd4ac8424cec26d3ed73fb7d9c315dc43bf239e4471`;
+- release EXE SHA256 `dd11e4310d879e62094469080b17e6841bf4df00069efbba4b18af57d89fe191`;
+- Cargo.lock SHA256 remains `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- internal SHA256SUMS: PASS.
+
+No product/safety mapping code changed in r21.
+
 ## Dependency / license gate
 Exact r18 dependency inventory: **PASS**.
 - inventory run `41422471078`;
@@ -308,4 +351,4 @@ For any future macOS/Android/iOS release, run the same target-specific completen
 **PASS — 2026-11-02.** Clean-session state reconstruction from project-local docs + live GitHub recovered the current state, r17 PASS, C12 PASS, safety limits and next product direction without previous-chat state. See `C13_CLEAN_SESSION.md`.
 
 ## Одна наступна дія
-Owner manual Windows installer/visual sanity для r20. До нього можна продовжувати лише owner-independent hardening/documentation; code signing, public release та live source adapter не починати автоматично.
+Owner-independent CI efficiency / release-checklist hardening. Owner manual Windows installer/visual sanity для r20 лишається окремим gate; code signing, public release та live source adapter не починати автоматично.

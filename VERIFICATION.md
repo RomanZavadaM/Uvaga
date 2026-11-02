@@ -220,6 +220,25 @@ https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/view?usp=drive
 
 Scope: automated release-readiness only. Owner installer UX/manual acceptance, code signing, public release and production/live integration remain pending.
 
+## r21 artifact identity verification
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #49 final head `df8f37f9e981ce336252af5a00b2713186049ed6`; merged main `68223a2b29c04f762c41d6bed6a4fd70def764e4`.
+
+Final runs:
+- release metadata `41451415389`: PASS;
+- docs `41451415439`: PASS;
+- synthetic candidate `41451415417`: PASS;
+- installer candidate `41451415391`: PASS, including install/launch/uninstall.
+
+Artifact readback:
+- synthetic `13145036714` / `Uvaga-Windows-Synthetic-candidate-34` / ZIP SHA256 `3147ce551e99918cae90ff0752ff998b25fff5df9c71577e71e4d4a8e3ab7630` / internal checksums PASS;
+- installer `13144614348` / `Uvaga-Windows-Installer-candidate-3` / ZIP SHA256 `32d69221465da743fe1e7e6503653eda8daf0572591b3a7af3f9302f5a5ca14c` / internal checksums PASS.
+
+Metadata evidence in both candidates includes app version `0.1.0`, source head, checkout SHA, run ID and exact Cargo.lock SHA `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`.
+
+Changed files were CI/docs/scripts only. Product/safety code unchanged.
+
 ## README localization verification
 PR #35 merged to main at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
 Ukrainian primary README plus EN/FR/DE/ES/KO/JA translations are present; local Markdown link validation PASS.
