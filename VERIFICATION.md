@@ -145,13 +145,14 @@ Machine policy:
 
 Remaining release obligation: generate and read back distributable third-party license texts plus exact MPL source-availability notice for the release lock.
 
-## Source/legal checks- UkraineAlarm public request page/offer checked without accepting/applying.
+## Source/legal checks
+- UkraineAlarm public request page/offer checked without accepting/applying.
 - KATOTTG uses cutoff/amendment-chain policy.
 - alerts.in.ua remains aggregator/proxy candidate only.
 - no live API credential used.
 
 ## Still open
-- full transitive dependency/license gate before release;
+- third-party license/notice text + MPL source-availability packaging before release;
 - Android/iOS validation;
 - live API access/security/latency/schema acceptance;
 - push/background delivery;
