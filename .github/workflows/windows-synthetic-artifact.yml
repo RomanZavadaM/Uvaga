@@ -21,8 +21,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
-      - name: Generate dependency lock
-        run: cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
+      - name: Restore verified dependency lock
+        run: |
+          cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
+          cargo update --manifest-path src-tauri/Cargo.toml -p cc --precise 1.10.0
+          python scripts/verify_tauri_lock.py
       - name: Test offline Tauri bridge
         run: cargo test --locked --manifest-path src-tauri/Cargo.toml
       - name: Build unsigned debug executable
@@ -38,15 +41,28 @@ jobs:
 
           Copy-Item $exe "$artifact/Uvaga.exe"
           Copy-Item "src-tauri/Cargo.lock" "$artifact/Cargo.lock"
+          Copy-Item "README.md" "$artifact/README.md"
+          Copy-Item "LICENSE.md" "$artifact/LICENSE.md"
+          Copy-Item "THIRD_PARTY_NOTICES.md" "$artifact/THIRD_PARTY_NOTICES.md"
+
+          $files = @(
+            "Uvaga.exe",
+            "Cargo.lock",
+            "README.md",
+            "LICENSE.md",
+            "THIRD_PARTY_NOTICES.md"
+          )
+          $sumLines = foreach ($name in $files) {
+            $hash = (Get-FileHash "$artifact/$name" -Algorithm SHA256).Hash.ToLower()
+            "$hash  $name"
+          }
+          $sumLines | Set-Content -Encoding ascii "$artifact/SHA256SUMS.txt"
 
           $exeHash = (Get-FileHash "$artifact/Uvaga.exe" -Algorithm SHA256).Hash.ToLower()
           $lockHash = (Get-FileHash "$artifact/Cargo.lock" -Algorithm SHA256).Hash.ToLower()
 
-          "$exeHash  Uvaga.exe" | Set-Content -Encoding ascii "$artifact/SHA256SUMS.txt"
-          "$lockHash  Cargo.lock" | Add-Content -Encoding ascii "$artifact/SHA256SUMS.txt"
-
           @(
-            "ТривогА — Windows synthetic test artifact r18",
+            "ТривогА — Windows synthetic test artifact r19",
             "",
             "НЕ РЕЛІЗ. НЕ PRODUCTION. НЕ СИСТЕМА РЕАЛЬНОГО ОПОВІЩЕННЯ.",
             "Target: Windows 10/11 x64",
@@ -56,18 +72,22 @@ jobs:
             "",
             "Мережа, live API, push і геолокація не підключені.",
             "Default scenario: UA-46 + active_stale => confirmed=active, freshness=stale, presentation=active_last_known.",
-            "UI also exposes whitelisted synthetic territory/scenario selection through local Tauri IPC.",
+            "UI exposes whitelisted synthetic territory/scenario selection through local Tauri IPC.",
+            "r19 hardening keeps the critical state summary above technical details and adds accessibility/static contract checks.",
             "Якщо IPC не працює, UI має показати помилку, а не відбій.",
             "",
             "SHA256 див. SHA256SUMS.txt"
           ) | Set-Content -Encoding utf8 "$artifact/TEST_ARTIFACT.txt"
+
+          $testInfoHash = (Get-FileHash "$artifact/TEST_ARTIFACT.txt" -Algorithm SHA256).Hash.ToLower()
+          "$testInfoHash  TEST_ARTIFACT.txt" | Add-Content -Encoding ascii "$artifact/SHA256SUMS.txt"
 
           Write-Host "Uvaga executable SHA256: $exeHash"
           Write-Host "Cargo.lock SHA256: $lockHash"
       - name: Upload Windows synthetic artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Uvaga-Windows-Synthetic-r18
+          name: Uvaga-Windows-Synthetic-r19
           path: target/uvaga-test/artifact/*
           if-no-files-found: error
           retention-days: 30

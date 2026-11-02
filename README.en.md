@@ -12,13 +12,14 @@
 
 [**Download Uvaga-Windows-Synthetic-r18.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41415006414/artifacts/13127022813)
 
-This is **not a release and not a production build**. The archive is only for manual verification of synthetic scenarios in PR #34. GitHub may require you to sign in before downloading an Actions artifact.
+This is **not a release and not a production build**. It is the verified r18 synthetic test build; Windows manual acceptance is complete and the changes are integrated into `main`. GitHub may require you to sign in before downloading an Actions artifact.
 
 - Source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`
 - ZIP SHA256: `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`
 - `Uvaga.exe` SHA256: `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`
 - Automated Windows/macOS checks: **PASS**
-- Manual Windows runtime acceptance for r18: **pending**
+- Manual Windows runtime acceptance for r18: **PASS — 2026-11-02**
+- r18 integrated into `main`: `61c0662d941e388858f5214c14860ec92a586905`
 
 The test shell lets you choose a synthetic territory (`UA-46` or `UA-30`) and exercise five fail-safe scenarios: active/fresh, active/stale, cleared/fresh, cleared/stale, and unknown/unavailable.
 

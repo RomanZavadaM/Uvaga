@@ -19,16 +19,29 @@ const labels = {
   },
 };
 
+const bridge = document.querySelector("[data-bridge]");
 const region = document.querySelector("[data-region]");
 const regionName = document.querySelector("[data-region-name]");
 const confirmed = document.querySelector("[data-confirmed]");
 const freshness = document.querySelector("[data-freshness]");
+const freshnessDetail = document.querySelector("[data-freshness-detail]");
 const presentation = document.querySelector("[data-presentation]");
+const issued = document.querySelector("[data-issued]");
 const raw = document.querySelector("[data-raw]");
 const status = document.querySelector("[data-status]");
 const refresh = document.querySelector("[data-refresh]");
 const territory = document.querySelector("[data-territory]");
 const scenario = document.querySelector("[data-scenario]");
+const versionNodes = document.querySelectorAll("[data-app-version]");
+
+const allowedPresentationKinds = new Set([
+  "active_current",
+  "active_last_known",
+  "clear_needs_refresh",
+  "cleared_current",
+  "unknown",
+  "error",
+]);
 
 function label(group, value) {
   return labels[group]?.[value] ?? value ?? "—";
@@ -38,17 +51,49 @@ function setControlsDisabled(disabled) {
   refresh.disabled = disabled;
   territory.disabled = disabled;
   scenario.disabled = disabled;
+  bridge.setAttribute("aria-busy", String(disabled));
+}
+
+function setPresentationKind(kind) {
+  bridge.dataset.presentationKind = allowedPresentationKinds.has(kind) ? kind : "unknown";
+}
+
+function setVersion(value) {
+  const safe = typeof value === "string" && value.trim() ? value.trim() : "—";
+  versionNodes.forEach((node) => {
+    node.textContent = safe;
+  });
+}
+
+function clearState() {
+  region.textContent = "—";
+  regionName.textContent = "Синтетична територія";
+  confirmed.textContent = "Не визначено";
+  freshness.textContent = "Стан джерела невідомий";
+  freshnessDetail.textContent = "Не визначено";
+  presentation.textContent = "Недостатньо даних";
+  issued.textContent = "—";
+  raw.textContent = "Синтетичний стан не отримано.";
 }
 
 function setError(message) {
   status.textContent = message;
   status.dataset.kind = "error";
-  region.textContent = "—";
-  regionName.textContent = "Синтетична територія";
-  confirmed.textContent = "Не визначено";
-  freshness.textContent = "Не визначено";
-  presentation.textContent = "Не визначено";
-  raw.textContent = "Синтетичний стан не отримано.";
+  clearState();
+  setPresentationKind("error");
+}
+
+function renderSnapshot(data) {
+  region.textContent = data.region;
+  regionName.textContent = data.territory_name;
+  confirmed.textContent = label("confirmed_state", data.confirmed_state);
+  freshness.textContent = label("source_freshness", data.source_freshness);
+  freshnessDetail.textContent = label("source_freshness", data.source_freshness);
+  presentation.textContent = label("presentation", data.presentation);
+  issued.textContent = data.issued_at ? String(data.issued_at) : "немає події";
+  raw.textContent = `synthetic=true · app=${data.app_version ?? "—"} · scenario=${data.scenario} · issued_at=${data.issued_at}`;
+  setPresentationKind(data.presentation);
+  setVersion(data.app_version);
 }
 
 async function loadDemo() {
@@ -68,13 +113,7 @@ async function loadDemo() {
     });
     const data = JSON.parse(payload);
 
-    region.textContent = data.region;
-    regionName.textContent = data.territory_name;
-    confirmed.textContent = label("confirmed_state", data.confirmed_state);
-    freshness.textContent = label("source_freshness", data.source_freshness);
-    presentation.textContent = label("presentation", data.presentation);
-    raw.textContent = `synthetic=true · scenario=${data.scenario} · issued_at=${data.issued_at}`;
-
+    renderSnapshot(data);
     status.textContent = "Стан отримано локально через Tauri IPC.";
     status.dataset.kind = "ok";
   } catch (error) {

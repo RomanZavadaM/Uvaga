@@ -12,13 +12,14 @@
 
 [**Uvaga-Windows-Synthetic-r18.zip 다운로드**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41415006414/artifacts/13127022813)
 
-이 파일은 **정식 릴리스도 production 빌드도 아닙니다**. PR #34의 synthetic 시나리오를 수동 검증하기 위한 테스트 아카이브입니다. GitHub Actions artifact를 다운로드하려면 GitHub 로그인이 필요할 수 있습니다.
+이 파일은 **정식 릴리스도 production 빌드도 아닙니다**. 검증된 r18 synthetic test build이며 Windows 수동 승인이 완료되었고 변경 사항은 `main`에 통합되었습니다. GitHub Actions artifact를 다운로드하려면 GitHub 로그인이 필요할 수 있습니다.
 
 - Source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`
 - ZIP SHA256: `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`
 - `Uvaga.exe` SHA256: `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`
 - 자동 Windows/macOS 검사: **PASS**
-- r18 Windows 수동 runtime 승인: **대기 중**
+- r18 Windows 수동 runtime 승인: **PASS — 2026-11-02**
+- r18 `main` 통합: `61c0662d941e388858f5214c14860ec92a586905`
 
 테스트 UI에서는 synthetic 지역(`UA-46` 또는 `UA-30`)을 선택하고 active/fresh, active/stale, cleared/fresh, cleared/stale, unknown/unavailable의 다섯 가지 fail-safe 시나리오를 확인할 수 있습니다.
 

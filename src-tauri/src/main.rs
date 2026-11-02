@@ -152,6 +152,7 @@ fn demo_snapshot_json(territory_code: &str, scenario_id: &str) -> Result<String,
             "\"source_freshness\":\"{}\",",
             "\"presentation\":\"{}\",",
             "\"issued_at\":{},",
+            "\"app_version\":\"{}\",",
             "\"synthetic\":true",
             "}}"
         ),
@@ -162,6 +163,7 @@ fn demo_snapshot_json(territory_code: &str, scenario_id: &str) -> Result<String,
         freshness_name(status.source_freshness),
         presentation_name(presentation),
         status.last_event_at.unwrap_or_default(),
+        env!("CARGO_PKG_VERSION"),
     ))
 }
 
@@ -195,6 +197,7 @@ mod tests {
         assert!(payload.contains("\"source_freshness\":\"stale\""));
         assert!(payload.contains("\"presentation\":\"active_last_known\""));
         assert!(payload.contains("\"synthetic\":true"));
+        assert!(payload.contains("\"app_version\":\"0.1.0\""));
         assert!(!payload.contains("\"presentation\":\"cleared_current\""));
     }
 
