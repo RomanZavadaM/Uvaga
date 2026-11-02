@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - 'about.toml'
-      - 'about.hbs'
       - '.github/workflows/third-party-license-texts.yml'
       - 'docs/THIRD_PARTY_LICENSE_TEXTS.md'
   workflow_dispatch:
@@ -86,16 +85,48 @@ jobs:
             --format json \
             > .audit/out/THIRD_PARTY_LICENSES.json
 
-      - name: Generate human-readable full license texts
+      - name: Render human-readable full license texts from verified JSON
         run: |
-          .audit/bin/cargo-about.exe generate \
-            --locked \
-            --offline \
-            --fail \
-            --manifest-path src-tauri/Cargo.toml \
-            --config about.toml \
-            --output-file .audit/out/THIRD_PARTY_LICENSES.md \
-            about.hbs
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          out = Path('.audit/out')
+          data = json.loads((out / 'THIRD_PARTY_LICENSES.json').read_text(encoding='utf-8'))
+
+          lines = [
+              '# ТривогА / Uvaga — third-party license texts',
+              '',
+              '> Generated from the verified r18 Cargo.lock for Windows x86_64-pc-windows-msvc normal+build dependencies.',
+              '> This document covers third-party dependency licenses only and does not replace Uvaga proprietary LICENSE.md.',
+              '',
+          ]
+
+          for license_info in data['licenses']:
+              lines += [
+                  '---',
+                  '',
+                  f"## {license_info['name']} ({license_info['id']})",
+                  '',
+                  'Used by:',
+              ]
+              for usage in license_info.get('used_by', []):
+                  crate = usage['crate']
+                  repo = crate.get('repository') or f"https://crates.io/crates/{crate['name']}"
+                  lines.append(f"- {crate['name']} {crate['version']} — {repo}")
+              lines += ['', 'License text:', '']
+              license_text = license_info.get('text') or ''
+              for raw in license_text.splitlines():
+                  lines.append('    ' + raw)
+              if not license_text:
+                  lines.append('    [empty license text]')
+              lines.append('')
+
+          (out / 'THIRD_PARTY_LICENSES.md').write_text(
+              '\n'.join(lines) + '\n',
+              encoding='utf-8',
+          )
+          PY
 
       - name: Validate generated output and Windows graph coverage
         run: |
@@ -151,7 +182,6 @@ jobs:
           PY
           cp src-tauri/Cargo.lock .audit/out/Cargo.lock
           cp about.toml .audit/out/about.toml
-          cp about.hbs .audit/out/about.hbs
           {
             echo "source_run=$R18_RUN_ID"
             echo "source_artifact=$R18_ARTIFACT_NAME"
