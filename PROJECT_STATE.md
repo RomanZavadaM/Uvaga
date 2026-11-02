@@ -109,10 +109,78 @@ Drive PROJECT mirror exists.
 BACKUPS contains:
 - raw Tauri Cargo.lock checkpoint;
 - verified r17 Windows ZIP;
-- verified C12 Git bundle ZIP.
+- verified C12 Git bundle ZIP;
+- exact r18 broad third-party compliance bundle:
+  https://drive.google.com/file/d/1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU/view?usp=drivesdk
+  — SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2`, Drive readback exact match;
+- exact r18 Windows third-party license-text bundle:
+  https://drive.google.com/file/d/11C7VE5QZhyMtkYwbJoDVraLAe9c08bEr/view?usp=drivesdk
+  — SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`, Drive readback exact match.
+
+## r18 — richer synthetic scenarios / territory selection
+**AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
+
+Open PR: #34 `feat(r18): add synthetic territory and fail-safe scenarios`.
+
+Verified product source head:
+`a2c945034bfea58b3ff5890ea53862831c1b502a`.
+
+Current PR head after README-only documentation commits:
+`cccce86708e77e6a1cd670179ebf9547d0a5f671`.
+
+Comparison `a2c945... → cccce867...` changes only README files; no r18 product/source file changed after the verified artifact was built.
+
+Automated checks on the current PR head:
+- Organizational docs checks `41417199329`: PASS;
+- Tauri shell product-platform checks `41417199299`: PASS;
+- Windows synthetic artifact `41417199372`: PASS.
+
+Verified manual-test artifact remains the r18 artifact built from `a2c945...`:
+- artifact id `13127022813`;
+- ZIP SHA256 `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`;
+- `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`.
+
+Scope implemented in PR #34:
+- whitelisted synthetic territories `UA-46` and `UA-30`;
+- five fail-safe scenarios: active/fresh, active/stale, cleared/fresh, cleared/stale, unknown/unavailable;
+- local Tauri IPC only;
+- unknown territory/scenario rejected;
+- IPC failure never becomes a clear state;
+- no live source adapter, credentials, notifications, geolocation, production deployment, signing or release.
+
+**Manual Windows 10/11 runtime acceptance is still required before PR #34 may be accepted/merged.**
+
+## README localization
+Merged to `main` via PR #35 at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
+Ukrainian is primary/canonical; translations: English, French, German, Spanish, Korean, Japanese. All README variants link to the verified r18 synthetic Windows test artifact and mark it clearly as non-release/non-production.
+
+## Dependency / license gate
+Exact r18 dependency inventory: **PASS**.
+- inventory run `41422471078`;
+- artifact `13130467223`;
+- 408 packages = 2 local/path + 406 crates.io;
+- no external git/non-registry dependencies;
+- no missing Cargo license expressions.
+
+Machine license/source policy: **PASS**.
+- policy run `41423140592`;
+- cargo-deny 0.20.2, action pinned to `3c6349835b2b7b196a839186cb8b78e02f7b5f25`;
+- permissive licenses explicitly allowed;
+- MPL-2.0 only as exact exceptions for 5 reviewed crates;
+- unknown registries/git dependencies denied;
+- GPL/AGPL/LGPL are not globally allowed.
+
+Third-party compliance packaging checkpoints:
+- broad exact-lock bundle: PASS for generation/readback; 406 crates indexed, 371 with package-local notice/license files, 35 without package-local files explicitly reported;
+- complete vendored source for all 5 reviewed MPL-2.0 packages preserved in `MPL-SOURCE-r18.tar.gz`;
+- exact Windows r18 normal+build license-text completeness: **PASS** — 222/222 external packages, missing 0, extra 0;
+- Windows license-text artifact id `13131534490`, ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`;
+- target scope is `x86_64-pc-windows-msvc`, normal+build dependencies, dev excluded.
+
+For any future macOS/Android/iOS release, run the same target-specific completeness check for that exact final release lock. Production distribution must place the required notices/license texts and MPL source-availability material in a non-expiring release location.
 
 ## Відкрите
-- full transitive dependency/license gate before release;
+- target-specific third-party compliance packaging for future macOS/Android/iOS release artifacts;
 - Android/iOS build/runtime validation;
 - live API credentials/schema/latency/webhook/security acceptance only after separate owner decision;
 - push/background delivery;
@@ -122,4 +190,4 @@ BACKUPS contains:
 **PASS — 2026-11-02.** Clean-session state reconstruction from project-local docs + live GitHub recovered the current state, r17 PASS, C12 PASS, safety limits and next product direction without previous-chat state. See `C13_CLEAN_SESSION.md`.
 
 ## Одна наступна дія
-Реалізувати наступний малий offline product-slice: **розширені synthetic scenarios / вибір території**, з тестами та CI, без live source adapter.
+Виконати **ручне Windows 10/11 x64 runtime-приймання r18** з перевіреного artifact `13127022813`. До PASS не зливати PR #34 і не починати live source adapter.

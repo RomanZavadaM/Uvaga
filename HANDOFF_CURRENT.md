@@ -61,6 +61,62 @@ https://drive.google.com/file/d/1ybaj5qBhXWNprZ7v4GLvIZeDXTr4xobp/view?usp=drive
 
 C12 scope is Git source/history only. Production state/data backup remains a separate future concern if such state is introduced.
 
+## r18 current trial state
+**AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
+
+Open PR: #34.
+Verified product source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`.
+Current PR head: `cccce86708e77e6a1cd670179ebf9547d0a5f671`.
+
+The commits after `a2c945...` are README-only; compare shows no product/source changes after the artifact used for manual acceptance.
+
+Automated checks on current PR head:
+- docs `41417199329`: PASS;
+- Tauri Windows/macOS matrix `41417199299`: PASS;
+- Windows synthetic artifact `41417199372`: PASS.
+
+Manual-test artifact:
+- id `13127022813`;
+- ZIP SHA256 `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`;
+- `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`.
+
+r18 implements synthetic territory selection and five fail-safe scenarios only. No live adapter/credentials/public notifications/production/signing/release.
+
+README localization is already merged independently via PR #35; Ukrainian is primary, with EN/FR/DE/ES/KO/JA translations.
+
+## Dependency / license status
+**Inventory PASS + machine policy PASS — 2026-11-02.**
+
+Inventory:
+- run `41422471078`;
+- artifact `13130467223`;
+- exact r18 Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- 408 packages total; 406 crates.io; 0 external git/non-registry; 0 missing license expressions.
+
+Machine policy:
+- run `41423140592`: PASS;
+- cargo-deny 0.20.2 pinned;
+- explicit permissive allow-list;
+- MPL only for 5 exact reviewed crates;
+- unknown git/registry dependencies denied.
+
+Compliance packaging:
+- PR #40 broad exact-lock bundle: generation/readback PASS; 406 crates indexed; all 5 MPL source trees preserved; package-local-file scan is partial (371/406).
+- PR #41 exact Windows license-text generation: **PASS**.
+- run `41426326573`; artifact `13131534490`; ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+- Windows `x86_64-pc-windows-msvc` normal+build closure: 222/222 external packages, missing 0, extra 0.
+- full license text + MPL evidence present.
+
+Drive BACKUPS:
+- broad compliance bundle:
+  https://drive.google.com/file/d/1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU/view?usp=drivesdk
+  — readback SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2`;
+- Windows license-text bundle:
+  https://drive.google.com/file/d/11C7VE5QZhyMtkYwbJoDVraLAe9c08bEr/view?usp=drivesdk
+  — readback SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+
+For future non-Windows release targets, repeat target-specific license-text completeness and publish required materials in a non-expiring release location.
+
 ## Safety
 No production, public notifications, live API application/credential, signing or release package at this stage.
 
@@ -72,4 +128,4 @@ The clean session recovered the actual state from project-local documents + live
 Detailed evidence: `C13_CLEAN_SESSION.md`.
 
 ## One next action
-Implement the next small offline prototype slice: **richer synthetic scenarios / territory selection**, with tests and CI, still without any live source adapter, live credentials, public notifications, production deployment, signing or release package.
+Run the verified r18 Windows artifact on Windows 10/11 x64 and complete the predeclared manual checklist. Until owner PASS: keep PR #34 open and do not start live-source integration.

@@ -85,6 +85,98 @@ Verified:
 
 Detailed evidence: `C13_CLEAN_SESSION.md`.
 
+## r18 synthetic territory/scenario verification
+**AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
+
+PR #34 verified product source head:
+`a2c945034bfea58b3ff5890ea53862831c1b502a`.
+
+Current PR head:
+`cccce86708e77e6a1cd670179ebf9547d0a5f671`.
+
+A direct compare from `a2c945...` to `cccce867...` shows only:
+- `README.md`;
+- `README.en.md`;
+- `README.fr.md`;
+- `README.de.md`;
+- `README.es.md`;
+- `README.ko.md`;
+- `README.ja.md`.
+
+Therefore no r18 product/source file changed after the verified manual-test artifact was built.
+
+Current-head automated evidence:
+- Organizational docs checks `41417199329`: PASS;
+- Tauri shell product-platform checks `41417199299`: PASS;
+- Windows synthetic test artifact `41417199372`: PASS.
+
+Manual-test artifact evidence from verified product head `a2c945...`:
+- artifact id `13127022813`;
+- ZIP SHA256 `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`;
+- `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`;
+- `Cargo.lock` SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`.
+
+Automated acceptance covers build/tests/artifact/checksums only. Visual/runtime UX still requires owner execution on Windows 10/11 x64. Until that PASS, PR #34 is not accepted and must not be merged.
+
+## README localization verification
+PR #35 merged to main at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
+Ukrainian primary README plus EN/FR/DE/ES/KO/JA translations are present; local Markdown link validation PASS.
+
+## Dependency / license verification
+**Inventory PASS / machine policy PASS — 2026-11-02.**
+
+Exact locked inventory:
+- source r18 Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- run `41422471078`: PASS;
+- artifact `13130467223`;
+- artifact ZIP SHA256 `afc0c0a75986fc68ea836a2cf7778353735dfdcb8bb24e5b99368e23ca351f7f`;
+- package count 408;
+- 406 crates.io + 2 local/path;
+- 0 unknown external sources;
+- 0 missing Cargo license expressions.
+
+Machine policy:
+- run `41423140592`: PASS;
+- `cargo deny check licenses sources`: PASS;
+- cargo-deny 0.20.2 via pinned action commit `3c6349835b2b7b196a839186cb8b78e02f7b5f25`;
+- MPL-2.0 is exception-scoped to 5 exact reviewed crates, not globally allowed;
+- unknown registry/git sources are denied;
+- GPL/AGPL/LGPL identifiers are not in the global license allow-list.
+
+Broad compliance bundle:
+- final PR #40 run `41424208874`: PASS;
+- artifact `13130384607`;
+- ZIP SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2` — local readback exact match;
+- 406 crates indexed;
+- 371 with captured package-local LICENSE/COPYING/NOTICE/COPYRIGHT/UNLICENSE files;
+- 35 without package-local files explicitly reported;
+- `MPL-SOURCE-r18.tar.gz` contains complete vendored source trees for all five reviewed MPL-2.0 packages.
+
+Exact Windows r18 license-text completeness:
+- final PR #41 run `41426326573`: **PASS**;
+- artifact `13131534490`;
+- ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e` — local readback exact match;
+- cargo-about 0.9.2 binary archive SHA256 `1c03e5890238562497c2d89a3b75b02560af349c1fc3e713d3284f532a5cd748`;
+- target `x86_64-pc-windows-msvc`;
+- dependency scope normal+build, dev excluded;
+- independent Windows cargo-tree external set: 222;
+- cargo-about external set: 222;
+- missing: 0; extra: 0;
+- full Markdown license text present;
+- MPL-2.0 and cssparser evidence present.
+
+**Windows r18 third-party text completeness: PASS.**
+
+Drive BACKUPS readback:
+- broad compliance bundle:
+  https://drive.google.com/file/d/1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU/view?usp=drivesdk
+  — size 1,735,444 bytes; SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2`, exact GitHub artifact match;
+- Windows license-text bundle:
+  https://drive.google.com/file/d/11C7VE5QZhyMtkYwbJoDVraLAe9c08bEr/view?usp=drivesdk
+  — size 350,789 bytes; SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`, exact GitHub artifact match.
+
+This PASS is target-specific. Future macOS/Android/iOS release targets require their own exact-lock target-specific compliance run and non-expiring release packaging.
+
 ## Source/legal checks
 - UkraineAlarm public request page/offer checked without accepting/applying.
 - KATOTTG uses cutoff/amendment-chain policy.
@@ -92,7 +184,7 @@ Detailed evidence: `C13_CLEAN_SESSION.md`.
 - no live API credential used.
 
 ## Still open
-- full transitive dependency/license gate before release;
+- target-specific third-party compliance packaging for future macOS/Android/iOS releases;
 - Android/iOS validation;
 - live API access/security/latency/schema acceptance;
 - push/background delivery;

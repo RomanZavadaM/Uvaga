@@ -67,10 +67,53 @@
 - C13: **PASS**.
 - Detailed record: `C13_CLEAN_SESSION.md`.
 
+## 2026-11-02 — r18 synthetic scenarios / territory selection
+- Predeclared acceptance created before implementation.
+- PR #34 opened: `feat(r18): add synthetic territory and fail-safe scenarios`.
+- Verified product source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`.
+- Added two whitelisted synthetic territories: `UA-46`, `UA-30`.
+- Added five fail-safe scenarios: active/fresh, active/stale, cleared/fresh, cleared/stale, unknown/unavailable.
+- Unknown territory/scenario rejected; local Tauri IPC only; IPC failure never creates clear.
+- Automated CI/artifact verification: PASS.
+- Verified artifact id `13127022813`; ZIP SHA256 `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`; `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`.
+- Subsequent PR-head changes through `cccce86708e77e6a1cd670179ebf9547d0a5f671` are README-only; comparison confirms no r18 product files changed after the verified artifact build.
+- Latest PR-head workflows also PASS: docs `41417199329`, Tauri matrix `41417199299`, Windows artifact `41417199372`.
+- Manual Windows runtime acceptance: **PENDING**. PR #34 must remain open until owner acceptance.
+
+## 2026-11-02 — README localization
+- PR #35 merged to main: `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
+- Ukrainian README remains primary/canonical.
+- Added English, French, German, Spanish, Korean and Japanese README variants.
+- Every README includes the verified r18 synthetic Windows download link, hashes and non-release/non-production warning.
+- Organizational docs/link checks: PASS.
+
+## 2026-11-02 — dependency/license inventory and policy
+- Exact verified r18 Cargo.lock reused; no newly resolved graph used as evidence.
+- Inventory run `41422471078`: PASS.
+- Inventory artifact `13130467223`, ZIP SHA256 `afc0c0a75986fc68ea836a2cf7778353735dfdcb8bb24e5b99368e23ca351f7f`.
+- 408 packages: 2 local proprietary path packages + 406 crates.io packages.
+- No external git/non-registry dependencies and no missing Cargo license expressions.
+- `THIRD_PARTY_NOTICES.md` corrected from stale docs-only wording.
+- MPL-2.0 reviewed as exact transitive exceptions: cssparser 0.37.0, cssparser-macros 0.7.1, dtoa-short 0.3.5, option-ext 0.2.0, selectors 0.38.0.
+- Machine policy run `41423140592`: PASS.
+- cargo-deny 0.20.2 pinned by action commit; `licenses sources` check PASS.
+- Unknown git/registry sources denied; GPL/AGPL/LGPL not globally allowed.
+- Broad compliance bundle PR #40 merged: exact lock, 406 crates indexed, 371 package-local license/notice captures, 35 explicitly unresolved by package-local-file scan, all 5 MPL source trees archived.
+- Final Windows license-text PR #41 merged.
+- Final Windows license-text run `41426326573`: PASS.
+- Artifact `13131534490`, ZIP SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+- Exact Windows normal+build external closure: 222; cargo-about external set: 222; missing 0; extra 0.
+- Full Markdown license texts and MPL evidence present.
+- Windows r18 third-party text completeness: **PASS**.
+- Drive BACKUPS readback verified exact:
+  - broad compliance bundle `1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU` → SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2`;
+  - Windows license-text bundle `11C7VE5QZhyMtkYwbJoDVraLAe9c08bEr` → SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
+- Future macOS/Android/iOS releases require their own target-specific completeness run and non-expiring distribution packaging.
+
 ## Execution continuity
 - One active executor by default; parallel work only by owner.
 - State divergence is recovered from live GitHub rather than assumed parallel work.
 - Issue #9 is the live integration register.
 
 ## NEXT
-Richer synthetic scenarios / territory selection before any live source adapter.
+Owner manual Windows 10/11 x64 runtime acceptance of r18 artifact `13127022813`. Do not merge PR #34 or start a live source adapter before PASS.

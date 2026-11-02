@@ -1,0 +1,49 @@
+name: Dependency license policy
+
+on:
+  pull_request:
+    paths:
+      - 'Cargo.toml'
+      - 'src-tauri/Cargo.toml'
+      - 'deny.toml'
+      - '.github/workflows/dependency-license-policy.yml'
+      - 'docs/DEPENDENCY_LICENSE_POLICY.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  policy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      R18_RUN_ID: '41415006414'
+      R18_ARTIFACT_NAME: 'Uvaga-Windows-Synthetic-r18'
+      R18_LOCK_SHA256: '6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d'
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download exact verified r18 dependency lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .audit/r18
+          gh run download "$R18_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "$R18_ARTIFACT_NAME" \
+            --dir .audit/r18
+          echo "$R18_LOCK_SHA256  .audit/r18/Cargo.lock" | sha256sum --check --strict
+          cp .audit/r18/Cargo.lock src-tauri/Cargo.lock
+
+      - name: Enforce reviewed licenses and sources
+        uses: EmbarkStudios/cargo-deny-action@3c6349835b2b7b196a839186cb8b78e02f7b5f25
+        with:
+          manifest-path: src-tauri/Cargo.toml
+          command: check licenses sources
+          arguments: ''
