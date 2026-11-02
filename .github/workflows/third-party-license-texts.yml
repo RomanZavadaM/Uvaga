@@ -1,0 +1,202 @@
+name: Third-party full license texts
+
+on:
+  pull_request:
+    paths:
+      - 'about.toml'
+      - '.github/workflows/third-party-license-texts.yml'
+      - 'docs/THIRD_PARTY_LICENSE_TEXTS.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: windows-2025
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    env:
+      R18_RUN_ID: '41415006414'
+      R18_ARTIFACT_NAME: 'Uvaga-Windows-Synthetic-r18'
+      R18_LOCK_SHA256: '6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d'
+      CARGO_ABOUT_VERSION: '0.9.2'
+      CARGO_ABOUT_SHA256: '1c03e5890238562497c2d89a3b75b02560af349c1fc3e713d3284f532a5cd748'
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Download and verify exact r18 Cargo.lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .audit/r18 .audit/bin .audit/out
+          gh run download "$R18_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "$R18_ARTIFACT_NAME" \
+            --dir .audit/r18
+          echo "$R18_LOCK_SHA256  .audit/r18/Cargo.lock" | sha256sum --check --strict
+          cp .audit/r18/Cargo.lock src-tauri/Cargo.lock
+
+      - name: Install pinned cargo-about binary
+        run: |
+          url="https://github.com/EmbarkStudios/cargo-about/releases/download/$CARGO_ABOUT_VERSION/cargo-about-$CARGO_ABOUT_VERSION-x86_64-pc-windows-msvc.tar.gz"
+          curl --fail --location --silent --show-error "$url" -o .audit/cargo-about.tar.gz
+          echo "$CARGO_ABOUT_SHA256  .audit/cargo-about.tar.gz" | sha256sum --check --strict
+          tar -xzf .audit/cargo-about.tar.gz -C .audit/bin --strip-components=1
+          .audit/bin/cargo-about.exe --version
+
+      - name: Fetch exact locked dependency sources
+        run: cargo fetch --locked --manifest-path src-tauri/Cargo.toml
+
+      - name: Derive independent Windows normal-build closure
+        run: |
+          cargo metadata \
+            --locked \
+            --filter-platform x86_64-pc-windows-msvc \
+            --format-version 1 \
+            --manifest-path src-tauri/Cargo.toml \
+            > .audit/out/windows-metadata.json
+          cargo tree \
+            --locked \
+            --manifest-path src-tauri/Cargo.toml \
+            --target x86_64-pc-windows-msvc \
+            --edges normal,build \
+            --prefix none \
+            --format '{p}' \
+            > .audit/out/windows-tree.txt
+
+      - name: Generate machine-readable full license data
+        run: |
+          .audit/bin/cargo-about.exe generate \
+            --locked \
+            --offline \
+            --fail \
+            --manifest-path src-tauri/Cargo.toml \
+            --config about.toml \
+            --format json \
+            > .audit/out/THIRD_PARTY_LICENSES.json
+
+      - name: Render human-readable full license texts from verified JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          out = Path('.audit/out')
+          data = json.loads((out / 'THIRD_PARTY_LICENSES.json').read_text(encoding='utf-8'))
+
+          lines = [
+              '# ТривогА / Uvaga — third-party license texts',
+              '',
+              '> Generated from the verified r18 Cargo.lock for Windows x86_64-pc-windows-msvc normal+build dependencies.',
+              '> This document covers third-party dependency licenses only and does not replace Uvaga proprietary LICENSE.md.',
+              '',
+          ]
+
+          for license_info in data['licenses']:
+              lines += [
+                  '---',
+                  '',
+                  f"## {license_info['name']} ({license_info['id']})",
+                  '',
+                  'Used by:',
+              ]
+              for usage in license_info.get('used_by', []):
+                  crate = usage['crate']
+                  repo = crate.get('repository') or f"https://crates.io/crates/{crate['name']}"
+                  lines.append(f"- {crate['name']} {crate['version']} — {repo}")
+              lines += ['', 'License text:', '']
+              license_text = license_info.get('text') or ''
+              for raw in license_text.splitlines():
+                  lines.append('    ' + raw)
+              if not license_text:
+                  lines.append('    [empty license text]')
+              lines.append('')
+
+          (out / 'THIRD_PARTY_LICENSES.md').write_text(
+              '\n'.join(lines) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - name: Validate generated output and Windows graph coverage
+        run: |
+          test -s .audit/out/THIRD_PARTY_LICENSES.json
+          test -s .audit/out/THIRD_PARTY_LICENSES.md
+          grep -q 'third-party license texts' .audit/out/THIRD_PARTY_LICENSES.md
+          grep -q 'MPL-2.0' .audit/out/THIRD_PARTY_LICENSES.md
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          out = Path('.audit/out')
+          meta = json.loads((out / 'windows-metadata.json').read_text(encoding='utf-8'))
+          about = json.loads((out / 'THIRD_PARTY_LICENSES.json').read_text(encoding='utf-8'))
+
+          package_source = {
+              (p['name'], p['version']): (p.get('source') or '')
+              for p in meta['packages']
+          }
+
+          tree_packages = set()
+          for raw in (out / 'windows-tree.txt').read_text(encoding='utf-8').splitlines():
+              match = re.match(r'^([^ ]+) v([^ ]+)', raw.strip())
+              if match:
+                  tree_packages.add((match.group(1), match.group(2)))
+
+          expected = {
+              nv for nv in tree_packages
+              if package_source.get(nv, '').startswith('registry+')
+          }
+          actual = {
+              (entry['package']['name'], entry['package']['version'])
+              for entry in about['crates']
+              if (entry['package'].get('source') or '').startswith('registry+')
+          }
+
+          missing = sorted(expected - actual)
+          extra = sorted(actual - expected)
+          summary = {
+              'windows_normal_build_external_count': len(expected),
+              'cargo_about_external_count': len(actual),
+              'missing_from_cargo_about': missing,
+              'extra_in_cargo_about': extra,
+          }
+          (out / 'WINDOWS_GRAPH_COVERAGE.json').write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          if missing or extra:
+              raise SystemExit('cargo-about output does not exactly match Windows normal+build dependency closure')
+          PY
+          cp src-tauri/Cargo.lock .audit/out/Cargo.lock
+          cp about.toml .audit/out/about.toml
+          {
+            echo "source_run=$R18_RUN_ID"
+            echo "source_artifact=$R18_ARTIFACT_NAME"
+            echo "cargo_lock_sha256=$R18_LOCK_SHA256"
+            echo "cargo_about_version=$CARGO_ABOUT_VERSION"
+            echo "cargo_about_archive_sha256=$CARGO_ABOUT_SHA256"
+            echo "target=x86_64-pc-windows-msvc"
+            echo "dependency_scope=normal+build; dev excluded"
+            echo "purpose=exact-r18 Windows third-party full license text generation"
+          } > .audit/out/EVIDENCE.txt
+
+      - name: Upload full third-party license texts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uvaga-r18-third-party-license-texts
+          path: .audit/out/*
+          if-no-files-found: error
+          retention-days: 30
