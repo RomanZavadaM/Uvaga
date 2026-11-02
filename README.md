@@ -4,7 +4,7 @@
 
 > **Поточний статус:** ранній prototype / synthetic-only. Немає production deployment, live API credentials або публічної доставки сповіщень. Програма не замінює офіційні канали оповіщення; відсутність повідомлення не означає відсутність небезпеки.
 
-**Мови README:** Українська · [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
+**Основна мова README: Українська.** Переклади: [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
 
 ## Завантаження для тестування
 
