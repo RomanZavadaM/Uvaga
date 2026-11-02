@@ -69,6 +69,7 @@ require(parser.scenarios == EXPECTED_SCENARIOS, f"scenario whitelist drift: {par
 require(not parser.remote_assets, f"remote UI assets are forbidden: {parser.remote_assets}")
 
 require("СИНТЕТИЧНИЙ РЕЖИМ" in HTML, "synthetic-mode banner missing")
+require("<dt>Останній підтверджений стан</dt>" in HTML, "historical state label must remain explicit")
 require("Це не система реального оповіщення." in HTML, "not-real-alerting warning missing")
 require('role="status"' in HTML and 'aria-live="polite"' in HTML, "accessible live status missing")
 require('aria-busy="true"' in HTML, "initial aria-busy state missing")
