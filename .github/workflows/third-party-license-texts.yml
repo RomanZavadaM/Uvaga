@@ -63,6 +63,14 @@ jobs:
             --format-version 1 \
             --manifest-path src-tauri/Cargo.toml \
             > .audit/out/windows-metadata.json
+          cargo tree \
+            --locked \
+            --manifest-path src-tauri/Cargo.toml \
+            --target x86_64-pc-windows-msvc \
+            --edges normal,build \
+            --prefix none \
+            --format '{p}' \
+            > .audit/out/windows-tree.txt
 
       - name: Generate machine-readable full license data
         run: |
@@ -94,36 +102,27 @@ jobs:
           grep -q 'MPL-2.0' .audit/out/THIRD_PARTY_LICENSES.md
           python3 - <<'PY'
           import json
-          from collections import deque
+          import re
           from pathlib import Path
 
           out = Path('.audit/out')
           meta = json.loads((out / 'windows-metadata.json').read_text(encoding='utf-8'))
           about = json.loads((out / 'THIRD_PARTY_LICENSES.json').read_text(encoding='utf-8'))
 
-          packages = {p['id']: p for p in meta['packages']}
-          nodes = {n['id']: n for n in meta['resolve']['nodes']}
-          root = meta['resolve']['root']
-          if not root:
-              raise SystemExit('Windows metadata has no resolve.root')
+          package_source = {
+              (p['name'], p['version']): (p.get('source') or '')
+              for p in meta['packages']
+          }
 
-          seen = {root}
-          queue = deque([root])
-          while queue:
-              current = queue.popleft()
-              for dep in nodes[current].get('deps', []):
-                  kinds = dep.get('dep_kinds', [])
-                  if kinds and all(k.get('kind') == 'dev' for k in kinds):
-                      continue
-                  target = dep['pkg']
-                  if target not in seen:
-                      seen.add(target)
-                      queue.append(target)
+          tree_packages = set()
+          for raw in (out / 'windows-tree.txt').read_text(encoding='utf-8').splitlines():
+              match = re.match(r'^([^ ]+) v([^ ]+)', raw.strip())
+              if match:
+                  tree_packages.add((match.group(1), match.group(2)))
 
           expected = {
-              (packages[p]['name'], packages[p]['version'])
-              for p in seen
-              if (packages[p].get('source') or '').startswith('registry+')
+              nv for nv in tree_packages
+              if package_source.get(nv, '').startswith('registry+')
           }
           actual = {
               (entry['package']['name'], entry['package']['version'])
