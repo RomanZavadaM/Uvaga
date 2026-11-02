@@ -8,7 +8,7 @@
 
 1. Tauri bundling вмикається лише для штатного Windows NSIS candidate; install mode = currentUser, без admin-вимоги; `allowDowngrades=false`; WebView2 = embedded bootstrapper.
 2. Build toolchain pins `tauri-cli 2.12.4`; application dependency graph перед build мусить відтворити exact accepted Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`.
-3. Installer build використовує `--locked`; silent dependency drift fail-closed.
+3. Application tests використовують `--locked`; перед і після `cargo tauri build` exact Cargo.lock SHA перевіряється повторно, тому silent dependency drift fail-closed.
 4. Artifact містить installer, release executable, README, proprietary LICENSE, THIRD_PARTY_NOTICES, build metadata і SHA256SUMS.
 5. Artifact також містить exact Windows full third-party license texts із вже прийнятого evidence для того самого verified lock; coverage має залишатись 222/222 external normal+build, missing 0, extra 0, а embedded Cargo.lock має мати той самий accepted SHA256.
 6. MPL-covered source-availability material не губиться: candidate містить source-availability notice і посилання/ідентифікатор перевіреного source bundle; production release потребує non-expiring location.
