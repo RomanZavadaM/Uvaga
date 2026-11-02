@@ -329,3 +329,5 @@ Docs `41458780488` PASS; UI contract `41458780620` PASS. No product/safety/CI tr
 
 Next owner-independent work may continue as read-only audit or narrowly scoped hardening. Do not cross owner gates: live source/credentials, push/public notifications, production deployment, code signing, public release or version bump.
 
+## r25 — integrated, CI PASS
+PR #59 head `7267e0a62615bbae1e4caf15403f15f67b0aff89` squash-merged to `d358cfa9b850b612d94823f7c7d73d0f08fa5f8c`. Automated presentation matrix now tests all 12 state/freshness combinations and loss of a previously fresh confirmed clear. Six workflow groups PASS. No production changes, owner manual acceptance remains pending. Next: owner-independent audit only, pending owner Windows verification of stale-clear scenario; no public release/live sources/signing/version bump.
