@@ -78,7 +78,7 @@ def main() -> None:
         return
     print('Release metadata contract: PASS')
     print(f'app_version={version}')
-    print(f'product={EXPECTED_PRODUCT}')
+    print('product_name=verified')
     print(f'identifier={EXPECTED_IDENTIFIER}')
     print('installer=nsis/currentUser; downgrades=false; updater=absent')
     print('artifact_identity=generic candidates; historical r19/r20 workflow labels absent')
