@@ -1,0 +1,27 @@
+name: Release metadata checks
+on:
+  pull_request:
+    paths:
+      - 'src-tauri/Cargo.toml'
+      - 'src-tauri/tauri.conf.json'
+      - 'scripts/check_release_metadata.py'
+      - '.github/workflows/release-metadata.yml'
+      - '.github/workflows/windows-synthetic-artifact.yml'
+      - '.github/workflows/windows-installer-candidate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Validate application and installer metadata
+        run: python scripts/check_release_metadata.py
