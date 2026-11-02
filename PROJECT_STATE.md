@@ -171,6 +171,56 @@ Critical invariant confirmed manually: a stale clear is not displayed as a curre
 Merged to `main` via PR #35 at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
 Ukrainian is primary/canonical; translations: English, French, German, Spanish, Korean, Japanese. All README variants link to the verified r18 synthetic Windows test artifact and mark it clearly as non-release/non-production.
 
+## r19 — product hardening / desktop UX
+**INTEGRATED / AUTOMATED PASS / OWNER VISUAL SANITY PENDING — 2026-11-02.**
+
+PR #45 merged squash to main:
+`1af2e5d2c53a00619172056bab9fde746daff988`.
+
+Final accepted PR head:
+`cc4992975b73f0211cdd44b05f7ebd52d76a5415`.
+
+Implemented:
+- compact critical-state summary above technical explanations;
+- semantic presentation styling with explicit text, not color-only;
+- accessible form labels, live status region and `aria-busy`;
+- technical explanation collapsed by default;
+- app version surfaced from Rust payload;
+- IPC error clears previous snapshot and forces error/unknown;
+- static UI safety-contract CI;
+- self-describing Windows r19 artifact with README, proprietary license, third-party notices and checksums;
+- stale README r18 status corrected in UA/EN/FR/DE/ES/KO/JA.
+
+Important defects found and fixed before merge:
+- presentation selector collision that could replace bridge contents;
+- UI-contract checker false failure on escaped Rust JSON source;
+- silent Cargo.lock drift (`cc 1.10.0 → 1.11.0`) discovered by artifact readback.
+
+Dependency determinism is now fail-closed:
+- all desktop CI regenerates the graph, restores `cc 1.10.0`, then requires exact Cargo.lock SHA256
+  `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- test/build then runs with `--locked`;
+- lock gate passed on Windows, macOS ARM and macOS Intel.
+
+Final CI:
+- UI contract `41442359517`: PASS;
+- docs `41442359398`: PASS;
+- Windows artifact `41442359441`: PASS;
+- Tauri matrix `41442359542`: PASS.
+
+Final Windows r19 artifact:
+- artifact id `13140138112`;
+- ZIP SHA256 `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`;
+- `Uvaga.exe` SHA256 `c9afe5873aad563dd6f07b51a6b05cc64fac3057e91f1127d2794b3372b7b593`;
+- embedded Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- internal SHA256SUMS readback: all entries PASS.
+
+Drive BACKUPS copy:
+https://drive.google.com/file/d/1Gjza0jCCQlGX8TDuPEUF49lX0g3iZ2BH/view?usp=drivesdk
+— readback ZIP SHA256 matches GitHub exactly.
+
+r19 is not a production release. Owner visual sanity of the redesigned layout remains pending; r18 remains the last owner-manually accepted UI baseline.
+
 ## Dependency / license gate
 Exact r18 dependency inventory: **PASS**.
 - inventory run `41422471078`;
@@ -207,4 +257,4 @@ For any future macOS/Android/iOS release, run the same target-specific completen
 **PASS — 2026-11-02.** Clean-session state reconstruction from project-local docs + live GitHub recovered the current state, r17 PASS, C12 PASS, safety limits and next product direction without previous-chat state. See `C13_CLEAN_SESSION.md`.
 
 ## Одна наступна дія
-Зафіксувати post-merge checkpoint у Drive та перейти до планування наступного продуктового кроку лише після окремого рішення власника. Live source adapter не починати автоматично.
+r20: release-readiness для Windows — unsigned NSIS test installer candidate, packaging metadata, SECURITY/distribution docs і checksum/readback. Live source adapter не починати автоматично.
