@@ -13,6 +13,8 @@ r20 готує **unsigned NSIS test installer candidate** для Windows 10/11 x
 - publisher metadata: `Roman Zavada`;
 - target: Windows 10/11 x64;
 - code signing: відсутній у r20 test candidate;
+- downgrade: blocked (`allowDowngrades=false`);
+- WebView2: embedded bootstrapper; якщо runtime відсутній, bootstrapper може потребувати мережі;
 - updater: відсутній;
 - live API credentials / notifications / geolocation: відсутні.
 
@@ -28,7 +30,7 @@ Installer candidate приймається тільки якщо:
 1. source head зафіксований у GitHub PR;
 2. exact accepted Cargo.lock SHA256 = `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
 3. application test/build працює з `--locked`;
-4. `tauri-cli` pin = `2.12.2`;
+4. `tauri-cli` pin = `2.12.4`;
 5. installer/executable та accompanying files мають SHA256SUMS;
 6. Windows exact-lock third-party license text coverage = 222/222, missing 0, extra 0;
 7. artifact після upload завантажено назад і checksum перевірено.
