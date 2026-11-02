@@ -84,8 +84,25 @@ r18 implements synthetic territory selection and five fail-safe scenarios only. 
 
 README localization is already merged independently via PR #35; Ukrainian is primary, with EN/FR/DE/ES/KO/JA translations.
 
-## Safety
-No production, public notifications, live API application/credential, signing or release package at this stage.
+## Dependency / license status
+**Inventory PASS + machine policy PASS — 2026-11-02.**
+
+Inventory:
+- run `41422471078`;
+- artifact `13130467223`;
+- exact r18 Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`;
+- 408 packages total; 406 crates.io; 0 external git/non-registry; 0 missing license expressions.
+
+Machine policy:
+- run `41423140592`: PASS;
+- cargo-deny 0.20.2 pinned;
+- explicit permissive allow-list;
+- MPL only for 5 exact reviewed crates;
+- unknown git/registry dependencies denied.
+
+Before production release, still generate/read back distributable third-party license texts and an exact MPL source-availability notice.
+
+## SafetyNo production, public notifications, live API application/credential, signing or release package at this stage.
 
 ## C13 continuity result
 **PASS — 2026-11-02.**
