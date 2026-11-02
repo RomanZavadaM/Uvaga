@@ -35,7 +35,7 @@ Each candidate metadata file records app version, source head, GitHub checkout S
 
 ## Version consistency
 
-The Windows app/installer version is currently `0.1.0`. r21 does not bump it.
+The Windows app/installer version is currently `0.1.0`. Subsequent CI/docs/release-process hardening does not itself bump the application version.
 
 `src-tauri/Cargo.toml` and `src-tauri/tauri.conf.json` must declare the same app version; CI fails on drift. A public-release version bump is a separate owner-approved checkpoint because it changes release identity and the generated Cargo.lock checkpoint.
 

@@ -12,7 +12,7 @@
 
 [**Descargar Uvaga-Windows-Installer-r20.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
 
-Este es un **instalador de prueba sin firma, no una versión de producción**. CI ya verificó instalación silenciosa current-user, registro HKCU, inicio de la aplicación instalada y desinstalación silenciosa. La aceptación visual/UX del instalador por el propietario sigue pendiente.
+Este es un **instalador de prueba sin firma, no una versión de producción**. CI ya verificó instalación silenciosa current-user, registro HKCU, inicio de la aplicación instalada y desinstalación silenciosa. La aceptación visual/UX del instalador por el propietario sigue pendiente. r20 sigue siendo el último candidato de instalador de prueba archivado con evidencia automatizada completa de instalación/desinstalación; r21–r23 fueron endurecimiento de CI/proceso de release y no crearon un artefacto de release más nuevo aceptado por el propietario.
 
 - Source head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
 - Merge r20: `e913edf6bb62249806afc7c19ac8c19e2cde1166`
@@ -29,7 +29,7 @@ Copia Drive: https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/v
 
 [**Descargar Uvaga-Windows-Synthetic-r19.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-Esto **no es una versión publicada ni una build de producción**. Es la última build de endurecimiento desktop verificada automáticamente. r18 sigue siendo la última build de Windows aceptada manualmente por el propietario; la revisión visual del propietario para r19 sigue pendiente.
+Esto **no es una versión publicada ni una build de producción**. Es una build sintética histórica r19 de endurecimiento desktop, conservada como evidencia verificable. r18 sigue siendo la última build de Windows aceptada manualmente por el propietario; la revisión visual del propietario para r19 sigue pendiente.
 
 - Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
 - SHA256 del ZIP: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`

@@ -12,7 +12,7 @@
 
 [**Uvaga-Windows-Installer-r20.zip 다운로드**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
 
-이 파일은 **서명되지 않은 테스트 설치 프로그램이며 production release가 아닙니다**. CI에서 current-user silent install, HKCU 등록, 설치된 앱 실행, silent uninstall을 이미 검증했습니다. 소유자의 installer UX/visual sanity는 아직 대기 중입니다.
+이 파일은 **서명되지 않은 테스트 설치 프로그램이며 production release가 아닙니다**. CI에서 current-user silent install, HKCU 등록, 설치된 앱 실행, silent uninstall을 이미 검증했습니다. 소유자의 installer UX/visual sanity는 아직 대기 중입니다. r20은 전체 자동 install/uninstall evidence가 보존된 최신 archived installer test candidate이며, r21–r23은 CI/release-process hardening으로 더 새로운 owner-accepted release artifact를 만들지 않았습니다.
 
 - Source head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
 - r20 merge: `e913edf6bb62249806afc7c19ac8c19e2cde1166`
@@ -29,7 +29,7 @@ Drive backup: https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/
 
 [**Uvaga-Windows-Synthetic-r19.zip 다운로드**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-이 파일은 **정식 릴리스도 production 빌드도 아닙니다**. 최신 자동 검증 desktop hardening build입니다. r18은 소유자가 Windows에서 수동 승인한 마지막 빌드이며 r19의 owner visual sanity는 아직 대기 중입니다.
+이 파일은 **정식 릴리스도 production 빌드도 아닙니다**. 검증 가능한 evidence로 보존된 역사적 r19 synthetic desktop-hardening build입니다. r18은 소유자가 Windows에서 수동 승인한 마지막 빌드이며 r19의 owner visual sanity는 아직 대기 중입니다.
 
 - Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
 - ZIP SHA256: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
