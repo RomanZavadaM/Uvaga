@@ -4,7 +4,7 @@
 
 > **現在の状態:** 初期プロトタイプ / synthetic-only。production 配備、live API 認証情報、公開通知配信はまだありません。本アプリは公式警報チャネルの代替ではなく、メッセージがないことは危険がないことを意味しません。
 
-**README 言語:** [Українська](README.md) · [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [한국어](README.ko.md) · 日本語
+**README の主要言語: [Українська](README.md)。** 翻訳: [English](README.en.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [한국어](README.ko.md) · 日本語
 
 ## テスト用ダウンロード
 
