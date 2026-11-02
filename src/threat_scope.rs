@@ -69,6 +69,68 @@ impl ScopedThreatBook {
     }
 }
 
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ScopedSnapshotEntry {
+    pub territory: TerritoryKey,
+    pub category: ThreatCategory,
+    pub state: AlertState,
+    pub last_event_at: i64,
+    pub last_event_id: String,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ScopedRecoverySnapshot {
+    pub version: u8,
+    pub entries: Vec<ScopedSnapshotEntry>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ScopedRecoveryError { UnsupportedVersion, UnknownTerritory, DuplicateScope, InvalidEvent }
+
+impl ScopedThreatBook {
+    /// Persist only verified historical states. Freshness is never persisted.
+    pub fn recovery_snapshot(&self) -> ScopedRecoverySnapshot {
+        ScopedRecoverySnapshot {
+            version: 1,
+            entries: self.statuses.iter().filter_map(|((territory, category), status)| {
+                Some(ScopedSnapshotEntry {
+                    territory: territory.clone(),
+                    category: *category,
+                    state: status.state,
+                    last_event_at: status.last_event_at?,
+                    last_event_id: status.last_event_id.clone()?,
+                })
+            }).collect(),
+        }
+    }
+
+    pub fn from_recovery_snapshot(
+        catalog: &TerritoryCatalog,
+        snapshot: &ScopedRecoverySnapshot,
+    ) -> Result<Self, ScopedRecoveryError> {
+        if snapshot.version != 1 { return Err(ScopedRecoveryError::UnsupportedVersion); }
+        let mut statuses = BTreeMap::new();
+        for entry in &snapshot.entries {
+            if catalog.get(&entry.territory).is_none() {
+                return Err(ScopedRecoveryError::UnknownTerritory);
+            }
+            if entry.state == AlertState::Unknown || entry.last_event_id.trim().is_empty() {
+                return Err(ScopedRecoveryError::InvalidEvent);
+            }
+            let key = (entry.territory.clone(), entry.category);
+            if statuses.contains_key(&key) { return Err(ScopedRecoveryError::DuplicateScope); }
+            statuses.insert(key, RegionStatus {
+                state: entry.state,
+                last_event_at: Some(entry.last_event_at),
+                last_event_id: Some(entry.last_event_id.clone()),
+                source_freshness: SourceFreshness::Unknown,
+            });
+        }
+        Ok(Self { statuses })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -146,4 +208,41 @@ mod tests {
         assert_eq!(book.apply(&catalog, &event(&oblast, ThreatCategory::AirRaid, "old-clear", 2, Signal::Clear)), ScopedResult::Rejected);
         assert_eq!(book.status(&oblast, ThreatCategory::AirRaid).unwrap().state, AlertState::Active);
     }
+    #[test]
+    fn restored_fresh_clear_requires_refresh_and_scopes_remain_independent() {
+        let (catalog, _, oblast, hromada) = catalog();
+        let mut original = ScopedThreatBook::default();
+        original.apply(&catalog, &event(&oblast, ThreatCategory::Chemical, "c-start", 10, Signal::Start));
+        original.apply(&catalog, &event(&oblast, ThreatCategory::Chemical, "c-clear", 11, Signal::Clear));
+        original.set_freshness(&oblast, ThreatCategory::Chemical, SourceFreshness::Fresh);
+        original.apply(&catalog, &event(&hromada, ThreatCategory::AirRaid, "a-start", 12, Signal::Start));
+        let snapshot = original.recovery_snapshot();
+        let mut restored = ScopedThreatBook::from_recovery_snapshot(&catalog, &snapshot).unwrap();
+        assert_eq!(restored.presentation(&oblast, ThreatCategory::Chemical), PresentationState::ClearNeedsRefresh);
+        assert!(!restored.presentation(&oblast, ThreatCategory::Chemical).may_show_as_safe());
+        assert_eq!(restored.presentation(&hromada, ThreatCategory::AirRaid), PresentationState::ActiveLastKnown);
+        assert_eq!(restored.apply(&catalog, &event(&hromada, ThreatCategory::AirRaid, "old-clear", 11, Signal::Clear)), ScopedResult::Rejected);
+        assert_eq!(restored.apply(&catalog, &event(&hromada, ThreatCategory::AirRaid, "a-start", 12, Signal::Start)), ScopedResult::Rejected);
+    }
+
+    #[test]
+    fn recovery_rejects_unknown_duplicate_and_invalid_entries() {
+        let (catalog, _, oblast, _) = catalog();
+        let mut original = ScopedThreatBook::default();
+        original.apply(&catalog, &event(&oblast, ThreatCategory::AirRaid, "start", 10, Signal::Start));
+        let valid = original.recovery_snapshot();
+        let mut wrong_version = valid.clone();
+        wrong_version.version = 2;
+        assert_eq!(ScopedThreatBook::from_recovery_snapshot(&catalog, &wrong_version).unwrap_err(), ScopedRecoveryError::UnsupportedVersion);
+        let mut duplicate = valid.clone();
+        duplicate.entries.push(duplicate.entries[0].clone());
+        assert_eq!(ScopedThreatBook::from_recovery_snapshot(&catalog, &duplicate).unwrap_err(), ScopedRecoveryError::DuplicateScope);
+        let mut unmapped = valid.clone();
+        unmapped.entries[0].territory.code = "NO-SUCH-TERRITORY".into();
+        assert_eq!(ScopedThreatBook::from_recovery_snapshot(&catalog, &unmapped).unwrap_err(), ScopedRecoveryError::UnknownTerritory);
+        let mut invalid = valid.clone();
+        invalid.entries[0].state = AlertState::Unknown;
+        assert_eq!(ScopedThreatBook::from_recovery_snapshot(&catalog, &invalid).unwrap_err(), ScopedRecoveryError::InvalidEvent);
+    }
+
 }
