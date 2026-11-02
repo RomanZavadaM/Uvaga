@@ -20,20 +20,31 @@ const labels = {
 };
 
 const region = document.querySelector("[data-region]");
+const regionName = document.querySelector("[data-region-name]");
 const confirmed = document.querySelector("[data-confirmed]");
 const freshness = document.querySelector("[data-freshness]");
 const presentation = document.querySelector("[data-presentation]");
 const raw = document.querySelector("[data-raw]");
 const status = document.querySelector("[data-status]");
 const refresh = document.querySelector("[data-refresh]");
+const territory = document.querySelector("[data-territory]");
+const scenario = document.querySelector("[data-scenario]");
 
 function label(group, value) {
   return labels[group]?.[value] ?? value ?? "—";
 }
 
+function setControlsDisabled(disabled) {
+  refresh.disabled = disabled;
+  territory.disabled = disabled;
+  scenario.disabled = disabled;
+}
+
 function setError(message) {
   status.textContent = message;
   status.dataset.kind = "error";
+  region.textContent = "—";
+  regionName.textContent = "Синтетична територія";
   confirmed.textContent = "Не визначено";
   freshness.textContent = "Не визначено";
   presentation.textContent = "Не визначено";
@@ -43,7 +54,7 @@ function setError(message) {
 async function loadDemo() {
   status.textContent = "Отримую синтетичний стан із Rust core…";
   status.dataset.kind = "loading";
-  refresh.disabled = true;
+  setControlsDisabled(true);
 
   try {
     const invoke = window.__TAURI__?.core?.invoke;
@@ -51,14 +62,18 @@ async function loadDemo() {
       throw new Error("Tauri IPC недоступний");
     }
 
-    const payload = await invoke("demo_snapshot");
+    const payload = await invoke("demo_snapshot", {
+      territory: territory.value,
+      scenario: scenario.value,
+    });
     const data = JSON.parse(payload);
 
     region.textContent = data.region;
+    regionName.textContent = data.territory_name;
     confirmed.textContent = label("confirmed_state", data.confirmed_state);
     freshness.textContent = label("source_freshness", data.source_freshness);
     presentation.textContent = label("presentation", data.presentation);
-    raw.textContent = `synthetic=true · issued_at=${data.issued_at}`;
+    raw.textContent = `synthetic=true · scenario=${data.scenario} · issued_at=${data.issued_at}`;
 
     status.textContent = "Стан отримано локально через Tauri IPC.";
     status.dataset.kind = "ok";
@@ -66,9 +81,11 @@ async function loadDemo() {
     console.error(error);
     setError("Не вдалося отримати синтетичний стан. Це не означає відбій.");
   } finally {
-    refresh.disabled = false;
+    setControlsDisabled(false);
   }
 }
 
 refresh.addEventListener("click", loadDemo);
+territory.addEventListener("change", loadDemo);
+scenario.addEventListener("change", loadDemo);
 window.addEventListener("DOMContentLoaded", loadDemo);

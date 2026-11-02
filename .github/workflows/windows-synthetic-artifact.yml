@@ -46,7 +46,7 @@ jobs:
           "$lockHash  Cargo.lock" | Add-Content -Encoding ascii "$artifact/SHA256SUMS.txt"
 
           @(
-            "ТривогА — Windows synthetic test artifact r17",
+            "ТривогА — Windows synthetic test artifact r18",
             "",
             "НЕ РЕЛІЗ. НЕ PRODUCTION. НЕ СИСТЕМА РЕАЛЬНОГО ОПОВІЩЕННЯ.",
             "Target: Windows 10/11 x64",
@@ -55,7 +55,8 @@ jobs:
             "GitHub Actions checkout SHA: $env:GITHUB_SHA",
             "",
             "Мережа, live API, push і геолокація не підключені.",
-            "Очікувана демонстрація: confirmed=active, freshness=stale, presentation=active_last_known.",
+            "Default scenario: UA-46 + active_stale => confirmed=active, freshness=stale, presentation=active_last_known.",
+            "UI also exposes whitelisted synthetic territory/scenario selection through local Tauri IPC.",
             "Якщо IPC не працює, UI має показати помилку, а не відбій.",
             "",
             "SHA256 див. SHA256SUMS.txt"
@@ -66,7 +67,7 @@ jobs:
       - name: Upload Windows synthetic artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Uvaga-Windows-Synthetic-r17
+          name: Uvaga-Windows-Synthetic-r18
           path: target/uvaga-test/artifact/*
           if-no-files-found: error
           retention-days: 30

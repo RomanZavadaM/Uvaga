@@ -118,22 +118,21 @@ BACKUPS contains:
   — SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`, Drive readback exact match.
 
 ## r18 — richer synthetic scenarios / territory selection
-**AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
+**AUTOMATED PASS / MANUAL WINDOWS PASS / MERGE PENDING — 2026-11-02.**
 
 Open PR: #34 `feat(r18): add synthetic territory and fail-safe scenarios`.
 
-Verified product source head:
+Verified manual-test product source head:
 `a2c945034bfea58b3ff5890ea53862831c1b502a`.
 
-Current PR head after README-only documentation commits:
-`cccce86708e77e6a1cd670179ebf9547d0a5f671`.
+After owner acceptance, PR #34 was reconciled with main `1b1c1d011dd427fd5c2a1fcd9b83054e6e3a9bd2`.
+Reconciled product head:
+`00044595f40b48b19e086e3e8a2a81cfaa48bfb5`.
 
-Comparison `a2c945... → cccce867...` changes only README files; no r18 product/source file changed after the verified artifact was built.
-
-Automated checks on the current PR head:
-- Organizational docs checks `41417199329`: PASS;
-- Tauri shell product-platform checks `41417199299`: PASS;
-- Windows synthetic artifact `41417199372`: PASS.
+The reconciliation preserved current main documentation/license checkpoints and applies only six r18 product/workflow files over main. Fresh checks on this reconciled product head:
+- Organizational docs checks `41437451193`: PASS;
+- Tauri shell product-platform checks `41437451223`: PASS;
+- Windows synthetic artifact `41437451346`: PASS.
 
 Verified manual-test artifact remains the r18 artifact built from `a2c945...`:
 - artifact id `13127022813`;
@@ -148,7 +147,17 @@ Scope implemented in PR #34:
 - IPC failure never becomes a clear state;
 - no live source adapter, credentials, notifications, geolocation, production deployment, signing or release.
 
-**Manual Windows 10/11 runtime acceptance is still required before PR #34 may be accepted/merged.**
+**Manual Windows 10/11 x64 runtime acceptance: PASS — 2026-11-02.**
+
+Owner screenshot evidence confirms both territories and all five mappings:
+- UA-46 and UA-30 selection works;
+- active/fresh → active current;
+- active/stale → active last-known;
+- cleared/fresh → cleared current;
+- cleared/stale → **clear needs refresh / повторне підтвердження**;
+- unknown/unavailable → insufficient data / unknown.
+
+Critical invariant confirmed manually: a stale clear is not displayed as a current safe all-clear.
 
 ## README localization
 Merged to `main` via PR #35 at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
@@ -190,4 +199,4 @@ For any future macOS/Android/iOS release, run the same target-specific completen
 **PASS — 2026-11-02.** Clean-session state reconstruction from project-local docs + live GitHub recovered the current state, r17 PASS, C12 PASS, safety limits and next product direction without previous-chat state. See `C13_CLEAN_SESSION.md`.
 
 ## Одна наступна дія
-Виконати **ручне Windows 10/11 x64 runtime-приймання r18** з перевіреного artifact `13127022813`. До PASS не зливати PR #34 і не починати live source adapter.
+Злити PR #34 squash **тільки після PASS фінального docs-check на head із цим acceptance checkpoint**. Після merge оновити Drive mirrors. Live source adapter не починати без окремого рішення власника.

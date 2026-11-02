@@ -62,18 +62,27 @@ https://drive.google.com/file/d/1ybaj5qBhXWNprZ7v4GLvIZeDXTr4xobp/view?usp=drive
 C12 scope is Git source/history only. Production state/data backup remains a separate future concern if such state is introduced.
 
 ## r18 current trial state
-**AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
+**AUTOMATED PASS / MANUAL WINDOWS PASS / MERGE PENDING — 2026-11-02.**
 
 Open PR: #34.
-Verified product source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`.
-Current PR head: `cccce86708e77e6a1cd670179ebf9547d0a5f671`.
+Verified manual-test product source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`.
+Reconciled product head: `00044595f40b48b19e086e3e8a2a81cfaa48bfb5`.
 
-The commits after `a2c945...` are README-only; compare shows no product/source changes after the artifact used for manual acceptance.
+PR #34 was reconciled with current main `1b1c1d011dd427fd5c2a1fcd9b83054e6e3a9bd2` without replaying stale README/state/license changes.
 
-Automated checks on current PR head:
-- docs `41417199329`: PASS;
-- Tauri Windows/macOS matrix `41417199299`: PASS;
-- Windows synthetic artifact `41417199372`: PASS.
+Fresh reconciled-head checks:
+- docs `41437451193`: PASS;
+- Tauri Windows/macOS matrix `41437451223`: PASS;
+- Windows synthetic artifact `41437451346`: PASS.
+
+Owner manual Windows screenshots confirm:
+- UA-46 and UA-30 switching;
+- active/fresh → active current;
+- active/stale → active last-known;
+- cleared/fresh → cleared current;
+- cleared/stale → clear requires reconfirmation;
+- unknown/unavailable → insufficient data.
+Critical stale-clear fail-safe: **PASS**.
 
 Manual-test artifact:
 - id `13127022813`;
@@ -128,4 +137,4 @@ The clean session recovered the actual state from project-local documents + live
 Detailed evidence: `C13_CLEAN_SESSION.md`.
 
 ## One next action
-Run the verified r18 Windows artifact on Windows 10/11 x64 and complete the predeclared manual checklist. Until owner PASS: keep PR #34 open and do not start live-source integration.
+Merge PR #34 squash after the final docs-check for this acceptance checkpoint passes; then sync Drive mirrors. Do not start live-source integration without a separate owner decision.

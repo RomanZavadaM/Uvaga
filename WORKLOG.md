@@ -78,7 +78,16 @@
 - Verified artifact id `13127022813`; ZIP SHA256 `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`; `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`.
 - Subsequent PR-head changes through `cccce86708e77e6a1cd670179ebf9547d0a5f671` are README-only; comparison confirms no r18 product files changed after the verified artifact build.
 - Latest PR-head workflows also PASS: docs `41417199329`, Tauri matrix `41417199299`, Windows artifact `41417199372`.
-- Manual Windows runtime acceptance: **PENDING**. PR #34 must remain open until owner acceptance.
+- Owner completed manual Windows 10/11 x64 acceptance with screenshots: **PASS**.
+- UA-46 and UA-30 switching: PASS.
+- active/fresh: PASS.
+- active/stale: PASS; stale active remains last-known active.
+- cleared/fresh: PASS.
+- unknown/unavailable: PASS; insufficient data shown.
+- critical cleared/stale: PASS; UI shows stale data and `Відбій потребує повторного підтвердження`, never a current safe all-clear.
+- PR #34 reconciled with main `1b1c1d011dd427fd5c2a1fcd9b83054e6e3a9bd2`; reconciled product head `00044595f40b48b19e086e3e8a2a81cfaa48bfb5`.
+- Fresh reconciled-head checks PASS: docs `41437451193`, Tauri matrix `41437451223`, Windows artifact `41437451346`.
+- r18 manual acceptance: **PASS; merge checkpoint pending only**.
 
 ## 2026-11-02 — README localization
 - PR #35 merged to main: `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
@@ -116,4 +125,4 @@
 - Issue #9 is the live integration register.
 
 ## NEXT
-Owner manual Windows 10/11 x64 runtime acceptance of r18 artifact `13127022813`. Do not merge PR #34 or start a live source adapter before PASS.
+Merge PR #34 squash after the final documentation checkpoint check passes. Then synchronize GitHub state to Drive. Do not start a live source adapter without a separate owner decision.

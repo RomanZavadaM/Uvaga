@@ -86,29 +86,23 @@ Verified:
 Detailed evidence: `C13_CLEAN_SESSION.md`.
 
 ## r18 synthetic territory/scenario verification
-**AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
+**AUTOMATED PASS / MANUAL WINDOWS PASS / MERGE PENDING — 2026-11-02.**
 
 PR #34 verified product source head:
 `a2c945034bfea58b3ff5890ea53862831c1b502a`.
 
-Current PR head:
-`cccce86708e77e6a1cd670179ebf9547d0a5f671`.
+Manual-test artifact was built from product head `a2c945034bfea58b3ff5890ea53862831c1b502a`.
 
-A direct compare from `a2c945...` to `cccce867...` shows only:
-- `README.md`;
-- `README.en.md`;
-- `README.fr.md`;
-- `README.de.md`;
-- `README.es.md`;
-- `README.ko.md`;
-- `README.ja.md`.
+After manual acceptance, PR #34 was reconciled with main `1b1c1d011dd427fd5c2a1fcd9b83054e6e3a9bd2`.
+Reconciled product head:
+`00044595f40b48b19e086e3e8a2a81cfaa48bfb5`.
 
-Therefore no r18 product/source file changed after the verified manual-test artifact was built.
+Compare `main → 00044595...` contains exactly six r18 product/workflow files and no stale README/state/license replay.
 
-Current-head automated evidence:
-- Organizational docs checks `41417199329`: PASS;
-- Tauri shell product-platform checks `41417199299`: PASS;
-- Windows synthetic test artifact `41417199372`: PASS.
+Fresh reconciled-head automated evidence:
+- Organizational docs checks `41437451193`: PASS;
+- Tauri shell product-platform checks `41437451223`: PASS;
+- Windows synthetic test artifact `41437451346`: PASS.
 
 Manual-test artifact evidence from verified product head `a2c945...`:
 - artifact id `13127022813`;
@@ -116,7 +110,18 @@ Manual-test artifact evidence from verified product head `a2c945...`:
 - `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`;
 - `Cargo.lock` SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`.
 
-Automated acceptance covers build/tests/artifact/checksums only. Visual/runtime UX still requires owner execution on Windows 10/11 x64. Until that PASS, PR #34 is not accepted and must not be merged.
+Manual Windows 10/11 x64 runtime evidence supplied by owner: **PASS**.
+
+Confirmed mappings:
+- UA-46 and UA-30 territory switching: PASS;
+- active/fresh → active current: PASS;
+- active/stale → active last-known: PASS;
+- cleared/fresh → cleared current: PASS;
+- cleared/stale → `Відбій потребує повторного підтвердження`: PASS;
+- unknown/unavailable → official state unknown + source unavailable + insufficient data: PASS;
+- local Tauri IPC remains successful.
+
+Critical safety invariant: **PASS** — stale clear does not render as current safe all-clear.
 
 ## README localization verification
 PR #35 merged to main at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
