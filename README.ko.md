@@ -8,20 +8,22 @@
 
 ## 테스트 다운로드
 
-### Windows 10/11 x64 — r18 synthetic test build
+### Windows 10/11 x64 — r19 synthetic test build
 
-[**Uvaga-Windows-Synthetic-r18.zip 다운로드**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41415006414/artifacts/13127022813)
+[**Uvaga-Windows-Synthetic-r19.zip 다운로드**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-이 파일은 **정식 릴리스도 production 빌드도 아닙니다**. 검증된 r18 synthetic test build이며 Windows 수동 승인이 완료되었고 변경 사항은 `main`에 통합되었습니다. GitHub Actions artifact를 다운로드하려면 GitHub 로그인이 필요할 수 있습니다.
+이 파일은 **정식 릴리스도 production 빌드도 아닙니다**. 최신 자동 검증 desktop hardening build입니다. r18은 소유자가 Windows에서 수동 승인한 마지막 빌드이며 r19의 owner visual sanity는 아직 대기 중입니다.
 
-- Source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`
-- ZIP SHA256: `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`
-- `Uvaga.exe` SHA256: `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`
-- 자동 Windows/macOS 검사: **PASS**
-- r18 Windows 수동 runtime 승인: **PASS — 2026-11-02**
-- r18 `main` 통합: `61c0662d941e388858f5214c14860ec92a586905`
+- Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
+- ZIP SHA256: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
+- `Uvaga.exe` SHA256: `c9afe5873aad563dd6f07b51a6b05cc64fac3057e91f1127d2794b3372b7b593`
+- `Cargo.lock` SHA256: `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`
+- UI contract / Windows / macOS ARM / macOS Intel: **PASS**
+- r19 `main` 통합: `1af2e5d2c53a00619172056bab9fde746daff988`
+- r19 owner visual sanity: **PENDING**
+- r18 owner manual runtime 승인: **PASS — 2026-11-02**
 
-테스트 UI에서는 synthetic 지역(`UA-46` 또는 `UA-30`)을 선택하고 active/fresh, active/stale, cleared/fresh, cleared/stale, unknown/unavailable의 다섯 가지 fail-safe 시나리오를 확인할 수 있습니다.
+r19은 핵심 상태를 더 작고 접근 가능하게 표시하며 fail-closed dependency lock과 자체 설명형 테스트 artifact를 추가합니다. live source는 연결하지 않습니다.
 
 ## 계획된 플랫폼
 
