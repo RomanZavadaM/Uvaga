@@ -1,0 +1,237 @@
+name: Windows NSIS installer candidate
+on:
+  pull_request:
+    paths:
+      - 'app/**'
+      - 'src-tauri/**'
+      - 'README.md'
+      - 'LICENSE.md'
+      - 'THIRD_PARTY_NOTICES.md'
+      - 'SECURITY.md'
+      - 'docs/WINDOWS_DISTRIBUTION.md'
+      - 'scripts/check_release_metadata.py'
+      - 'scripts/verify_tauri_lock.py'
+      - '.github/workflows/windows-installer-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  installer:
+    runs-on: windows-2025
+    timeout-minutes: 40
+    env:
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target/uvaga-installer
+      SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      TAURI_CLI_VERSION: '2.12.4'
+      TAURI_CLI_ARCHIVE_SHA256: '3e8687fb184bd7f10ebd8642f7715f79f4a605c0694c142a21507e8a24dc0f8b'
+      ACCEPTED_LOCK_SHA256: '6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d'
+      LICENSE_RUN_ID: '41426326573'
+      LICENSE_ARTIFACT_NAME: 'Uvaga-r18-third-party-license-texts'
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Validate release metadata
+        run: python scripts/check_release_metadata.py
+
+      - name: Restore exact accepted application dependency lock
+        run: |
+          cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
+          cargo update --manifest-path src-tauri/Cargo.toml -p cc --precise 1.10.0
+          python scripts/verify_tauri_lock.py
+
+      - name: Test application before packaging
+        run: cargo test --locked --manifest-path src-tauri/Cargo.toml
+
+      - name: Install exact prebuilt Tauri CLI
+        shell: pwsh
+        run: |
+          $tools = ".tools/tauri"
+          New-Item -ItemType Directory -Force -Path $tools | Out-Null
+          $archive = ".tools/cargo-tauri.zip"
+          $url = "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v$env:TAURI_CLI_VERSION/cargo-tauri-x86_64-pc-windows-msvc.zip"
+          Invoke-WebRequest -Uri $url -OutFile $archive
+          $hash = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLower()
+          if ($hash -ne $env:TAURI_CLI_ARCHIVE_SHA256) {
+            throw "Tauri CLI archive checksum mismatch: $hash"
+          }
+          Expand-Archive -Path $archive -DestinationPath $tools -Force
+          $cargoTauri = Get-ChildItem $tools -Recurse -Filter "cargo-tauri.exe" -File | Select-Object -First 1
+          if (!$cargoTauri) { throw "cargo-tauri.exe not found in verified archive" }
+          $cargoTauri.DirectoryName | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          & $cargoTauri.FullName --version
+          if ((& $cargoTauri.FullName --version) -notmatch $env:TAURI_CLI_VERSION) {
+            throw "Unexpected tauri-cli version"
+          }
+
+      - name: Download accepted exact-lock Windows license texts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path ".audit/license-texts" | Out-Null
+          gh run download $env:LICENSE_RUN_ID --repo $env:GITHUB_REPOSITORY --name $env:LICENSE_ARTIFACT_NAME --dir ".audit/license-texts"
+
+          if (!(Test-Path ".audit/license-texts/Cargo.lock")) { throw "License evidence Cargo.lock missing" }
+          $lockHash = (Get-FileHash ".audit/license-texts/Cargo.lock" -Algorithm SHA256).Hash.ToLower()
+          if ($lockHash -ne $env:ACCEPTED_LOCK_SHA256) { throw "License evidence lock mismatch: $lockHash" }
+
+          $coverage = Get-Content ".audit/license-texts/WINDOWS_GRAPH_COVERAGE.json" -Raw | ConvertFrom-Json
+          if ($coverage.windows_normal_build_external_count -ne 222) { throw "Unexpected external dependency count" }
+          if ($coverage.cargo_about_external_count -ne 222) { throw "Unexpected cargo-about dependency count" }
+          if ($coverage.missing_from_cargo_about.Count -ne 0) { throw "License evidence has missing packages" }
+          if ($coverage.extra_in_cargo_about.Count -ne 0) { throw "License evidence has extra packages" }
+          if (!(Test-Path ".audit/license-texts/THIRD_PARTY_LICENSES.md")) { throw "Full license text missing" }
+
+      - name: Build unsigned NSIS installer
+        run: |
+          cargo tauri build --bundles nsis --ci
+          python scripts/verify_tauri_lock.py
+
+      - name: Locate and verify unsigned bundle
+        shell: pwsh
+        run: |
+          $installerDir = Join-Path $env:CARGO_TARGET_DIR "release/bundle/nsis"
+          $installer = Get-ChildItem -Path $installerDir -Filter "*-setup.exe" -File | Select-Object -First 1
+          if (!$installer) { throw "NSIS installer not found in $installerDir" }
+
+          $releaseExe = Join-Path $env:CARGO_TARGET_DIR "release/uvaga-app.exe"
+          if (!(Test-Path $releaseExe)) { throw "Release executable not found: $releaseExe" }
+
+          $installerSig = Get-AuthenticodeSignature $installer.FullName
+          $exeSig = Get-AuthenticodeSignature $releaseExe
+          if ($installerSig.Status -ne "NotSigned") { throw "Installer must remain unsigned in candidate scope: $($installerSig.Status)" }
+          if ($exeSig.Status -ne "NotSigned") { throw "Release executable must remain unsigned in candidate scope: $($exeSig.Status)" }
+
+          "INSTALLER_PATH=$($installer.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "RELEASE_EXE_PATH=$releaseExe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Silent current-user install and launch smoke
+        shell: pwsh
+        run: |
+          $installDir = Join-Path $env:RUNNER_TEMP "Uvaga-candidate-install"
+          Remove-Item $installDir -Recurse -Force -ErrorAction SilentlyContinue
+
+          $proc = Start-Process -FilePath $env:INSTALLER_PATH -ArgumentList @("/S", "/D=$installDir") -Wait -PassThru
+          if ($proc.ExitCode -ne 0) { throw "Silent install failed: exit $($proc.ExitCode)" }
+
+          $installedExe = Get-ChildItem -Path $installDir -Filter "*.exe" -File -Recurse |
+            Where-Object { $_.Name -notmatch "(?i)uninstall" } |
+            Select-Object -First 1
+          if (!$installedExe) { throw "Installed application executable not found in $installDir" }
+
+          $hkcu = Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall" -ErrorAction SilentlyContinue |
+            Get-ItemProperty |
+            Where-Object { $_.DisplayName -eq "ТривогА" } |
+            Select-Object -First 1
+          if (!$hkcu) { throw "Current-user HKCU uninstall registration not found" }
+
+          $app = Start-Process -FilePath $installedExe.FullName -PassThru
+          Start-Sleep -Seconds 8
+          if ($app.HasExited) { throw "Installed application exited during launch smoke with code $($app.ExitCode)" }
+          Stop-Process -Id $app.Id -Force
+          $app.WaitForExit()
+
+          $installedSig = Get-AuthenticodeSignature $installedExe.FullName
+          if ($installedSig.Status -ne "NotSigned") { throw "Installed executable unexpectedly signed" }
+
+          "INSTALL_DIR=$installDir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "INSTALLED_EXE=$($installedExe.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Silent uninstall smoke
+        shell: pwsh
+        run: |
+          $uninstaller = Get-ChildItem -Path $env:INSTALL_DIR -Filter "*uninstall*.exe" -File -Recurse | Select-Object -First 1
+          if (!$uninstaller) { throw "Uninstaller not found" }
+
+          $proc = Start-Process -FilePath $uninstaller.FullName -ArgumentList "/S" -Wait -PassThru
+          if ($proc.ExitCode -ne 0) { throw "Silent uninstall failed: exit $($proc.ExitCode)" }
+          Start-Sleep -Seconds 3
+
+          if (Test-Path $env:INSTALLED_EXE) { throw "Application executable remains after uninstall" }
+
+          $hkcu = Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall" -ErrorAction SilentlyContinue |
+            Get-ItemProperty |
+            Where-Object { $_.DisplayName -eq "ТривогА" } |
+            Select-Object -First 1
+          if ($hkcu) { throw "HKCU uninstall registration remains after uninstall" }
+
+      - name: Prepare self-describing installer artifact
+        shell: pwsh
+        run: |
+          $out = Join-Path $env:CARGO_TARGET_DIR "installer-artifact"
+          New-Item -ItemType Directory -Force -Path $out | Out-Null
+          New-Item -ItemType Directory -Force -Path "$out/third-party" | Out-Null
+
+          Copy-Item $env:INSTALLER_PATH "$out/Uvaga-Setup-unsigned.exe"
+          Copy-Item $env:RELEASE_EXE_PATH "$out/Uvaga.exe"
+          Copy-Item "src-tauri/Cargo.lock" "$out/Cargo.lock"
+          Copy-Item "README.md" "$out/README.md"
+          Copy-Item "LICENSE.md" "$out/LICENSE.md"
+          Copy-Item "THIRD_PARTY_NOTICES.md" "$out/THIRD_PARTY_NOTICES.md"
+          Copy-Item "SECURITY.md" "$out/SECURITY.md"
+          Copy-Item "docs/WINDOWS_DISTRIBUTION.md" "$out/WINDOWS_DISTRIBUTION.md"
+          Copy-Item ".audit/license-texts/THIRD_PARTY_LICENSES.md" "$out/third-party/THIRD_PARTY_LICENSES.md"
+          Copy-Item ".audit/license-texts/WINDOWS_GRAPH_COVERAGE.json" "$out/third-party/WINDOWS_GRAPH_COVERAGE.json"
+
+          $appVersion = (python scripts/check_release_metadata.py --print-version).Trim()
+
+          @(
+            "ТривогА — Windows NSIS CI candidate",
+            "",
+            "НЕ PRODUCTION RELEASE. UNSIGNED TEST ARTIFACT.",
+            "Artifact track: installer-candidate",
+            "App version: $appVersion",
+            "Source head: $env:SOURCE_HEAD_SHA",
+            "GitHub checkout SHA: $env:GITHUB_SHA",
+            "GitHub Actions run: $env:GITHUB_RUN_ID",
+            "Tauri CLI: $env:TAURI_CLI_VERSION",
+            "Tauri CLI archive SHA256: $env:TAURI_CLI_ARCHIVE_SHA256",
+            "Target: Windows 10/11 x64",
+            "Installer: NSIS currentUser, Ukrainian+English+FR+DE+ES+KO+JA",
+            "WebView2: embedded bootstrapper",
+            "Downgrades: disabled",
+            "Exact app Cargo.lock SHA256: $env:ACCEPTED_LOCK_SHA256",
+            "Automated smoke: silent install + HKCU registration + app launch + silent uninstall",
+            "Signing: none",
+            "Updater/live API/push/geolocation: none"
+          ) | Set-Content -Encoding utf8 "$out/BUILD_INFO.txt"
+
+          @(
+            "MPL source availability checkpoint",
+            "Broad compliance/source bundle Drive backup:",
+            "https://drive.google.com/file/d/1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU/view?usp=drivesdk",
+            "Bundle ZIP SHA256: af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2",
+            "This CI candidate is a test artifact. Any production release requires a non-expiring source-availability location."
+          ) | Set-Content -Encoding utf8 "$out/MPL_SOURCE_AVAILABILITY.txt"
+
+          $entries = Get-ChildItem -Path $out -File -Recurse | Where-Object { $_.Name -ne "SHA256SUMS.txt" } | Sort-Object FullName
+          $lines = foreach ($file in $entries) {
+            $hash = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLower()
+            $relative = [IO.Path]::GetRelativePath($out, $file.FullName).Replace("\", "/")
+            "$hash  $relative"
+          }
+          $lines | Set-Content -Encoding ascii "$out/SHA256SUMS.txt"
+
+          $installerHash = (Get-FileHash "$out/Uvaga-Setup-unsigned.exe" -Algorithm SHA256).Hash.ToLower()
+          $exeHash = (Get-FileHash "$out/Uvaga.exe" -Algorithm SHA256).Hash.ToLower()
+          Write-Host "Installer SHA256: $installerHash"
+          Write-Host "Release EXE SHA256: $exeHash"
+          Write-Host "Accepted Cargo.lock SHA256: $env:ACCEPTED_LOCK_SHA256"
+
+      - name: Upload installer candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uvaga-Windows-Installer-candidate-${{ github.run_number }}
+          path: target/uvaga-installer/installer-artifact/**
+          if-no-files-found: error
+          retention-days: 30
