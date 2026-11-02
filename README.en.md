@@ -4,7 +4,7 @@
 
 > **Current status:** early prototype / synthetic-only. There is no production deployment, no live API credentials, and no public notification delivery. The application does not replace official alerting channels; absence of a message does not mean absence of danger.
 
-**README languages:** [Українська](README.md) · English · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
+**Primary README language: [Українська](README.md).** Translations: English · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [한국어](README.ko.md) · [日本語](README.ja.md)
 
 ## Test download
 
