@@ -167,6 +167,14 @@ Exact Windows r18 license-text completeness:
 
 **Windows r18 third-party text completeness: PASS.**
 
+Drive BACKUPS readback:
+- broad compliance bundle:
+  https://drive.google.com/file/d/1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU/view?usp=drivesdk
+  — size 1,735,444 bytes; SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2`, exact GitHub artifact match;
+- Windows license-text bundle:
+  https://drive.google.com/file/d/11C7VE5QZhyMtkYwbJoDVraLAe9c08bEr/view?usp=drivesdk
+  — size 350,789 bytes; SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`, exact GitHub artifact match.
+
 This PASS is target-specific. Future macOS/Android/iOS release targets require their own exact-lock target-specific compliance run and non-expiring release packaging.
 
 ## Source/legal checks

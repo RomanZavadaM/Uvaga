@@ -105,6 +105,9 @@
 - Exact Windows normal+build external closure: 222; cargo-about external set: 222; missing 0; extra 0.
 - Full Markdown license texts and MPL evidence present.
 - Windows r18 third-party text completeness: **PASS**.
+- Drive BACKUPS readback verified exact:
+  - broad compliance bundle `1WRal8jzB9TPiwZUQczYlCf86MZbbQFdU` → SHA256 `af4561fd187f588333d263df5064a3c06271e2bd7b7d21546b915425dc6477d2`;
+  - Windows license-text bundle `11C7VE5QZhyMtkYwbJoDVraLAe9c08bEr` → SHA256 `bff4a206a3cdf7fae85a671b23bd566c3613beb8d19d99729b13d261cb531f6e`.
 - Future macOS/Android/iOS releases require their own target-specific completeness run and non-expiring distribution packaging.
 
 ## Execution continuity
