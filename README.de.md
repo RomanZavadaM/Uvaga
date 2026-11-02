@@ -12,7 +12,7 @@
 
 [**Uvaga-Windows-Installer-r20.zip herunterladen**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41447023597/artifacts/13142977634)
 
-Dies ist ein **unsignierter Test-Installer, kein Production-Release**. CI hat current-user Silent-Installation, HKCU-Registrierung, Start der installierten App und Silent-Deinstallation bereits geprüft. Die Installer-UX-Abnahme durch den Eigentümer steht noch aus.
+Dies ist ein **unsignierter Test-Installer, kein Production-Release**. CI hat current-user Silent-Installation, HKCU-Registrierung, Start der installierten App und Silent-Deinstallation bereits geprüft. Die Installer-UX-Abnahme durch den Eigentümer steht noch aus. r20 bleibt der jüngste archivierte Installer-Testkandidat mit vollständiger automatisierter Installations-/Deinstallations-Evidenz; r21–r23 waren CI-/Release-Prozess-Hardening ohne neues vom Eigentümer akzeptiertes Release-Artefakt.
 
 - Source head: `96a7953a2388811716c9c13001fcf9ca3d5b79c2`
 - r20-Merge: `e913edf6bb62249806afc7c19ac8c19e2cde1166`
@@ -29,7 +29,7 @@ Drive-Backup: https://drive.google.com/file/d/1A0fAVnfmgnK6xfVwTlXB-muZxTnGrTuX/
 
 [**Uvaga-Windows-Synthetic-r19.zip herunterladen**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-Dies ist **kein Release und kein Production-Build**. Es ist der neueste automatisiert geprüfte Desktop-Hardening-Build. r18 bleibt der letzte vom Eigentümer manuell akzeptierte Windows-Build; die visuelle Eigentümerprüfung für r19 steht noch aus.
+Dies ist **kein Release und kein Production-Build**. Es ist ein historischer synthetischer r19-Desktop-Hardening-Build, der als überprüfbare Evidenz erhalten bleibt. r18 bleibt der letzte vom Eigentümer manuell akzeptierte Windows-Build; die visuelle Eigentümerprüfung für r19 steht noch aus.
 
 - Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
 - ZIP SHA256: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
