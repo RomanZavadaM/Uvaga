@@ -30,6 +30,7 @@ jobs:
       CARGO_TARGET_DIR: target/uvaga-installer
       SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       TAURI_CLI_VERSION: '2.12.4'
+      TAURI_CLI_ARCHIVE_SHA256: '3e8687fb184bd7f10ebd8642f7715f79f4a605c0694c142a21507e8a24dc0f8b'
       ACCEPTED_LOCK_SHA256: '6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d'
       LICENSE_RUN_ID: '41426326573'
       LICENSE_ARTIFACT_NAME: 'Uvaga-r18-third-party-license-texts'
@@ -48,11 +49,24 @@ jobs:
       - name: Test application before packaging
         run: cargo test --locked --manifest-path src-tauri/Cargo.toml
 
-      - name: Install exact Tauri CLI
+      - name: Install exact prebuilt Tauri CLI
+        shell: pwsh
         run: |
-          cargo install tauri-cli --version $env:TAURI_CLI_VERSION --locked
-          cargo tauri --version
-          if ((cargo tauri --version) -notmatch $env:TAURI_CLI_VERSION) {
+          $tools = ".tools/tauri"
+          New-Item -ItemType Directory -Force -Path $tools | Out-Null
+          $archive = ".tools/cargo-tauri.zip"
+          $url = "https://github.com/tauri-apps/tauri/releases/download/tauri-cli-v$env:TAURI_CLI_VERSION/cargo-tauri-x86_64-pc-windows-msvc.zip"
+          Invoke-WebRequest -Uri $url -OutFile $archive
+          $hash = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLower()
+          if ($hash -ne $env:TAURI_CLI_ARCHIVE_SHA256) {
+            throw "Tauri CLI archive checksum mismatch: $hash"
+          }
+          Expand-Archive -Path $archive -DestinationPath $tools -Force
+          $cargoTauri = Get-ChildItem $tools -Recurse -Filter "cargo-tauri.exe" -File | Select-Object -First 1
+          if (!$cargoTauri) { throw "cargo-tauri.exe not found in verified archive" }
+          $cargoTauri.DirectoryName | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          & $cargoTauri.FullName --version
+          if ((& $cargoTauri.FullName --version) -notmatch $env:TAURI_CLI_VERSION) {
             throw "Unexpected tauri-cli version"
           }
 
@@ -173,6 +187,7 @@ jobs:
             "Source head: $env:SOURCE_HEAD_SHA",
             "GitHub checkout SHA: $env:GITHUB_SHA",
             "Tauri CLI: $env:TAURI_CLI_VERSION",
+            "Tauri CLI archive SHA256: $env:TAURI_CLI_ARCHIVE_SHA256",
             "Target: Windows 10/11 x64",
             "Installer: NSIS currentUser, Ukrainian+English+FR+DE+ES+KO+JA",
             "WebView2: embedded bootstrapper",
