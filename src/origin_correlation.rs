@@ -44,7 +44,7 @@ pub fn correlate(reports: &[IntakeReport], territory: &str, kind: &str) -> Corre
             && copies.iter().all(|r| r.authenticated && r.competent_for_kind && !r.origin_event.trim().is_empty());
         if trusted {
             accepted += 1;
-            fingerprints.insert(identities.iter().next().unwrap());
+            fingerprints.insert(*identities.iter().next().unwrap());
         } else {
             suspect += 1;
         }
