@@ -81,7 +81,7 @@ require(
 require('setPresentationKind("error")' in JS, "IPC error must force error/unknown presentation")
 require("clearState();" in JS, "IPC error must clear previous snapshot")
 require('env!("CARGO_PKG_VERSION")' in RUST, "Rust payload must expose local app version")
-require('\"app_version\"' in RUST, "app_version JSON field missing")
+require("app_version" in RUST, "app_version JSON field missing")
 
 readme_paths = [
     ROOT / "README.md",
