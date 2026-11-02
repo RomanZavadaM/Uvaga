@@ -8,20 +8,22 @@
 
 ## Descarga de prueba
 
-### Windows 10/11 x64 — build sintética r18
+### Windows 10/11 x64 — build sintética r19
 
-[**Descargar Uvaga-Windows-Synthetic-r18.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41415006414/artifacts/13127022813)
+[**Descargar Uvaga-Windows-Synthetic-r19.zip**](https://github.com/RomanZavadaM/Uvaga/actions/runs/41442359441/artifacts/13140138112)
 
-Esto **no es una versión publicada ni una build de producción**. Es la build sintética r18 verificada; la aceptación manual en Windows está completada y los cambios están integrados en `main`. GitHub puede requerir iniciar sesión para descargar un artefacto de Actions.
+Esto **no es una versión publicada ni una build de producción**. Es la última build de endurecimiento desktop verificada automáticamente. r18 sigue siendo la última build de Windows aceptada manualmente por el propietario; la revisión visual del propietario para r19 sigue pendiente.
 
-- Source head: `a2c945034bfea58b3ff5890ea53862831c1b502a`
-- SHA256 del ZIP: `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`
-- SHA256 de `Uvaga.exe`: `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`
-- Comprobaciones automáticas Windows/macOS: **PASS**
-- Aceptación manual de runtime en Windows para r18: **PASS — 2026-11-02**
-- r18 integrado en `main`: `61c0662d941e388858f5214c14860ec92a586905`
+- Source head: `cc4992975b73f0211cdd44b05f7ebd52d76a5415`
+- SHA256 del ZIP: `7f2dc03cd58686e2555026a544d78673f9fdcf7b452c44913b40013ee34bffad`
+- SHA256 de `Uvaga.exe`: `c9afe5873aad563dd6f07b51a6b05cc64fac3057e91f1127d2794b3372b7b593`
+- SHA256 de `Cargo.lock`: `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`
+- Contrato UI / Windows / macOS ARM / macOS Intel: **PASS**
+- r19 integrado en `main`: `1af2e5d2c53a00619172056bab9fde746daff988`
+- Revisión visual del propietario r19: **PENDING**
+- Aceptación manual runtime r18: **PASS — 2026-11-02**
 
-La interfaz de prueba permite elegir un territorio sintético (`UA-46` o `UA-30`) y cinco escenarios fail-safe: active/fresh, active/stale, cleared/fresh, cleared/stale y unknown/unavailable.
+r19 hace el estado crítico más compacto y accesible, añade un bloqueo fail-closed de dependencias y un artefacto de prueba autodescriptivo. Las fuentes en vivo siguen sin conectarse.
 
 ## Plataformas previstas
 
