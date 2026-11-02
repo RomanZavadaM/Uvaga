@@ -38,6 +38,8 @@ jobs:
             LICENSE.md \
             COPYRIGHT.md \
             THIRD_PARTY_NOTICES.md \
+            SECURITY.md \
+            docs/WINDOWS_DISTRIBUTION.md \
             CORE_EVALUATION.md
           do
             test -s "$f" || { echo "missing or empty: $f"; exit 1; }
