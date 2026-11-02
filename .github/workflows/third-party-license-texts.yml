@@ -1,0 +1,104 @@
+name: Third-party full license texts
+
+on:
+  pull_request:
+    paths:
+      - 'about.toml'
+      - 'about.hbs'
+      - '.github/workflows/third-party-license-texts.yml'
+      - 'docs/THIRD_PARTY_LICENSE_TEXTS.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      R18_RUN_ID: '41415006414'
+      R18_ARTIFACT_NAME: 'Uvaga-Windows-Synthetic-r18'
+      R18_LOCK_SHA256: '6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d'
+      CARGO_ABOUT_VERSION: '0.9.2'
+      CARGO_ABOUT_SHA256: '9099a59e820c38a68b9d65f300662a567d56562f9a10f6aa4c7e86c17c2566af'
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Download and verify exact r18 Cargo.lock
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .audit/r18 .audit/bin .audit/out
+          gh run download "$R18_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "$R18_ARTIFACT_NAME" \
+            --dir .audit/r18
+          echo "$R18_LOCK_SHA256  .audit/r18/Cargo.lock" | sha256sum --check --strict
+          cp .audit/r18/Cargo.lock src-tauri/Cargo.lock
+
+      - name: Install pinned cargo-about binary
+        run: |
+          url="https://github.com/EmbarkStudios/cargo-about/releases/download/$CARGO_ABOUT_VERSION/cargo-about-$CARGO_ABOUT_VERSION-x86_64-unknown-linux-musl.tar.gz"
+          curl --fail --location --silent --show-error "$url" -o .audit/cargo-about.tar.gz
+          echo "$CARGO_ABOUT_SHA256  .audit/cargo-about.tar.gz" | sha256sum --check --strict
+          tar -xzf .audit/cargo-about.tar.gz -C .audit/bin --strip-components=1
+          .audit/bin/cargo-about --version
+
+      - name: Fetch exact locked dependency sources
+        run: cargo fetch --locked --manifest-path src-tauri/Cargo.toml
+
+      - name: Generate machine-readable full license data
+        run: |
+          .audit/bin/cargo-about generate \
+            --locked \
+            --offline \
+            --fail \
+            --manifest-path src-tauri/Cargo.toml \
+            --config about.toml \
+            --format json \
+            > .audit/out/THIRD_PARTY_LICENSES.json
+
+      - name: Generate human-readable full license texts
+        run: |
+          .audit/bin/cargo-about generate \
+            --locked \
+            --offline \
+            --fail \
+            --manifest-path src-tauri/Cargo.toml \
+            --config about.toml \
+            --output-file .audit/out/THIRD_PARTY_LICENSES.md \
+            about.hbs
+
+      - name: Validate generated output
+        run: |
+          test -s .audit/out/THIRD_PARTY_LICENSES.json
+          test -s .audit/out/THIRD_PARTY_LICENSES.md
+          grep -q 'third-party license texts' .audit/out/THIRD_PARTY_LICENSES.md
+          grep -q 'MPL-2.0' .audit/out/THIRD_PARTY_LICENSES.md
+          cp src-tauri/Cargo.lock .audit/out/Cargo.lock
+          cp about.toml .audit/out/about.toml
+          cp about.hbs .audit/out/about.hbs
+          {
+            echo "source_run=$R18_RUN_ID"
+            echo "source_artifact=$R18_ARTIFACT_NAME"
+            echo "cargo_lock_sha256=$R18_LOCK_SHA256"
+            echo "cargo_about_version=$CARGO_ABOUT_VERSION"
+            echo "cargo_about_archive_sha256=$CARGO_ABOUT_SHA256"
+            echo "purpose=exact-r18 third-party full license text generation"
+          } > .audit/out/EVIDENCE.txt
+
+      - name: Upload full third-party license texts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uvaga-r18-third-party-license-texts
+          path: .audit/out/*
+          if-no-files-found: error
+          retention-days: 30
