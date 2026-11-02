@@ -50,3 +50,19 @@ Only crates.io registry dependencies are accepted. Unknown registries and git de
 ## Safety
 
 No live alert source, credentials, public notifications, production deployment, signing or release are introduced.
+
+## Verification result
+
+**PASS — 2026-11-02.**
+
+- GitHub Actions run: `41423140592`;
+- exact r18 `Cargo.lock` hash verification: PASS;
+- pinned `cargo-deny-action` commit: `3c6349835b2b7b196a839186cb8b78e02f7b5f25` (cargo-deny 0.20.2);
+- `cargo deny check licenses sources`: PASS;
+- global GPL/AGPL/LGPL allow-list: absent;
+- MPL-2.0 accepted only for the five reviewed exact crate versions;
+- unknown registry/git source policy: deny.
+
+**Machine dependency license/source policy sub-gate: PASS.**
+
+Still separate before production release: generate/read back distributable third-party license texts and explicit MPL source-availability notice for the exact release lock.
