@@ -215,3 +215,10 @@ Owner-independent CI efficiency / release-checklist hardening. Owner r20 install
 - r22 result: docs-only edits no longer auto-run expensive Windows synthetic/installer builds; heavy workflows keep manual `workflow_dispatch`; `RELEASE_CHECKLIST.md` and cheap CI-scope guard added.
 - Post-merge docs-only trigger smoke: PASS on head `a2583cb91d9c580f2b064647cfa541ca6b66a976`; only Organizational docs `41455027345` ran and passed; no Windows synthetic/installer automatic run.
 
+## 2026-11-02 — r22 Drive mirror synchronization
+- Source of truth main before mirror checkpoint: `0a85a94bb65046036f3d95d6372e0e22e58c43a3`.
+- PROJECT_STATE / WORKLOG / HANDOFF_CURRENT / VERIFICATION Drive mirrors rewritten from GitHub.
+- Old mirror-only trailing sentinels `.` / `*` removed.
+- Readback: exact ordered match for all non-empty source lines in all four documents; counts equal; first mismatch = none.
+- Result: Drive PROJECT mirror readback PASS.
+
