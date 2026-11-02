@@ -85,6 +85,43 @@ Verified:
 
 Detailed evidence: `C13_CLEAN_SESSION.md`.
 
+## r18 synthetic territory/scenario verification
+**AUTOMATED PASS / MANUAL WINDOWS PENDING — 2026-11-02.**
+
+PR #34 verified product source head:
+`a2c945034bfea58b3ff5890ea53862831c1b502a`.
+
+Current PR head:
+`cccce86708e77e6a1cd670179ebf9547d0a5f671`.
+
+A direct compare from `a2c945...` to `cccce867...` shows only:
+- `README.md`;
+- `README.en.md`;
+- `README.fr.md`;
+- `README.de.md`;
+- `README.es.md`;
+- `README.ko.md`;
+- `README.ja.md`.
+
+Therefore no r18 product/source file changed after the verified manual-test artifact was built.
+
+Current-head automated evidence:
+- Organizational docs checks `41417199329`: PASS;
+- Tauri shell product-platform checks `41417199299`: PASS;
+- Windows synthetic test artifact `41417199372`: PASS.
+
+Manual-test artifact evidence from verified product head `a2c945...`:
+- artifact id `13127022813`;
+- ZIP SHA256 `b9f3f2c47d1333720568e949d957005aa09b8138bf4844e7b9e422ad31cfb444`;
+- `Uvaga.exe` SHA256 `f660f2e42a3f6a921230feb1e847bccf6b8e6513beea47bbd156a7714d93fafa`;
+- `Cargo.lock` SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`.
+
+Automated acceptance covers build/tests/artifact/checksums only. Visual/runtime UX still requires owner execution on Windows 10/11 x64. Until that PASS, PR #34 is not accepted and must not be merged.
+
+## README localization verification
+PR #35 merged to main at `e3d11e7ac47ee72a9d22ab5205115dac1d8a8956`.
+Ukrainian primary README plus EN/FR/DE/ES/KO/JA translations are present; local Markdown link validation PASS.
+
 ## Source/legal checks
 - UkraineAlarm public request page/offer checked without accepting/applying.
 - KATOTTG uses cutoff/amendment-chain policy.
