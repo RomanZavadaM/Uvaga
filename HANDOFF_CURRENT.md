@@ -293,3 +293,19 @@ Detailed evidence: `C13_CLEAN_SESSION.md`.
 
 ## One next action
 Continue owner-independent CI efficiency / release-checklist hardening. Owner r20 installer/visual sanity remains pending; do not start code signing, public release or live-source integration automatically.
+
+## r22 — CI efficiency + release checklist
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #52 exact head `4376a23820c5232eaa148526ff17b82e6184964f` passed all final gates and was squash-merged to main as `9087e6fda537333092df8e5010d5a9f3f0d5ac11`.
+
+Final runs: release metadata `41453727274`, docs `41453727294`, CI scope `41453727434`, Windows synthetic `41453727373`, Windows installer `41453727648` — all PASS.
+
+PR #51 was an earlier aggressive CI-consolidation alternative. It was found by live-GitHub reconciliation and closed unmerged; do not restore its workflow-retirement changes by assumption.
+
+r22 keeps current heavy product gates, removes broad docs-only automatic triggers, keeps manual exact-ref `workflow_dispatch`, and adds `RELEASE_CHECKLIST.md` plus a CI-scope guard.
+
+Post-merge docs-only trigger smoke: **PASS** on head `a2583cb91d9c580f2b064647cfa541ca6b66a976`; only Organizational docs run `41455027345` started and passed. Windows synthetic/installer did not auto-run. Next: synchronize Drive PROJECT mirrors with readback.
+
+After that, continue owner-independent hardening only. Owner r20 installer/visual acceptance remains pending; do not start live API/source adapter, credentials, push/public notifications, production deployment, code signing, public release or version bump.
+

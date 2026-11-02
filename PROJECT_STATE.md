@@ -352,3 +352,25 @@ For any future macOS/Android/iOS release, run the same target-specific completen
 
 ## Одна наступна дія
 Owner-independent CI efficiency / release-checklist hardening. Owner manual Windows installer/visual sanity для r20 лишається окремим gate; code signing, public release та live source adapter не починати автоматично.
+
+## r22 — CI efficiency + release checklist
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #52 final head `4376a23820c5232eaa148526ff17b82e6184964f`; squash-merged to main:
+`9087e6fda537333092df8e5010d5a9f3f0d5ac11`.
+
+Final pre-merge checks:
+- Release metadata `41453727274`: PASS;
+- Organizational docs `41453727294`: PASS;
+- CI scope `41453727434`: PASS;
+- Windows synthetic `41453727373`: PASS;
+- Windows NSIS installer `41453727648`: PASS, including exact-lock test, unsigned verification, install/launch/uninstall and artifact upload.
+
+r22 removes documentation-only automatic triggers from heavy Windows synthetic/installer workflows, preserves `workflow_dispatch` for exact-ref final candidates, adds cheap CI-scope regression protection and establishes `RELEASE_CHECKLIST.md` as the project-local release gate.
+
+Unexpected PR #51 was reconciled from live GitHub and closed unmerged as a superseded alternative. No product/safety/live/signing/version change from #51 was integrated.
+
+Post-merge docs-only trigger smoke: **PASS**. On checkpoint head `a2583cb91d9c580f2b064647cfa541ca6b66a976`, only Organizational docs run `41455027345` started and passed; Windows synthetic/installer workflows did not auto-run.
+
+Owner r20 installer UX/manual sanity remains pending. Code signing, public release, live credentials/source integration, push notifications and production deployment remain owner-only gates.
+

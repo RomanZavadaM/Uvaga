@@ -204,3 +204,14 @@ Owner-independent CI efficiency / release-checklist hardening. Owner r20 install
 - Initial Windows metadata failures were diagnostic-only cp1252 Unicode output; assertions had passed; fixed with ASCII-safe diagnostics.
 - Synthetic candidate artifact `13145036714`, ZIP SHA256 `3147ce551e99918cae90ff0752ff998b25fff5df9c71577e71e4d4a8e3ab7630`.
 - Installer candidate artifact `13144614348`, ZIP SHA256 `32d69221465da743fe1e7e6503653eda8daf0572591b3a7af3f9302f5a5ca14c`.
+
+## 2026-11-02 — r22 CI efficiency + release checklist integrated
+- Live pre-merge main: `8729f905f17d830feba68b62c5ea72ef9e13ede3`.
+- PR #52 exact head: `4376a23820c5232eaa148526ff17b82e6184964f`.
+- Final checks PASS: release metadata `41453727274`, docs `41453727294`, CI scope `41453727434`, Windows synthetic `41453727373`, Windows installer `41453727648`.
+- PR #52 squash-merged to main: `9087e6fda537333092df8e5010d5a9f3f0d5ac11`.
+- Diff was exactly 7 CI/docs/script files; no product/safety/live/signing/version changes.
+- PR #51 was discovered during clean-session reconciliation, reviewed, documented and closed unmerged as a superseded alternative.
+- r22 result: docs-only edits no longer auto-run expensive Windows synthetic/installer builds; heavy workflows keep manual `workflow_dispatch`; `RELEASE_CHECKLIST.md` and cheap CI-scope guard added.
+- Post-merge docs-only trigger smoke: PASS on head `a2583cb91d9c580f2b064647cfa541ca6b66a976`; only Organizational docs `41455027345` ran and passed; no Windows synthetic/installer automatic run.
+
