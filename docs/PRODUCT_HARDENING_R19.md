@@ -16,7 +16,7 @@
 8. Static UI contract test перевіряє whitelist двох synthetic territories, усі п’ять scenario IDs, critical stale-clear label, synthetic warning і відсутність remote scripts/styles.
 9. Windows Tauri tests/build, Windows synthetic artifact, macOS ARM64/Intel checks і docs/UI-contract CI — PASS.
 10. README UA/EN/FR/DE/ES/KO/JA не повинні називати r18 manual acceptance pending або PR #34 відкритим.
-11. Live source adapter, credentials, public notifications, geolocation, production deployment, signing і production release не додаються в r19.
+11. Desktop CI fail-closed перевіряє exact accepted Tauri Cargo.lock SHA256 `6073fb5d12e3202ed3fdc2e9bf1cbb854b9a7efcfc45063ad5aeba48291b4b7d`; dependency drift не може тихо пройти build.\n12. Live source adapter, credentials, public notifications, geolocation, production deployment, signing і production release не додаються в r19.
 
 ## Manual acceptance
 
