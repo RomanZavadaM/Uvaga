@@ -51,3 +51,14 @@ Uvaga не заявляє авторських прав на ці компоне
 Machine-enforced license/source policy вже перевірена: GitHub Actions run `41423140592` — **PASS** (`cargo deny check licenses sources`).
 
 До production release ще не закритий саме packaging-підетап: повний набір сторонніх license/notice texts та exact MPL source-availability notice для фінального release lock.
+
+## Compliance bundle checkpoint
+
+GitHub Actions run `41423995739` produced and read back artifact `13131470682` (`Uvaga-r18-third-party-compliance-bundle`), ZIP SHA256 `b91319651fe2ffa9d7983195fcc6e82bee77ed8357d36459aedb8a83c2a7d160`.
+
+- 406 crates.io packages indexed;
+- 371 have captured package-local license/notice files;
+- 35 have no package-local license/notice file and require supplemental license text/attribution;
+- complete vendored source for the five exact MPL-2.0 packages is preserved in `MPL-SOURCE-r18.tar.gz` inside the artifact.
+
+Therefore the source/material collection checkpoint is **PASS/PARTIAL**: MPL source is preserved and most package notices are captured, but third-party text completeness is not yet closed.
