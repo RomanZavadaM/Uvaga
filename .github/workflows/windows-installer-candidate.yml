@@ -2,6 +2,8 @@ name: Windows NSIS installer candidate
 on:
   pull_request:
     paths:
+      - 'Cargo.toml'
+      - 'src/**'
       - 'app/**'
       - 'src-tauri/**'
       - 'scripts/check_release_metadata.py'
