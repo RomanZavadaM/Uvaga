@@ -26,12 +26,17 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
+      - name: Restore verified dependency lock
+        run: |
+          cargo generate-lockfile --manifest-path src-tauri/Cargo.toml
+          cargo update --manifest-path src-tauri/Cargo.toml -p cc --precise 1.10.0
+          python scripts/verify_tauri_lock.py
       - name: Test Tauri shell bridge on Windows
         if: matrix.os == 'windows-2025'
-        run: cargo test --manifest-path src-tauri/Cargo.toml
+        run: cargo test --locked --manifest-path src-tauri/Cargo.toml
       - name: Check Tauri shell on macOS
         if: matrix.os != 'windows-2025'
-        run: cargo check --manifest-path src-tauri/Cargo.toml
+        run: cargo check --locked --manifest-path src-tauri/Cargo.toml
       - name: Export generated Cargo.lock for repository checkpoint
         if: matrix.os == 'windows-2025'
         uses: actions/upload-artifact@v4
