@@ -1,0 +1,87 @@
+name: Git history backup and restore check
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/git-bundle-backup.yml'
+      - 'docs/GIT_BUNDLE_BACKUP_C12.md'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/git-bundle-backup.yml'
+      - 'docs/GIT_BUNDLE_BACKUP_C12.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bundle-restore:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Fetch all branches and tags
+        run: |
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' '+refs/tags/*:refs/tags/*' --prune
+
+      - name: Create and verify bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifact
+
+          MAIN_SHA="$(git rev-parse refs/remotes/origin/main)"
+          git update-ref refs/heads/c12-main "$MAIN_SHA"
+
+          git bundle create artifact/Uvaga-all-refs.bundle --all
+          git bundle verify artifact/Uvaga-all-refs.bundle
+
+          BUNDLE_SHA="$(sha256sum artifact/Uvaga-all-refs.bundle | awk '{print $1}')"
+          printf '%s  %s\n' "$BUNDLE_SHA" "Uvaga-all-refs.bundle" > artifact/SHA256SUMS.txt
+
+          {
+            echo "Uvaga Git history backup C12"
+            echo "main_sha=$MAIN_SHA"
+            echo "bundle_sha256=$BUNDLE_SHA"
+            echo "workflow_sha=$GITHUB_SHA"
+            echo "event=$GITHUB_EVENT_NAME"
+          } > artifact/MANIFEST.txt
+
+      - name: Restore main in a clean repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_MAIN="$(git rev-parse refs/remotes/origin/main)"
+
+          rm -rf restore
+          git init restore
+          git -C restore fetch ../artifact/Uvaga-all-refs.bundle refs/heads/c12-main:refs/heads/main
+          git -C restore checkout main
+
+          RESTORED_MAIN="$(git -C restore rev-parse HEAD)"
+          test "$RESTORED_MAIN" = "$SOURCE_MAIN"
+
+          git -C restore fsck --full
+          test -f restore/START_HERE.md
+          test -f restore/HANDOFF_CURRENT.md
+          test -f restore/Cargo.toml
+
+      - name: Run restored core tests
+        run: cargo test --manifest-path restore/Cargo.toml
+
+      - name: Upload bundle checkpoint
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uvaga-Git-Bundle-C12
+          path: artifact/*
+          if-no-files-found: error
+          retention-days: 30
