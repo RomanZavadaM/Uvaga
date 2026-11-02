@@ -399,3 +399,9 @@ UA/EN/FR/DE/ES/KO/JA README release-status wording is now consistent: r19 is his
 
 Organizational docs `41458780488`: PASS. UI contract `41458780620`: PASS. No heavy Windows/Tauri run was triggered by this docs-only change.
 
+## r25 — complete fail-safe presentation matrix
+**INTEGRATED / AUTOMATED PASS — 2026-11-02.**
+
+PR #59 exact head `7267e0a62615bbae1e4caf15403f15f67b0aff89`; squash-merged `d358cfa9b850b612d94823f7c7d73d0f08fa5f8c`. All six workflow groups PASS: Rust core `41465383756`, local relay `41465383823`, Windows synthetic `41465383783`, Tauri matrix `41465383772`, Windows NSIS installer `41465383761`, organizational docs `41465383938`.
+
+Exactly two files: `src/presentation.rs` (+52 lines of tests only) and `docs/FAIL_SAFE_MATRIX_R25.md` (+16 lines). Tests cover all 12 combinations of confirmed state × freshness, plus degradation of a previously fresh clear. No production code, version, live integration, credentials, signing, notifications or release changed. Owner Windows screenshot evidence indicates synthetic app opened and active-fresh/cleared-fresh UI was shown, but no owner acceptance of complete r20 installer/visual matrix or cleared-stale scenario is claimed.
